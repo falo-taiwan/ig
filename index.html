@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 時代必修協作課：如何選對合適的 AI 協作方法？</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Hero Section -->
+    <header class="hero-section">
+        <div class="glow-orb" id="orb-1"></div>
+        <div class="glow-orb" id="orb-2"></div>
+        
+        <div class="container">
+            <div class="hero-badge"><i class="fa-solid fa-graduation-cap"></i> AI 時代必修協作課</div>
+            <h1 class="hero-title">如何選對合適的<br><span class="text-gradient">AI 協作方法？</span></h1>
+            <p class="hero-subtitle">這不是一場人與 AI 的能力競賽，而是一堂關於「任務與方法適配（Task-Method Fit）」的職場思維課。從 Excel 比對案，看懂「語意對話」與「自動化程式」的黃金分工。</p>
+            
+            <div class="hero-cta-group">
+                <a href="#comparison-arena" class="btn btn-primary">開始體驗探索 <i class="fa-solid fa-arrow-down"></i></a>
+                <a href="#theory" class="btn btn-secondary">理解協作方法論 <i class="fa-solid fa-book-open"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Section 1: The Core Story & Pain Point -->
+        <section class="section" id="story">
+            <div class="section-header">
+                <span class="section-tag">COLLABORATION THINKING</span>
+                <h2>1. 選擇不對的協作方法，事倍功半</h2>
+                <p>當我們把「精密運算」的任務強加給「語意對話」的工具時，再優秀的 AI 夥伴也只能給出令人挫折的答案。</p>
+            </div>
+            
+            <div class="grid grid-2">
+                <div class="card story-card">
+                    <div class="card-badge badge-warning">真實痛點情境</div>
+                    <div class="story-bubble">
+                        <p class="quote">「我只是要 AI 比對兩個 Excel 裡同名工作表的資料，看專案是否有新增、刪減或欄位變異。結果它一直抓錯，我重新下指令說關鍵字一樣就算同個專案，它還是錯。我搞了一個多小時，到最後我自己人工花半小時搞定。AI 真的很難用！」</p>
+                        <div class="quote-author">
+                            <div class="avatar"><i class="fa-solid fa-user-tie"></i></div>
+                            <div>
+                                <strong>某企業專案經理 (PM)</strong>
+                                <span>因為「選錯協作模式」而感到挫折的典型使用者</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card analysis-card">
+                    <h3>協作方法的本質誤區</h3>
+                    <p>這位經理的困境，不在於 AI 的智商高低，而在於<strong>「誤用了 AI 的協作模式」</strong>。直接把檔案丟給聊天對話框（Chat Mode），是強迫一個極具創造力的「文學家」去幹精密的「會計審計」工作。</p>
+                    <ul class="bullet-list">
+                        <li>
+                            <i class="fa-solid fa-shuffle text-primary"></i> 
+                            <div><strong>聊天對話（Chat）的特性</strong>：擅長邏輯推理、概念擴展、語意摘要。但具有隨機性（Probabilistic）。</div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-code text-success"></i> 
+                            <div><strong>程式代碼（Code）的特性</strong>：擅長絕對精確、重複性高、邏輯嚴密的資料對齊。具有決定性（Deterministic）。</div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-lightbulb text-warning"></i> 
+                            <div><strong>最佳協作法</strong>：人出點子 ➡️ AI 寫出程式 ➡️ 程式精確執行。這才是「選對方法」的黃金三角。</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: AI Output Showdown Arena -->
+        <section class="section highlight-section" id="comparison-arena">
+            <div class="section-header text-center">
+                <span class="section-tag">AI SHOWDOWN ARENA</span>
+                <h2>2. 實戰擂台：對話模式（Chat）與 程式代理（Code）的答卷對決</h2>
+                <p>將同一個 50 筆複雜專案資料庫丟給兩位不同的「AI 戰友」協作，產出的結果卻有天壤之別。這證明了「選對協作方法」才是成敗關鍵！</p>
+            </div>
+
+            <div class="grid grid-2 arena-container">
+                <!-- Left Column: Claude Chat (The Conversational Writer) -->
+                <div class="card chat-failure-card border-danger-dim">
+                    <div class="arena-card-badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> ❌ 聊天對話模式 (Claude Chat)</div>
+                    <div class="arena-header">
+                        <div class="ai-avatar avatar-chat"><i class="fa-solid fa-comments"></i></div>
+                        <div>
+                            <h4>純聊天通靈協作</h4>
+                            <span>將 Excel 轉為純文字讀入上下文比對</span>
+                        </div>
+                    </div>
+
+                    <div class="chat-transcript">
+                        <div class="bubble bubble-user">「幫我比對這兩份 Excel 專案清單，看哪些新增、刪除或修改了？」</div>
+                        <div class="bubble bubble-ai">
+                            <p>好的，我幫您比對了這兩份檔案，結果如下：</p>
+                            <ul class="arena-list">
+                                <li><strong>❌ 專案編號被自動腦補簡寫</strong>：<br>
+                                    將 <code>PRJ-2026-005</code> 簡寫為 <code>PRJ-005</code>。這在真實對帳中會造成系統無法讀取。</li>
+                                <li><strong>❌ 受到隱形空格干擾，造成嚴重誤判</strong>：<br>
+                                    因為看不見首尾空格，將 <code>PRJ-2026-012</code> 與 <code>PRJ-2026-048</code> 誤判為<strong>「1 筆刪除 + 1 筆新增」</strong>。導致它回報為<strong>「新增 5 筆、刪除 5 筆」</strong>（實際只有 3 增 3 減）。</li>
+                                <li><strong>❌ PM 欄位語意誤報</strong>：<br>
+                                    回報 <code>PRJ-045</code> 專案經理變更為 Jerry，但在資料欄位中，該專案 PM 本來就是 Jerry。</li>
+                                <li><strong>❌ 致命傷：給不出 100% 完整性保證</strong>：<br>
+                                    在結尾聲明：<span class="text-italic">「其餘 30 筆專案我大致看過是一致的，但我無法向您保證是否有某個欄位的某個數字被偷偷修改過一碼...」</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Claude Code (The Agentic Programmer) -->
+                <div class="card code-success-card border-success-dim">
+                    <div class="arena-card-badge badge-success"><i class="fa-solid fa-circle-check"></i> ✅ 代理程式模式 (Claude Code)</div>
+                    <div class="arena-header">
+                        <div class="ai-avatar avatar-code"><i class="fa-solid fa-terminal"></i></div>
+                        <div>
+                            <h4>程式代理協作 (Agent)</h4>
+                            <span>調用本地 xlsx skill 執行確定性比對</span>
+                        </div>
+                    </div>
+
+                    <div class="cli-transcript">
+                        <div class="cli-input">> claude compare_excel.py</div>
+                        <div class="cli-output">
+                            <span class="cli-log-info">[INFO] 載入工作表: '專案清單'...</span>
+                            <span class="cli-log-success">[SUCCESS] 成功讀取 50 筆舊資料與 50 筆最新資料。</span>
+                            <span class="cli-log-info">[RUN] 執行主鍵去空格清洗 (df[key].str.strip())...</span>
+                            <span class="cli-log-success">[MATCH] 智慧排除 'PRJ-2026-012' 與 'PRJ-2026-048' 之假性空格差異。</span>
+                            <hr class="cli-divider">
+                            <span class="cli-result-header">📊 100% 精確比對結果：</span>
+                            <span class="cli-result-item">➕ 新增專案 (3筆): PRJ-2026-051, 052, 053 (格式完整)</span>
+                            <span class="cli-result-item">➖ 刪除專案 (3筆): PRJ-2026-005, 015, 035 (排除空格誤判)</span>
+                            <span class="cli-result-item">⚠️ 屬性變更 (4筆): PRJ-2026-002, 009, 020, 045</span>
+                            <span class="cli-result-item">ℹ️ 欄位驗證: PRJ-2026-045 僅變更備註欄位，PM欄位無異動。</span>
+                            <span class="cli-log-warn">⚠️ 發現資料品質問題: PRJ-2026-012/048 帶有首尾空格，已自動 Trim 清洗。</span>
+                            <hr class="cli-divider">
+                            <span class="cli-log-success">✨ 已生成彩色異動 Excel 報告: project_comparison_report.xlsx</span>
+                            <span class="cli-log-success">🔒 完整性驗證: 100% 欄位級無遺漏對齊，無任何不確定性。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Transformer Limits -->
+        <section class="section" id="theory">
+            <div class="section-header">
+                <span class="section-tag">METHODOLOGY BOUNDARY</span>
+                <h2>3. 協作方法論：認識「對話框」與「程式」的局限</h2>
+                <p>為什麼直接把資料餵給 AI 對話框，它無法給你 100% 的精確度保證？這與模型的底層運算邏輯息息相關：</p>
+            </div>
+
+            <div class="grid grid-4">
+                <!-- Limit 1 -->
+                <div class="card limit-card">
+                    <div class="limit-icon"><i class="fa-solid fa-chart-line text-warning"></i></div>
+                    <h4>1. 機率預測非硬性比對</h4>
+                    <p>AI 的本質是「預測下一個最可能出現的字（機率）」，而不是資料庫的精確雜湊（Hashing）匹配。它擅長讀懂語意，但不擅長做數學上的等號校對。</p>
+                </div>
+
+                <!-- Limit 2 -->
+                <div class="card limit-card">
+                    <div class="limit-icon"><i class="fa-solid fa-arrows-split-up-and-left text-danger"></i></div>
+                    <h4>2. 注意力稀釋與滑動</h4>
+                    <p>當 30-50 列資料長得極度重覆時，AI 的 Attention 權重會被高度均勻稀釋。在掃描過程中容易發生「注意力滑動」，誤將 A 專案的資料貼給了相鄰的 B 專案。</p>
+                </div>
+
+                <!-- Limit 3 -->
+                <div class="card limit-card">
+                    <div class="limit-icon"><i class="fa-solid fa-compress text-primary"></i></div>
+                    <h4>3. 「迷失在中間」效應</h4>
+                    <p>Transformer 模型對輸入開頭與結尾的抓取精度極高（如 PRJ-001 與 PRJ-050），但位於「長文本中間」的 30 筆資料，其提取權重會大幅衰減，導致漏看。</p>
+                </div>
+
+                <!-- Limit 4 -->
+                <div class="card limit-card">
+                    <div class="limit-icon"><i class="fa-solid fa-brain text-success"></i></div>
+                    <h4>4. 工作記憶體定址上限</h4>
+                    <p>要精確對齊 500 個單元格，AI 必須在單次思考中維護一個極為龐大的變數定址映射表。這超出了 LLM 單次前向傳播（Forward Pass）的短期工作記憶極限。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: The 100-Point Benchmark Solution -->
+        <section class="section highlight-section" id="benchmark">
+            <div class="section-header text-center">
+                <span class="section-tag">GROUND TRUTH BENCHMARK</span>
+                <h2>4. 經典 50 筆專案測試集與標準答案</h2>
+                <p>為了幫大家測試各種 AI 工具的實力，我們設計了 50 筆複雜專案組合、共 10 筆異動的標準測試集。以下是精準的標準答案對照表：</p>
+            </div>
+
+            <!-- Tab Controller -->
+            <div class="tab-container-wrapper card">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="tab-summary"><i class="fa-solid fa-chart-pie"></i> 總覽統計</button>
+                    <button class="tab-btn" data-tab="tab-added"><i class="fa-solid fa-circle-plus text-success"></i> 新增專案 (3筆)</button>
+                    <button class="tab-btn" data-tab="tab-deleted"><i class="fa-solid fa-circle-minus text-danger"></i> 刪除專案 (3筆)</button>
+                    <button class="tab-btn" data-tab="tab-modified"><i class="fa-solid fa-triangle-exclamation text-warning"></i> 屬性變更 (4筆)</button>
+                    <button class="tab-btn" data-tab="tab-robust"><i class="fa-solid fa-shield-halved text-primary"></i> 隱藏防錯 (2筆)</button>
+                </div>
+
+                <!-- Tab Contents -->
+                <div class="tab-content active" id="tab-summary">
+                    <div class="summary-showcase">
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <span class="stat-num">50</span>
+                                <span class="stat-label">舊檔專案數 (V1)</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-num">50</span>
+                                <span class="stat-label">新檔專案數 (V2)</span>
+                            </div>
+                            <div class="stat-box border-success">
+                                <span class="stat-num text-success">+3</span>
+                                <span class="stat-label">新增專案數</span>
+                            </div>
+                            <div class="stat-box border-danger">
+                                <span class="stat-num text-danger">-3</span>
+                                <span class="stat-label">刪除專案數</span>
+                            </div>
+                            <div class="stat-box border-warning">
+                                <span class="stat-num text-warning">4</span>
+                                <span class="stat-label">內容變更數</span>
+                            </div>
+                            <div class="stat-box border-primary">
+                                <span class="stat-num text-primary">43</span>
+                                <span class="stat-label">完全一致數</span>
+                            </div>
+                        </div>
+                        <div class="summary-note">
+                            <p><i class="fa-solid fa-circle-info text-primary"></i> <strong>備註說明</strong>：新舊檔列數皆為 50 筆（新增 3 筆與刪除 3 筆剛好抵消），這是一個巧妙的陷阱。如果 AI 僅僅因為列數相同就判斷無變動，那就直接不合格！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-added">
+                    <div class="added-list">
+                        <div class="added-card">
+                            <div class="added-header">
+                                <span class="added-badge">PRJ-2026-051</span>
+                                <strong>集團永續淨零轉型輔導專案</strong>
+                            </div>
+                            <div class="added-body">
+                                <p><strong>部門</strong>：永續發展辦公室 | <strong>PM</strong>：林淑芬 (Sophia) | <strong>預算</strong>：$5,200,000 | <strong>進度</strong>：0.0% | <strong>狀態</strong>：規劃中</p>
+                                <div class="added-desc"><strong>風險備註</strong>：委託外部顧問進行溫室氣體盤查與第三方認證之輔導合約簽訂中。</div>
+                            </div>
+                        </div>
+                        <div class="added-card">
+                            <div class="added-header">
+                                <span class="added-badge">PRJ-2026-052</span>
+                                <strong>次世代生成式AI合規與沙盒測試系統</strong>
+                            </div>
+                            <div class="added-body">
+                                <p><strong>部門</strong>：資訊安全處 | <strong>PM</strong>：黃冠宇 (Jerry) | <strong>預算</strong>：$1,750,000 | <strong>進度</strong>：5.0% | <strong>狀態</strong>：規劃中</p>
+                                <div class="added-desc"><strong>風險備註</strong>：擬定大語言模型輸出安全防欄之過濾機制與驗收劇本編製。</div>
+                            </div>
+                        </div>
+                        <div class="added-card">
+                            <div class="added-header">
+                                <span class="added-badge">PRJ-2026-053</span>
+                                <strong>行銷系統CDP(顧客數據平台)第二期擴充</strong>
+                            </div>
+                            <div class="added-body">
+                                <p><strong>部門</strong>：行銷企劃處 | <strong>PM</strong>：陳雅婷 (Emily) | <strong>預算</strong>：$2,300,000 | <strong>進度</strong>：0.0% | <strong>狀態</strong>：規劃中</p>
+                                <div class="added-desc"><strong>風險備註</strong>：本期重點在於即時標籤推送與線下零售ERP的即時數據打通。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-deleted">
+                    <ul class="bullet-list-large">
+                        <li>
+                            <i class="fa-solid fa-circle-minus text-danger"></i>
+                            <div>
+                                <strong>PRJ-2026-005 (跨國跨境支付平台API串接工程)</strong>
+                                <span>原部門：國際金融部 | 原 PM：李明憲 (Alan) | 已從最新名冊中刪除。</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-circle-minus text-danger"></i>
+                            <div>
+                                <strong>PRJ-2026-015 (遠距辦公SSL-VPN架換升級專案)</strong>
+                                <span>原部門：資訊安全處 | 原 PM：羅志祥 (Show) | 已從最新名冊中刪除。</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-circle-minus text-danger"></i>
+                            <div>
+                                <strong>PRJ-2026-035 (資訊技術處_雲端備份回復演練專案_V3)</strong>
+                                <span>原部門：資訊技術處 | 原 PM：黃冠宇 (Jerry) | 已從最新名冊中刪除。</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="tab-modified">
+                    <div class="grid grid-2">
+                        <div class="change-detail-card">
+                            <div class="change-title">PRJ-2026-002 (App改版)</div>
+                            <div class="change-diff">
+                                <div class="diff-item">
+                                    <span class="diff-label">進度 %</span>
+                                    <span class="diff-val"><del>60.0%</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-success">75.0%</ins></span>
+                                </div>
+                                <div class="diff-item">
+                                    <span class="diff-label">備註</span>
+                                    <span class="diff-val"><del>正在針對使用者反饋調整介面細節，時程略微吃緊。</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-success">UI微調超前完成，現已進入UAT測試籌備階段。</ins></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="change-detail-card">
+                            <div class="change-title">PRJ-2026-009 (SRM系統升級)</div>
+                            <div class="change-diff">
+                                <div class="diff-item">
+                                    <span class="diff-label">目前狀態</span>
+                                    <span class="diff-val"><del>進行中</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-warning">暫緩</ins></span>
+                                </div>
+                                <div class="diff-item">
+                                    <span class="diff-label">備註</span>
+                                    <span class="diff-val"><del>系統測試階段發現效能瓶頸，供應商配合調整中，預計延遲兩週上線。</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-warning">因供應商測試機台大火事件，專案無限期暫緩，等待重新評估備援方案。</ins></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="change-detail-card">
+                            <div class="change-title">PRJ-2026-020 (MFA導入案)</div>
+                            <div class="change-diff">
+                                <div class="diff-item">
+                                    <span class="diff-label">預算 (NTD)</span>
+                                    <span class="diff-val"><del>$2,600,000</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-success">$3,200,000</ins></span>
+                                </div>
+                                <div class="diff-item">
+                                    <span class="diff-label">備註</span>
+                                    <span class="diff-val"><del>正與各系統主管討論認證模組API串接細節...</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-success">經董事會核准，因追加硬體金鑰認證設備，本專案預算追加600,000元。</ins></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="change-detail-card">
+                            <div class="change-title">PRJ-2026-045 (行銷自動化)</div>
+                            <div class="change-diff">
+                                <div class="diff-item">
+                                    <span class="diff-label">專案經理 (PM)</span>
+                                    <span class="diff-val"><del>張家豪 (Kevin)</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-success">黃冠宇 (Jerry)</ins></span>
+                                </div>
+                                <div class="diff-item">
+                                    <span class="diff-label">備註</span>
+                                    <span class="diff-val"><del>整合電子郵件、簡訊與Line推播，目前進度符合預期...</del> <i class="fa-solid fa-arrow-right"></i> <ins class="ins-success">專案由原PM辦理交接，即日起改由 Jerry 接手，確保專案無縫接軌。</ins></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-robust">
+                    <div class="summary-note">
+                        <p><i class="fa-solid fa-shield-halved text-primary"></i> <strong>強健性防錯測試 (Robustness Check)</strong></p>
+                        <p>我們在 V2 的資料中，故意對以下兩筆資料的主鍵進行了「空白污染」：</p>
+                    </div>
+                    <ul class="bullet-list-large">
+                        <li>
+                            <i class="fa-solid fa-triangle-exclamation text-warning"></i>
+                            <div>
+                                <strong>`PRJ-2026-012   ` (尾部多了 3 個空格)</strong>
+                                <span>正確判定：<strong>無變動</strong>。優秀的 AI 在比對前，必須對主鍵做 `.strip()` 清理。若直接用 VLOOKUP 或無清理程式比對，會誤報為 1 增 1 減。</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-triangle-exclamation text-warning"></i>
+                            <div>
+                                <strong>`  PRJ-2026-048` (首部多了 2 個空格)</strong>
+                                <span>正確判定：<strong>無變動</strong>。同樣是用來測試 AI 比對系統的程式強健度。</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Raw Data Download Hub & Interactive Spreadsheet Explorer -->
+        <section class="section highlight-section" id="data-explorer-section">
+            <div class="section-header text-center">
+                <span class="section-tag">DATASET EXPLORER</span>
+                <h2>5. 原始資料下載中心 & 雙表即時看板</h2>
+                <p>為了讓學生和朋友親身體驗，你可以直接下載我們產生的真實 Excel 檔案。下方也為您將<strong>完整 50 筆原始資料</strong>直接呈現在網頁中，並用最醒目的視覺顏色高亮出所有異動細節！</p>
+            </div>
+
+            <!-- Download cards grid -->
+            <div class="grid grid-3 download-hub">
+                <a href="project_data_v1.xlsx" download class="card download-card border-primary-glow">
+                    <div class="download-icon-circle bg-primary-glow"><i class="fa-solid fa-file-excel"></i></div>
+                    <div class="download-text">
+                        <h4>1. 原始舊版資料庫</h4>
+                        <span class="file-name">project_data_v1.xlsx (50筆)</span>
+                        <p>比對前的基線專案總表，包含原始狀態與預算。</p>
+                    </div>
+                    <div class="download-badge"><i class="fa-solid fa-download"></i> 下載舊檔</div>
+                </a>
+
+                <a href="project_data_v2.xlsx" download class="card download-card border-success-glow">
+                    <div class="download-icon-circle bg-success-glow"><i class="fa-solid fa-file-excel"></i></div>
+                    <div class="download-text">
+                        <h4>2. 最新異動資料庫</h4>
+                        <span class="file-name">project_data_v2.xlsx (50筆)</span>
+                        <p>最新名冊，包含 3 新增、3 刪除、4 修改與首尾空格污染。</p>
+                    </div>
+                    <div class="download-badge"><i class="fa-solid fa-download"></i> 下載新檔</div>
+                </a>
+
+                <a href="project_comparison_report.xlsx" download class="card download-card border-warning-glow">
+                    <div class="download-icon-circle bg-warning-glow"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div class="download-text">
+                        <h4>3. 官方彩色異動報告</h4>
+                        <span class="file-name">project_comparison_report.xlsx</span>
+                        <p>Python 比對產出的標準 Excel 報告，高亮異動儲存格。</p>
+                    </div>
+                    <div class="download-badge"><i class="fa-solid fa-download"></i> 下載報告</div>
+                </a>
+            </div>
+
+            <!-- Big Interactive Sheet Explorer -->
+            <div class="card explorer-container">
+                <div class="explorer-toolbar">
+                    <div class="explorer-title"><i class="fa-solid fa-table-list"></i> 專案組合資料探索器</div>
+                    <div class="explorer-controls">
+                        <button class="btn btn-secondary btn-sm active" id="btn-show-v1">顯示 V1 舊檔資料 (50筆)</button>
+                        <button class="btn btn-secondary btn-sm" id="btn-show-v2">顯示 V2 最新資料 (50筆)</button>
+                    </div>
+                </div>
+
+                <div class="legend-panel">
+                    <span class="legend-item"><span class="legend-box bg-added"></span>➕ 新增專案</span>
+                    <span class="legend-item"><span class="legend-box bg-deleted"></span>➖ 刪除專案 (僅在V1顯示)</span>
+                    <span class="legend-item"><span class="legend-box bg-modified"></span>⚠️ 欄位修改</span>
+                    <span class="legend-item"><span class="legend-box bg-dirty"></span>🛡️ 空白字元干擾</span>
+                </div>
+
+                <!-- Scrollable Table Viewport -->
+                <div class="spreadsheet-viewport">
+                    <table class="spreadsheet-table" id="explorer-table">
+                        <thead>
+                            <tr id="explorer-thead-tr">
+                                <!-- Populated dynamically by JS -->
+                            </tr>
+                        </thead>
+                        <tbody id="explorer-tbody">
+                            <!-- Populated dynamically by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: The Code Solution -->
+        <section class="section" id="code-template">
+            <div class="section-header">
+                <span class="section-tag">BEST PRACTICE</span>
+                <h2>6. 標準解決方案：企業級 Python 比對程式碼</h2>
+                <p>要達到 100% 絕對精度，唯一正確做法是利用 AI 寫出精準的程式來運行。以下是經受實戰檢驗的標準 Python 比對範本：</p>
+            </div>
+
+            <div class="card code-card">
+                <div class="code-header">
+                    <span><i class="fa-brands fa-python text-warning"></i> compare_excel.py</span>
+                    <button class="btn-copy" id="btn-copy-code"><i class="fa-regular fa-copy"></i> 複製程式碼</button>
+                </div>
+                <pre><code id="python-code">import pandas as pd
+import openpyxl
+from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
+
+def compare_sheets(file_old, file_new, sheet_name, key_col):
+    # 1. 載入並去除主鍵的頭尾空白 (Trim Keys)
+    df_old = pd.read_excel(file_old, sheet_name=sheet_name)
+    df_new = pd.read_excel(file_new, sheet_name=sheet_name)
+    
+    df_old[key_col] = df_old[key_col].astype(str).str.strip()
+    df_new[key_col] = df_new[key_col].astype(str).str.strip()
+    
+    # 2. 轉換為字典進行極速對齊
+    dict_old = df_old.set_index(key_col).to_dict(orient='index')
+    dict_new = df_new.set_index(key_col).to_dict(orient='index')
+    
+    keys_old, keys_new = set(dict_old.keys()), set(dict_new.keys())
+    
+    # 3. 找出新增、刪除、與交集專案
+    added = sorted(list(keys_new - keys_old))
+    deleted = sorted(list(keys_old - keys_new))
+    common = keys_old & keys_new
+    
+    # 4. 逐欄比對數值異動
+    modified = []
+    for key in sorted(list(common)):
+        chg = {}
+        for col in [c for c in df_old.columns if c != key_col]:
+            v_old, v_new = dict_old[key].get(col), dict_new[key].get(col)
+            if pd.isna(v_old) and pd.isna(v_new): continue
+            if v_old != v_new:
+                chg[col] = {"old": v_old, "new": v_new}
+        if chg:
+            modified.append({"key": key, "changes": chg, "row_new": dict_new[key]})
+            
+    print(f"比對完成! 新增: {len(added)} 筆, 刪除: {len(deleted)} 筆, 變更: {len(modified)} 筆。")
+    return added, deleted, modified
+
+# 呼叫範例：
+# compare_sheets("old.xlsx", "new.xlsx", "專案清單", "專案編號")</code></pre>
+            </div>
+        </section>
+
+        <!-- Section 7: Education Wrap Up -->
+        <section class="section" id="education-wrap">
+            <div class="grid grid-2">
+                <div class="card bg-gradient-purple text-white text-content-card">
+                    <h3>💡 給學生的金石良言</h3>
+                    <p>很多初學者以為，使用 AI 的最高境界是「不用寫一行 code，全靠嘴巴講」。但這場實驗證明，<strong>這是一個巨大的誤區</strong>。</p>
+                    <p><strong>AI 的終極使用邏輯是：</strong></p>
+                    <div class="heavy-quote">
+                        「把『模糊、有邏輯溫度』的指令留給人機溝通；把『精確、重覆性高』的運算留給程式。而 AI 的職責，是當你的工程師，幫你把『模糊指令』翻譯成『精確的程式碼』去執行！」
+                    </div>
+                </div>
+
+                <div class="card feedback-collection">
+                    <h3>📢 分享這個案例</h3>
+                    <p>這是一個非常適合帶給企業經理人或軟體工程學生的 AI 通識案例。它能有效打破「AI 聊天無所不能」的神話，讓大家建立健康的 AI 協作世界觀。</p>
+                    <div class="share-box">
+                        <button class="btn btn-secondary" onclick="window.print()"><i class="fa-solid fa-print"></i> 列印 / 儲存為 PDF 教案</button>
+                        <button class="btn btn-primary" onclick="alert('已複製網頁位址，趕快分享給朋友吧！')"><i class="fa-solid fa-share-nodes"></i> 複製分享連結</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>© 2026 AI 應用必修實戰課程教案. 由 Antigravity 團隊與 鄭Force 老師共同製作</p>
+            <p class="text-muted">讓程式做程式的事，讓 AI 寫最完美的程式。</p>
+        </div>
+    </footer>
+
+    <!-- Interactive JS Script -->
+    <script src="script.js"></script>
+</body>
+</html>
