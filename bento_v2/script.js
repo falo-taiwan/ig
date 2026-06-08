@@ -115,7 +115,32 @@ const I18N_DICT = {
         label_switcher_title: "教學帳號切換:",
         label_switcher_guest: "訪客",
         label_switcher_member: "會員(學生)",
-        label_switcher_admin: "管理員(後台)"
+        label_switcher_admin: "管理員(後台)",
+        nav_gas: "GAS 部署",
+        feedback_title: "鼓勵與反饋 (留言板)",
+        feedback_worker_no: "留言工號 *",
+        feedback_content: "鼓勵與反饋 *",
+        feedback_clear: "清空",
+        feedback_submit: "送出",
+        alert_invalid_worker_no: "請輸入正確工號!!",
+        alert_empty_feedback: "請填寫工號及回饋內容！",
+        toast_feedback_success: "留言成功！",
+        opt_feedback_status_all: "所有狀態",
+        opt_feedback_status_unread: "未讀",
+        opt_feedback_status_read: "已讀",
+        btn_feedback_mark_read: "標示為已讀",
+        btn_feedback_mark_unread: "標示為未讀",
+        th_fb_seq: "項次",
+        th_fb_status: "狀態",
+        th_fb_worker_no: "留言工號",
+        th_fb_dept: "部門",
+        th_fb_name: "姓名",
+        th_fb_content: "留言內容",
+        th_fb_time: "留言時間",
+        th_fb_action: "操作",
+        alert_confirm_delete_fb: "確定要刪除這筆留言嗎？",
+        alert_select_fb: "請先勾選要處理的留言",
+        alert_save_success: "儲存成功！"
     },
     "en": {
         web_title: "Sunny Kitchen - Ordering System POC (AI Education)",
@@ -230,7 +255,32 @@ const I18N_DICT = {
         label_switcher_title: "Account Switcher:",
         label_switcher_guest: "Guest",
         label_switcher_member: "Student Member",
-        label_switcher_admin: "Admin (Backend)"
+        label_switcher_admin: "Admin (Backend)",
+        nav_gas: "GAS Deploy",
+        feedback_title: "Feedback & Support (Message Board)",
+        feedback_worker_no: "Employee ID *",
+        feedback_content: "Feedback & Message *",
+        feedback_clear: "Clear",
+        feedback_submit: "Submit",
+        alert_invalid_worker_no: "Please enter correct Employee ID!!",
+        alert_empty_feedback: "Please enter Employee ID and message content!",
+        toast_feedback_success: "Feedback submitted successfully!",
+        opt_feedback_status_all: "All Status",
+        opt_feedback_status_unread: "Unread",
+        opt_feedback_status_read: "Read",
+        btn_feedback_mark_read: "Mark Read",
+        btn_feedback_mark_unread: "Mark Unread",
+        th_fb_seq: "No.",
+        th_fb_status: "Status",
+        th_fb_worker_no: "Employee ID",
+        th_fb_dept: "Dept",
+        th_fb_name: "Name",
+        th_fb_content: "Message Content",
+        th_fb_time: "Submitted Time",
+        th_fb_action: "Action",
+        alert_confirm_delete_fb: "Are you sure you want to delete this message?",
+        alert_select_fb: "Please check at least one message first",
+        alert_save_success: "Saved successfully!"
     },
     "th": {
         web_title: "Sunny Kitchen - ระบบสั่งอาหารกล่อง POC",
@@ -345,7 +395,32 @@ const I18N_DICT = {
         label_switcher_title: "เปลี่ยนผู้ใช้งาน:",
         label_switcher_guest: "ทั่วไป",
         label_switcher_member: "นักเรียนทดสอบ",
-        label_switcher_admin: "แอดมิน (หลังบ้าน)"
+        label_switcher_admin: "แอดมิน (หลังบ้าน)",
+        nav_gas: "การติดตั้ง GAS",
+        feedback_title: "คำร้องเรียนและข้อคิดเห็น (กระดานข้อความ)",
+        feedback_worker_no: "รหัสพนักงาน *",
+        feedback_content: "ข้อเสนอแนะและคำแนะนำ *",
+        feedback_clear: "ล้าง",
+        feedback_submit: "ส่งข้อความ",
+        alert_invalid_worker_no: "กรุณาป้อนรหัสพนักงานที่ถูกต้อง!!",
+        alert_empty_feedback: "กรุณากรอกรหัสพนักงานและข้อความข้อเสนอแนะ!",
+        toast_feedback_success: "ส่งข้อเสนอแนะสำเร็จ!",
+        opt_feedback_status_all: "ทุกสถานะ",
+        opt_feedback_status_unread: "ยังไม่ได้อ่าน",
+        opt_feedback_status_read: "อ่านแล้ว",
+        btn_feedback_mark_read: "ทำเป็นอ่านแล้ว",
+        btn_feedback_mark_unread: "ทำเป็นยังไม่ได้อ่าน",
+        th_fb_seq: "ลำดับ",
+        th_fb_status: "สถานะ",
+        th_fb_worker_no: "รหัสพนักงาน",
+        th_fb_dept: "แผนก",
+        th_fb_name: "ชื่อ",
+        th_fb_content: "ข้อความ",
+        th_fb_time: "เวลาที่ส่ง",
+        th_fb_action: "ดำเนินการ",
+        alert_confirm_delete_fb: "คุณแน่ใจหรือไม่ที่จะลบข้อความนี้?",
+        alert_select_fb: "กรุณาเลือกข้อความอย่างน้อยหนึ่งรายการ",
+        alert_save_success: "บันทึกสำเร็จ!"
     },
     "vi": {
         web_title: "Sunny Kitchen - Hệ Thống Đặt Cơm Hộp POC",
@@ -460,7 +535,32 @@ const I18N_DICT = {
         label_switcher_title: "Đổi vai trò tài khoản:",
         label_switcher_guest: "Khách",
         label_switcher_member: "Học Viên",
-        label_switcher_admin: "Admin (Sau bếp)"
+        label_switcher_admin: "Admin (Sau bếp)",
+        nav_gas: "Triển khai GAS",
+        feedback_title: "Khích lệ & Phản hồi (Bảng tin nhắn)",
+        feedback_worker_no: "Mã số nhân viên *",
+        feedback_content: "Ý kiến phản hồi *",
+        feedback_clear: "Xóa sạch",
+        feedback_submit: "Gửi phản hồi",
+        alert_invalid_worker_no: "Vui lòng nhập mã số nhân viên chính xác!!",
+        alert_empty_feedback: "Vui lòng nhập mã nhân viên và nội dung phản hồi!",
+        toast_feedback_success: "Gửi phản hồi thành công!",
+        opt_feedback_status_all: "Tất cả trạng thái",
+        opt_feedback_status_unread: "Chưa đọc",
+        opt_feedback_status_read: "Đã đọc",
+        btn_feedback_mark_read: "Đánh dấu đã đọc",
+        btn_feedback_mark_unread: "Đánh dấu chưa đọc",
+        th_fb_seq: "STT",
+        th_fb_status: "Trạng thái",
+        th_fb_worker_no: "Mã nhân viên",
+        th_fb_dept: "Bộ phận",
+        th_fb_name: "Họ tên",
+        th_fb_content: "Nội dung",
+        th_fb_time: "Thời gian",
+        th_fb_action: "Thao tác",
+        alert_confirm_delete_fb: "Bạn có chắc chắn muốn xóa phản hồi này?",
+        alert_select_fb: "Vui lòng chọn ít nhất một phản hồi",
+        alert_save_success: "Lưu thành công!"
     }
 };
 
@@ -879,7 +979,11 @@ function applyLanguage(lang) {
         "label-rice-less", "label-custom-title", "label-no-scallion", "label-add-chili", "label-no-utensils", 
         "label-catering-title", "label-required-catering", "label-catering-200", "label-catering-250",
         "btn-cancel-cust", "btn-add-cust", "label-switcher-title", "label-switcher-guest", 
-        "label-switcher-member", "label-switcher-admin"
+        "label-switcher-member", "label-switcher-admin",
+        "nav-text-gas", "label-feedback-title", "label-feedback-worker-no", "label-feedback-content", 
+        "label-feedback-clear", "label-feedback-submit", "opt-feedback-status-all", "opt-feedback-status-unread", 
+        "opt-feedback-status-read", "btn-feedback-mark-read", "btn-feedback-mark-unread", "th-fb-seq", 
+        "th-fb-status", "th-fb-worker-no", "th-fb-dept", "th-fb-name", "th-fb-content", "th-fb-time", "th-fb-action"
     ];
 
     idList.forEach(id => {
@@ -953,6 +1057,8 @@ function switchView(viewName) {
         switchMemberSubTab('orders');
     } else if (viewName === 'admin') {
         loadAdminData();
+    } else if (viewName === 'guide') {
+        renderFeedbacks();
     }
 }
 
@@ -1892,6 +1998,11 @@ function changeUserRole(role) {
     if (document.getElementById('view-member').classList.contains('active')) {
         loadMemberOrders();
     }
+    
+    // 角色變更時，若正在回饋視角，則重新渲染 (切換表單與後台列表)
+    if (document.getElementById('view-guide').classList.contains('active')) {
+        renderFeedbacks();
+    }
 }
 
 function updateNavbarUserBadge() {
@@ -1943,4 +2054,282 @@ function copyGasCode() {
     navigator.clipboard.writeText(code).then(() => {
         showToast(currentLang === 'zh-TW' ? 'GAS 代碼已複製！' : 'GAS code copied successfully!', 'success');
     });
+}
+
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#039;');
+}
+
+// --- 13. 鼓勵與反饋留言板互動與後台管理 (Feedback Board System) ---
+
+const WORKER_MOCK_DATA = {
+    "1000": { name: "Sunny", dept: "廚苑部 (Kitchen)" },
+    "11100002": { name: "銀行電子", dept: "系統部 (System)" },
+    "11100004": { name: "李小明", dept: "研發部 (R&D)" },
+    "11100007": { name: "王大同", dept: "管理部 (Admin)" },
+    "11100010": { name: "張美玲", dept: "客服部 (CS)" },
+    "admin": { name: "管理員", dept: "系統管理 (IT)" },
+    "sunny": { name: "Sunny主廚", dept: "主廚室 (Chef)" }
+};
+
+function getWorkerInfo(workerNo) {
+    if (WORKER_MOCK_DATA[workerNo]) {
+        return WORKER_MOCK_DATA[workerNo];
+    }
+    return { name: "員工 " + workerNo, dept: "測試部門" };
+}
+
+const DEFAULT_FEEDBACKS = [
+    {
+        id: "FB-001",
+        worker_no: "11100002",
+        name: "銀行電子",
+        department: "系統部 (System)",
+        message_content: "昨天的炸燒肉飯真的太好吃了！皮很脆，肉也很嫩，今天還想再點！",
+        create_time: "2026-06-07 11:30:15",
+        read_status: 1
+    },
+    {
+        id: "FB-002",
+        worker_no: "11100004",
+        name: "李小明",
+        department: "研發部 (R&D)",
+        message_content: "希望能增加素食餐點的選項，有時想吃得清淡一些。",
+        create_time: "2026-06-08 09:15:30",
+        read_status: 0
+    },
+    {
+        id: "FB-003",
+        worker_no: "1000",
+        name: "Sunny",
+        department: "廚苑部 (Kitchen)",
+        message_content: "系統的客製化米飯份量和減油蔥功能非常好用，送餐也很準時！",
+        create_time: "2026-06-08 10:20:00",
+        read_status: 0
+    }
+];
+
+function getFeedbacksFromStorage() {
+    let feedbacks = localStorage.getItem('bento_feedbacks');
+    if (!feedbacks) {
+        feedbacks = JSON.stringify(DEFAULT_FEEDBACKS);
+        localStorage.setItem('bento_feedbacks', feedbacks);
+    }
+    return JSON.parse(feedbacks);
+}
+
+function saveFeedbacksToStorage(feedbacks) {
+    localStorage.setItem('bento_feedbacks', JSON.stringify(feedbacks));
+}
+
+function renderFeedbacks() {
+    const feedbackFormContainer = document.getElementById('feedback-form-container');
+    const feedbackAdminContainer = document.getElementById('feedback-admin-container');
+    
+    if (currentRole === 'admin') {
+        if (feedbackFormContainer) feedbackFormContainer.style.display = 'none';
+        if (feedbackAdminContainer) feedbackAdminContainer.style.display = 'block';
+        loadAdminFeedbacks();
+    } else {
+        if (feedbackFormContainer) feedbackFormContainer.style.display = 'block';
+        if (feedbackAdminContainer) feedbackAdminContainer.style.display = 'none';
+        clearFeedbackForm();
+    }
+}
+
+function clearFeedbackForm() {
+    const workerNoInput = document.getElementById('feedback-worker-no');
+    const contentInput = document.getElementById('feedback-message-content');
+    if (workerNoInput) workerNoInput.value = '';
+    if (contentInput) contentInput.innerHTML = '';
+}
+
+function submitFeedback() {
+    const workerNoInput = document.getElementById('feedback-worker-no');
+    const messageContentInput = document.getElementById('feedback-message-content');
+    
+    if (!workerNoInput || !messageContentInput) return;
+    
+    const workerNo = workerNoInput.value.trim();
+    const messageContent = messageContentInput.innerHTML.replace(/\s+$/, '');
+    
+    if (!workerNo || !messageContent || messageContent === '<br>') {
+        alert(getTranslation('alert_empty_feedback'));
+        return;
+    }
+    
+    // Validate Employee ID
+    const allValidIDs = [
+        "1000", "11100002", "11100004", "11100007", "11100010", "11100014",
+        "11100016", "11100017", "11100018", "11100019", "11100020", "admin", "sunny",
+        "11100021", "11100025", "11100026", "11100028", "11100029", "11100030"
+    ];
+    if (!allValidIDs.includes(workerNo)) {
+        alert(getTranslation('alert_invalid_worker_no'));
+        return;
+    }
+    
+    const info = getWorkerInfo(workerNo);
+    const feedbacks = getFeedbacksFromStorage();
+    
+    const newFeedback = {
+        id: "FB-" + new Date().getTime().toString().slice(-6),
+        worker_no: workerNo,
+        name: info.name,
+        department: info.dept,
+        message_content: escapeHTML(messageContent).replace(/\n/g, '<br>'),
+        create_time: new Date().toISOString().replace('T', ' ').substring(0, 19),
+        read_status: 0
+    };
+    
+    feedbacks.unshift(newFeedback);
+    saveFeedbacksToStorage(feedbacks);
+    
+    showToast(getTranslation('toast_feedback_success'), 'success');
+    clearFeedbackForm();
+    renderFeedbacks();
+}
+
+let selectedFeedbackIds = [];
+
+function loadAdminFeedbacks() {
+    const body = document.getElementById('feedback-list-body');
+    if (!body) return;
+    body.innerHTML = '';
+    
+    const feedbacks = getFeedbacksFromStorage();
+    const searchInput = document.getElementById('feedback-search-worker');
+    const statusFilter = document.getElementById('feedback-filter-status');
+    
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    const status = statusFilter ? statusFilter.value : "all";
+    
+    const filtered = feedbacks.filter(fb => {
+        const matchQuery = fb.worker_no.toLowerCase().includes(query) || 
+                           (fb.name && fb.name.toLowerCase().includes(query)) ||
+                           (fb.message_content && fb.message_content.toLowerCase().includes(query));
+        const matchStatus = status === "all" || 
+                           (status === "read" && fb.read_status === 1) || 
+                           (status === "unread" && fb.read_status === 0);
+        return matchQuery && matchStatus;
+    });
+    
+    if (filtered.length === 0) {
+        body.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-muted);">No feedback records found.</td></tr>`;
+        return;
+    }
+    
+    filtered.forEach((fb, index) => {
+        const tr = document.createElement('tr');
+        tr.className = fb.read_status === 0 ? "status-unread" : "status-read";
+        
+        const isChecked = selectedFeedbackIds.includes(fb.id) ? "checked" : "";
+        const statusText = fb.read_status === 1 ? getTranslation('opt_feedback_status_read') : getTranslation('opt_feedback_status_unread');
+        const badgeClass = fb.read_status === 1 ? "read" : "unread";
+        
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td><input type="checkbox" class="feedback-checkbox" data-id="${fb.id}" ${isChecked} onchange="toggleFeedbackSelection('${fb.id}', this.checked)"></td>
+            <td><span class="badge-status ${badgeClass}" style="cursor: pointer;" onclick="toggleFeedbackReadStatus('${fb.id}')">${statusText}</span></td>
+            <td><strong>${escapeHTML(fb.worker_no)}</strong></td>
+            <td>${escapeHTML(fb.department || '')}</td>
+            <td>${escapeHTML(fb.name || '')}</td>
+            <td class="message-content-cell" onclick="toggleExpandContent(this)">
+                <div class="message-content-display">${fb.message_content}</div>
+            </td>
+            <td><small>${fb.create_time}</small></td>
+            <td>
+                <div style="display: flex; gap: 4px;">
+                    <button class="action-btn edit" style="padding: 4px 8px; font-size: 0.75rem;" onclick="editFeedbackContent('${fb.id}')"><i class="fa-solid fa-pen"></i></button>
+                    <button class="action-btn delete" style="padding: 4px 8px; font-size: 0.75rem; background-color: var(--danger);" onclick="deleteFeedback('${fb.id}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </td>
+        `;
+        body.appendChild(tr);
+    });
+}
+
+function filterFeedbacks() {
+    loadAdminFeedbacks();
+}
+
+function toggleExpandContent(cell) {
+    cell.classList.toggle('expanded');
+}
+
+function toggleFeedbackSelection(id, checked) {
+    if (checked) {
+        if (!selectedFeedbackIds.includes(id)) selectedFeedbackIds.push(id);
+    } else {
+        selectedFeedbackIds = selectedFeedbackIds.filter(x => x !== id);
+    }
+}
+
+function toggleSelectAllFeedbacks(checkbox) {
+    const checkboxes = document.querySelectorAll('.feedback-checkbox');
+    selectedFeedbackIds = [];
+    checkboxes.forEach(cb => {
+        cb.checked = checkbox.checked;
+        const id = cb.getAttribute('data-id');
+        if (checkbox.checked && id) {
+            selectedFeedbackIds.push(id);
+        }
+    });
+}
+
+function toggleFeedbackReadStatus(id) {
+    const feedbacks = getFeedbacksFromStorage();
+    const fb = feedbacks.find(x => x.id === id);
+    if (fb) {
+        fb.read_status = fb.read_status === 1 ? 0 : 1;
+        saveFeedbacksToStorage(feedbacks);
+        loadAdminFeedbacks();
+    }
+}
+
+function bulkMarkFeedback(status) {
+    if (selectedFeedbackIds.length === 0) {
+        alert(getTranslation('alert_select_fb'));
+        return;
+    }
+    const feedbacks = getFeedbacksFromStorage();
+    feedbacks.forEach(fb => {
+        if (selectedFeedbackIds.includes(fb.id)) {
+            fb.read_status = status;
+        }
+    });
+    saveFeedbacksToStorage(feedbacks);
+    selectedFeedbackIds = [];
+    const selectAll = document.getElementById('feedback-select-all');
+    if (selectAll) selectAll.checked = false;
+    loadAdminFeedbacks();
+}
+
+function deleteFeedback(id) {
+    if (confirm(getTranslation('alert_confirm_delete_fb'))) {
+        let feedbacks = getFeedbacksFromStorage();
+        feedbacks = feedbacks.filter(x => x.id !== id);
+        saveFeedbacksToStorage(feedbacks);
+        selectedFeedbackIds = selectedFeedbackIds.filter(x => x !== id);
+        loadAdminFeedbacks();
+    }
+}
+
+function editFeedbackContent(id) {
+    const feedbacks = getFeedbacksFromStorage();
+    const fb = feedbacks.find(x => x.id === id);
+    if (!fb) return;
+    
+    const newContent = prompt("編輯留言內容 (Edit message content):", fb.message_content.replace(/<br>/g, "\n"));
+    if (newContent !== null) {
+        fb.message_content = escapeHTML(newContent).replace(/\n/g, "<br>");
+        saveFeedbacksToStorage(feedbacks);
+        showToast(getTranslation('alert_save_success'), 'success');
+        loadAdminFeedbacks();
+    }
 }

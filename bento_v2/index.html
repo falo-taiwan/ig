@@ -38,8 +38,11 @@
                 <button class="nav-item" id="nav-member" onclick="switchView('member')">
                     <span id="nav-text-member">訂餐查詢</span>
                 </button>
-                <button class="nav-item new-feature" id="nav-guide" onclick="switchView('guide')">
-                    <span id="nav-text-guide">鼓勵與反饋</span><span class="orange-badge-new">New</span>
+                <button class="nav-item" id="nav-guide" onclick="switchView('guide')">
+                    <span id="nav-text-guide">鼓勵與反饋</span>
+                </button>
+                <button class="nav-item gas-btn" id="nav-gas" onclick="switchView('gas')">
+                    <i class="fa-solid fa-code"></i><span id="nav-text-gas">GAS 部署</span>
                 </button>
                 <button class="nav-item admin-btn" id="nav-admin" onclick="switchView('admin')" style="display: none;">
                     <span id="nav-text-admin">後台管理</span>
@@ -343,17 +346,89 @@
             </div>
         </div>
 
-        <!-- 視角四：GAS 部署指南 (GAS Guide View) -->
+        <!-- 視角四：鼓勵與反饋 (Feedback View) -->
         <div id="view-guide" class="view-panel">
             <div class="container">
-                <div class="guide-card">
-                    <h3 class="section-header-title"><i class="fa-solid fa-graduation-cap"></i> Google Apps Script (GAS) 部署教學與代碼</h3>
+                <!-- 留言板主要卡片 -->
+                <div class="section-card">
+                    <h3 class="section-header-title" id="label-feedback-title">鼓勵與反饋 (留言板)</h3>
+                    
+                    <!-- 1. 訪客/會員 留言表單 (Guest/Member Submission Form) -->
+                    <div id="feedback-form-container" class="feedback-form-container">
+                        <div class="form-group">
+                            <label for="feedback-worker-no" id="label-feedback-worker-no">留言工號 *</label>
+                            <input type="text" id="feedback-worker-no" class="form-control" placeholder="請輸入工號" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="feedback-message-content" id="label-feedback-content">鼓勵與反饋 *</label>
+                            <div id="feedback-message-content" contenteditable="true" class="form-control feedback-editable" placeholder="請輸入鼓勵或反饋內容..."></div>
+                        </div>
+                        <div class="feedback-form-actions">
+                            <button id="feedback-clear-btn" class="action-btn edit" onclick="clearFeedbackForm()"><i class="fa-solid fa-eraser"></i> <span id="label-feedback-clear">清空</span></button>
+                            <button id="feedback-submit-btn" class="submit-order-btn" style="width: auto; padding: 10px 24px;" onclick="submitFeedback()"><i class="fa-solid fa-paper-plane"></i> <span id="label-feedback-submit">送出</span></button>
+                        </div>
+                    </div>
+
+                    <!-- 2. 管理員 留言列表 (Admin Message Management Board) -->
+                    <div id="feedback-admin-container" class="feedback-admin-container" style="display: none;">
+                        <!-- 搜尋與篩選工具列 -->
+                        <div class="admin-toolbar" style="margin-bottom: 20px;">
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;">
+                                <div class="admin-search-box" style="flex: 1; min-width: 200px;">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input type="text" id="feedback-search-worker" class="admin-search-input" placeholder="搜尋工號..." oninput="filterFeedbacks()">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <select id="feedback-filter-status" class="form-control" onchange="filterFeedbacks()" style="height: 40px; padding: 8px 12px;">
+                                        <option value="all" id="opt-feedback-status-all">所有狀態</option>
+                                        <option value="unread" id="opt-feedback-status-unread">未讀</option>
+                                        <option value="read" id="opt-feedback-status-read">已讀</option>
+                                    </select>
+                                </div>
+                                <div class="feedback-bulk-actions" style="display: flex; gap: 8px;">
+                                    <button class="action-btn edit" onclick="bulkMarkFeedback(1)" style="margin: 0; padding: 8px 12px; font-size: 0.85rem;"><i class="fa-solid fa-envelope-open"></i> <span id="btn-feedback-mark-read">標示為已讀</span></button>
+                                    <button class="action-btn edit" onclick="bulkMarkFeedback(0)" style="margin: 0; padding: 8px 12px; font-size: 0.85rem;"><i class="fa-solid fa-envelope"></i> <span id="btn-feedback-mark-unread">標示為未讀</span></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 留言列表表格 -->
+                        <div class="table-wrapper">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;" id="th-fb-seq">項次</th>
+                                        <th style="width: 50px;"><input type="checkbox" id="feedback-select-all" onchange="toggleSelectAllFeedbacks(this)"></th>
+                                        <th id="th-fb-status">狀態</th>
+                                        <th id="th-fb-worker-no">留言工號</th>
+                                        <th id="th-fb-dept">部門</th>
+                                        <th id="th-fb-name">姓名</th>
+                                        <th id="th-fb-content">留言內容</th>
+                                        <th id="th-fb-time">留言時間</th>
+                                        <th id="th-fb-action">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feedback-list-body">
+                                    <!-- 留言列表動態渲染 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視角五：GAS 部署指南 (GAS Deploy View) -->
+        <div id="view-gas" class="view-panel">
+            <div class="container">
+                <div class="guide-card gas-theme">
+                    <h3 class="section-header-title gas-theme"><i class="fa-solid fa-graduation-cap"></i> Google Apps Script (GAS) 部署教學與代碼</h3>
                     <p style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-muted);">
                         本訂餐系統採用完全前後端分離設計。前端透過 <code>google.script.run</code> 呼叫 GAS 後端，並將資料保存在 Google Sheet（試算表）中。以下為部署至真實 GAS 雲端的步驟：
                     </p>
 
                     <div class="guide-step">
-                        <div class="step-num">1</div>
+                        <div class="step-num gas-theme">1</div>
                         <div class="step-content">
                             <h4>建立 Google 試算表</h4>
                             <p>在您的 Google 雲端硬碟建立一個新的「試算表」，並在其中手動建立兩個工作表分頁，分別命名為 <code>Products</code> 與 <code>Orders</code>（或者執行下面的 GAS 初始化代碼，系統會自動建立）。</p>
@@ -361,7 +436,7 @@
                     </div>
 
                     <div class="guide-step">
-                        <div class="step-num">2</div>
+                        <div class="step-num gas-theme">2</div>
                         <div class="step-content">
                             <h4>開啟 Google Apps Script</h4>
                             <p>在您的試算表選單中點選 <strong>擴充功能 ➡️ Apps Script</strong>，開啟指令碼編輯器。</p>
@@ -369,7 +444,7 @@
                     </div>
 
                     <div class="guide-step">
-                        <div class="step-num">3</div>
+                        <div class="step-num gas-theme">3</div>
                         <div class="step-content">
                             <h4>複製並貼上後端程式碼 (`Code.gs`)</h4>
                             <p>將預設的 <code>myFunction</code> 清空，複製下方編輯器中的 <code>Code.gs</code> 內容並完整貼上，按下儲存鍵。</p>
@@ -377,7 +452,7 @@
                     </div>
 
                     <div class="guide-step">
-                        <div class="step-num">4</div>
+                        <div class="step-num gas-theme">4</div>
                         <div class="step-content">
                             <h4>建立前端網頁檔案 (`index.html`)</h4>
                             <p>在 Apps Script 專案左側點選「+」新增一個 <strong>HTML 檔案</strong>，命名為 <code>index</code>（系統會自動生成 <code>index.html</code>），並將本專案的 <code>index.html</code>、<code>style.css</code> 與 <code>script.js</code> 合併（CSS 放入 <code>&lt;style&gt;</code>，JS 放入 <code>&lt;script&gt;</code>）後貼上。</p>
@@ -385,7 +460,7 @@
                     </div>
 
                     <div class="guide-step">
-                        <div class="step-num">5</div>
+                        <div class="step-num gas-theme">5</div>
                         <div class="step-content">
                             <h4>發布 Web 應用程式</h4>
                             <p>點選右上角 <strong>部署 ➡️ 新增部署</strong>。選取「網頁應用程式」，並設定：<br>
@@ -398,10 +473,10 @@
                 </div>
 
                 <!-- Apps Script 代碼展示編輯器 -->
-                <div class="guide-card" style="padding: 15px;">
-                    <div class="code-editor-header">
+                <div class="guide-card gas-theme" style="padding: 15px;">
+                    <div class="code-editor-header gas-theme">
                         <span><i class="fa-solid fa-file-code"></i> Code.gs (Apps Script 後端代碼 v2.1)</span>
-                        <button class="action-btn edit" onclick="copyGasCode()" style="margin: 0;"><i class="fa-regular fa-copy"></i> 複製代碼</button>
+                        <button class="action-btn edit gas-theme-btn" onclick="copyGasCode()" style="margin: 0;"><i class="fa-regular fa-copy"></i> 複製代碼</button>
                     </div>
                     <pre class="code-editor-body" id="gas-code-content">
 // Code.gs - Sunny廚苑訂餐系統後端 v2.1 (Google Apps Script)

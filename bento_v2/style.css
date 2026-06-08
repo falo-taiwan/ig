@@ -1927,3 +1927,143 @@ button, input, select, textarea {
 .option-box.selected input {
     accent-color: #e28703;
 }
+
+/* --- 11. GAS 部署單獨樣式 (GAS View Colors) --- */
+:root {
+    --gas-color: #8b5cf6;
+    --gas-dark: #6d28d9;
+    --gas-light: #f5f3ff;
+}
+
+.nav-item.gas-btn {
+    border: 1px dashed var(--gas-color) !important;
+    color: var(--gas-color) !important;
+}
+
+.nav-item.gas-btn:hover, .nav-item.gas-btn.active {
+    background-color: var(--gas-light) !important;
+    color: var(--gas-dark) !important;
+    border-color: var(--gas-dark) !important;
+}
+
+/* GAS 專屬卡片與指示步驟樣式 */
+.guide-card.gas-theme {
+    border-top: 4px solid var(--gas-color) !important;
+}
+
+.section-header-title.gas-theme {
+    color: var(--gas-dark) !important;
+    border-left-color: var(--gas-color) !important;
+}
+
+.step-num.gas-theme {
+    background-color: var(--gas-light) !important;
+    color: var(--gas-color) !important;
+}
+
+.code-editor-header.gas-theme {
+    background-color: #312e81 !important; /* 深靛藍背景 */
+}
+
+.action-btn.gas-theme-btn {
+    background-color: var(--gas-color) !important;
+    color: #ffffff !important;
+}
+
+.action-btn.gas-theme-btn:hover {
+    background-color: var(--gas-dark) !important;
+}
+
+/* --- 12. 鼓勵與反饋留言板樣式 (Feedback Board) --- */
+.feedback-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.feedback-editable {
+    min-height: 150px;
+    height: auto !important;
+    background-color: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    outline: none;
+    overflow-y: auto;
+    transition: var(--transition);
+}
+
+.feedback-editable:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.feedback-editable[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: var(--text-muted);
+}
+
+.feedback-form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* 留言板管理後台 */
+.feedback-admin-container {
+    animation: fadeIn 0.4s ease;
+}
+
+/* 留言狀態標籤 */
+.badge-status {
+    padding: 4px 8px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-status.unread {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.badge-status.read {
+    background-color: #d1fae5;
+    color: #059669;
+}
+
+/* 留言表格行狀態樣式 */
+.admin-table tr.status-unread {
+    background-color: #fef2f2;
+}
+
+.admin-table tr.status-unread:hover {
+    background-color: #fee2e2;
+}
+
+.message-content-cell {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-content-cell.expanded {
+    max-width: none;
+    white-space: normal;
+    word-break: break-all;
+}
+
+.message-content-display {
+    max-height: 100px;
+    overflow-y: auto;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
