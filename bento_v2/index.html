@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="web-title">Sunny廚苑 - 訂餐系統 POC (AI 教學示範版)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 頂部導航列 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo-area" onclick="switchView('menu')">
+                <div class="logo-icon"><i class="fa-solid fa-utensils"></i></div>
+                <div class="logo-text">
+                    <span class="logo-title">Sunny廚苑</span>
+                    <span class="logo-subtitle" id="logo-subtitle">精緻外送訂餐系統</span>
+                </div>
+            </div>
+            
+            <div class="nav-links">
+                <button class="nav-item active" id="nav-menu" onclick="switchView('menu')">
+                    <i class="fa-solid fa-house-chimney"></i><span id="nav-text-menu">首頁選單</span>
+                </button>
+                <button class="nav-item" id="nav-member" onclick="switchView('member')">
+                    <i class="fa-solid fa-user-check"></i><span id="nav-text-member">會員訂單</span>
+                </button>
+                <button class="nav-item admin-btn" id="nav-admin" onclick="switchView('admin')" style="display: none;">
+                    <i class="fa-solid fa-chart-line"></i><span id="nav-text-admin">後台管理</span>
+                </button>
+                <button class="nav-item" id="nav-guide" onclick="switchView('guide')">
+                    <i class="fa-solid fa-code"></i><span id="nav-text-guide">GAS部署</span>
+                </button>
+            </div>
+
+            <div class="nav-actions">
+                <!-- 語言切換選單 (i18n Dropdown) -->
+                <div class="lang-selector-wrapper">
+                    <button class="lang-selector-btn" onclick="toggleLangDropdown(event)">
+                        <i class="fa-solid fa-earth-asia"></i><span id="current-lang-label">繁體中文</span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <button class="lang-option active" data-lang="zh-TW" onclick="changeLanguage('zh-TW')">🇹🇼 繁體中文</button>
+                        <button class="lang-option" data-lang="en" onclick="changeLanguage('en')">🇺🇸 English</button>
+                        <button class="lang-option" data-lang="th" onclick="changeLanguage('th')">🇹🇭 ภาษาไทย</button>
+                        <button class="lang-option" data-lang="vi" onclick="changeLanguage('vi')">🇻🇳 Tiếng Việt</button>
+                    </div>
+                </div>
+
+                <div class="user-badge" id="navbar-user-display">
+                    <i class="fa-solid fa-circle-user"></i><span id="navbar-user-text">訪客模式</span>
+                </div>
+                <button class="cart-toggle-btn" onclick="toggleCart(true)">
+                    <i class="fa-solid fa-basket-shopping"></i><span id="nav-text-cart">購物車</span>
+                    <span class="cart-count-badge" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主區塊 -->
+    <main>
+        
+        <!-- 視角一：點餐菜單首頁 (Menu View) -->
+        <div id="view-menu" class="view-panel active">
+            <!-- 橫幅公告 -->
+            <section class="hero-banner">
+                <div class="container">
+                    <div class="hero-banner-content">
+                        <span class="hero-tag">AI 教學示範 POC v2.0</span>
+                        <h1 class="hero-title" id="hero-title">Sunny主廚推薦精緻餐盒</h1>
+                        <p class="hero-subtitle" id="hero-subtitle">自製油蔥港式蔥油雞飯、招牌炸燒肉便當、紅燒無骨滷排！安心多一點，食材好一點，為您訂做而製的極致美味！</p>
+                        <div class="hero-features">
+                            <div class="hero-feature-item"><i class="fa-solid fa-circle-check"></i><span id="feat-pork">100% 台灣溫體豬</span></div>
+                            <div class="hero-feature-item"><i class="fa-solid fa-recycle"></i><span id="feat-box">高質感紙餐盒可微波</span></div>
+                            <div class="hero-feature-item"><i class="fa-solid fa-motorcycle"></i><span id="feat-delivery">外送自取超便利</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 搜尋與分類 -->
+            <section class="container">
+                <div class="filter-bar">
+                    <div class="search-input-group">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-box" class="search-input" placeholder="搜尋主餐、便當、沙拉..." oninput="filterProducts()">
+                    </div>
+                    <div class="category-tabs" id="category-tabs-container">
+                        <!-- 由 JS 翻譯生成 -->
+                    </div>
+                </div>
+
+                <!-- 商品列表 -->
+                <div class="product-grid" id="product-list-container">
+                    <!-- 商品卡片會由 JavaScript 動態渲染 -->
+                </div>
+            </section>
+        </div>
+
+        <!-- 視角二：會員專區 (Member View) -->
+        <div id="view-member" class="view-panel">
+            <div class="container">
+                <div class="member-layout">
+                    <!-- 會員左側卡片 -->
+                    <div class="member-card">
+                        <div class="member-avatar">U</div>
+                        <div class="member-name" id="member-display-name">測試會員</div>
+                        <div class="member-email" id="member-display-email">member@slk.com</div>
+                        <div class="member-stats">
+                            <div class="member-stat-box">
+                                <div class="member-stat-num" id="stat-order-count">0</div>
+                                <div class="member-stat-label" id="label-stat-count">訂單數量</div>
+                            </div>
+                            <div class="member-stat-box">
+                                <div class="member-stat-num" id="stat-total-spent">$0</div>
+                                <div class="member-stat-label" id="label-stat-spent">消費累計</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 會員側邊分頁按鈕 -->
+                        <button class="member-menu-btn active" id="member-tab-btn-orders" onclick="switchMemberSubTab('orders')">
+                            <span id="label-member-menu-orders">訂單紀錄</span><i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                        <button class="member-menu-btn" id="member-tab-btn-profile" onclick="switchMemberSubTab('profile')">
+                            <span id="label-member-menu-profile">帳號設定 / 地址簿</span><i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- 會員右側列表 -->
+                    <div class="member-main-content">
+                        <!-- 子分頁 1: 訂單紀錄 -->
+                        <div class="member-sub-panel active" id="member-sub-orders">
+                            <div class="section-card">
+                                <h3 class="section-header-title" id="label-my-orders-title">您的歷史訂單紀錄</h3>
+                                <div id="member-orders-container">
+                                    <!-- 訂單列表由 JavaScript 動態渲染 -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 子分頁 2: 帳號設定與地址簿 (Account profile) -->
+                        <div class="member-sub-panel" id="member-sub-profile">
+                            <div class="section-card">
+                                <h3 class="section-header-title" id="label-profile-title">基本資料與送餐地址簿</h3>
+                                <form id="member-profile-form" onsubmit="saveMemberProfile(event)">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="profile-name" id="label-prof-name">姓名 *</label>
+                                            <input type="text" id="profile-name" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="profile-phone" id="label-prof-phone">聯絡電話 *</label>
+                                            <input type="tel" id="profile-phone" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="profile-dept" id="label-prof-dept">公司/部門名稱</label>
+                                            <input type="text" id="profile-dept" class="form-control" placeholder="例如: 銀行電子/研發部">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="profile-email">電子信箱 (唯讀)</label>
+                                            <input type="email" id="profile-email" class="form-control" readonly value="member@slk.com" style="background-color:#f1f5f9; color:var(--text-muted)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-address" id="label-prof-address">常用外送地址 *</label>
+                                        <input type="text" id="profile-address" class="form-control" placeholder="請輸入外送地址" required>
+                                    </div>
+                                    <button type="submit" class="submit-order-btn" style="width: auto; padding: 10px 24px; margin-top: 10px;" id="btn-save-profile">
+                                        <i class="fa-solid fa-floppy-disk"></i>儲存地址資料
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視角三：管理員後台 (Admin View) -->
+        <div id="view-admin" class="view-panel">
+            <div class="container">
+                <div class="admin-layout">
+                    <!-- 後台左側菜單 -->
+                    <div class="admin-sidebar">
+                        <button class="admin-menu-item active" id="admin-tab-btn-dashboard" onclick="switchAdminTab('dashboard')">
+                            <i class="fa-solid fa-chart-pie"></i><span id="label-admin-menu-dashboard">營業概況</span>
+                        </button>
+                        <button class="admin-menu-item" id="admin-tab-btn-orders" onclick="switchAdminTab('orders')">
+                            <i class="fa-solid fa-list-check"></i><span id="label-admin-menu-orders">訂單管理</span>
+                        </button>
+                        <button class="admin-menu-item" id="admin-tab-btn-products" onclick="switchAdminTab('products')">
+                            <i class="fa-solid fa-box"></i><span id="label-admin-menu-products">商品管理</span>
+                        </button>
+                    </div>
+
+                    <!-- 後台右側主面板 -->
+                    <div class="admin-main-content">
+                        <!-- 後台子分頁 1：營業概況 Dashboard -->
+                        <div class="admin-tab-panel active" id="admin-tab-dashboard">
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="metric-info">
+                                        <h5 id="label-metric-revenue">累計營業額</h5>
+                                        <div class="metric-num" id="admin-metric-revenue">NT$0</div>
+                                    </div>
+                                    <div class="metric-icon-box green"><i class="fa-solid fa-dollar-sign"></i></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-info">
+                                        <h5 id="label-metric-orders">總訂單數</h5>
+                                        <div class="metric-num" id="admin-metric-orders">0 筆</div>
+                                    </div>
+                                    <div class="metric-icon-box blue"><i class="fa-solid fa-receipt"></i></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-info">
+                                        <h5 id="label-metric-aov">平均單價 (AOV)</h5>
+                                        <div class="metric-num" id="admin-metric-aov">NT$0</div>
+                                    </div>
+                                    <div class="metric-icon-box orange"><i class="fa-solid fa-calculator"></i></div>
+                                </div>
+                            </div>
+                            
+                            <div class="admin-charts-row" style="margin-top: 20px;">
+                                <!-- 圖表 1: 訂單趨勢 -->
+                                <div class="chart-card">
+                                    <h3 class="section-header-title" id="label-chart-trend">每日訂單統計趨勢 (模擬數據)</h3>
+                                    <div class="chart-placeholder" id="orders-chart-container">
+                                        <!-- 柱狀圖由 JS 繪製 -->
+                                    </div>
+                                </div>
+                                
+                                <!-- 圖表 2: 熱銷排行 -->
+                                <div class="chart-card">
+                                    <h3 class="section-header-title" id="label-chart-rank">暢銷商品排行</h3>
+                                    <div class="ranking-list" id="top-selling-container">
+                                        <!-- 排行榜由 JS 繪製 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 後台子分頁 2：訂單管理 Orders -->
+                        <div class="admin-tab-panel" id="admin-tab-orders">
+                            <div class="section-card">
+                                <div class="admin-toolbar">
+                                    <h3 class="section-header-title" style="margin-bottom: 0;" id="label-admin-orders-title">所有訂單列表</h3>
+                                    
+                                    <!-- 篩選與搜尋工具 -->
+                                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                        <div class="admin-search-box">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                            <input type="text" id="admin-order-search" class="admin-search-input" placeholder="搜尋姓名、電話、訂單ID..." oninput="filterAdminOrders()">
+                                        </div>
+                                        <div class="order-filter-group" id="admin-order-filter-group">
+                                            <!-- 由 JS 翻譯載入狀態篩選按鈕 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-wrapper">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th id="th-order-id">訂單 ID</th>
+                                                <th id="th-customer">顧客資訊</th>
+                                                <th id="th-details">餐點與客製明細</th>
+                                                <th id="th-method">配送方式</th>
+                                                <th id="th-total">合計金額</th>
+                                                <th id="th-status">訂單狀態</th>
+                                                <th id="th-action">狀態更改</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-orders-table-body">
+                                            <!-- JavaScript 渲染訂單列 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 後台子分頁 3：商品管理 Products -->
+                        <div class="admin-tab-panel" id="admin-tab-products">
+                            <div class="section-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                    <h3 class="section-header-title" style="margin-bottom: 0;" id="label-admin-products-title">上架商品清單</h3>
+                                    <button class="order-btn" onclick="openProductModal()"><i class="fa-solid fa-circle-plus"></i><span id="btn-add-product">新增商品</span></button>
+                                </div>
+                                <div class="table-wrapper">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th id="th-prod-img">縮圖</th>
+                                                <th id="th-prod-name">名稱</th>
+                                                <th id="th-prod-cat">分類</th>
+                                                <th id="th-prod-price">單價 (TWD)</th>
+                                                <th id="th-prod-status">狀態</th>
+                                                <th id="th-prod-edit">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-products-table-body">
+                                            <!-- JavaScript 渲染商品列 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視角四：GAS 部署指南 (GAS Guide View) -->
+        <div id="view-guide" class="view-panel">
+            <div class="container">
+                <div class="guide-card">
+                    <h3 class="section-header-title"><i class="fa-solid fa-graduation-cap"></i> Google Apps Script (GAS) 部署教學與代碼</h3>
+                    <p style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-muted);">
+                        本訂餐系統採用完全前後端分離設計。前端透過 <code>google.script.run</code> 呼叫 GAS 後端，並將資料保存在 Google Sheet（試算表）中。以下為部署至真實 GAS 雲端的步驟：
+                    </p>
+
+                    <div class="guide-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>建立 Google 試算表</h4>
+                            <p>在您的 Google 雲端硬碟建立一個新的「試算表」，並在其中手動建立兩個工作表分頁，分別命名為 <code>Products</code> 與 <code>Orders</code>（或者執行下面的 GAS 初始化代碼，系統會自動建立）。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>開啟 Google Apps Script</h4>
+                            <p>在您的試算表選單中點選 <strong>擴充功能 ➡️ Apps Script</strong>，開啟指令碼編輯器。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>複製並貼上後端程式碼 (`Code.gs`)</h4>
+                            <p>將預設的 <code>myFunction</code> 清空，複製下方編輯器中的 <code>Code.gs</code> 內容並完整貼上，按下儲存鍵。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>建立前端網頁檔案 (`index.html`)</h4>
+                            <p>在 Apps Script 專案左側點選「+」新增一個 <strong>HTML 檔案</strong>，命名為 <code>index</code>（系統會自動生成 <code>index.html</code>），並將本專案的 <code>index.html</code>、<code>style.css</code> 與 <code>script.js</code> 合併（CSS 放入 <code>&lt;style&gt;</code>，JS 放入 <code>&lt;script&gt;</code>）後貼上。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">5</div>
+                        <div class="step-content">
+                            <h4>發布 Web 應用程式</h4>
+                            <p>點選右上角 <strong>部署 ➡️ 新增部署</strong>。選取「網頁應用程式」，並設定：<br>
+                                - 專案執行為：<strong>我 (您的 Google 帳戶)</strong><br>
+                                - 誰有權存取：<strong>任何人 (Anyone)</strong><br>
+                                部署完成後，您即可獲得一個專屬的 Web App URL，直接線上點餐！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apps Script 代碼展示編輯器 -->
+                <div class="guide-card" style="padding: 15px;">
+                    <div class="code-editor-header">
+                        <span><i class="fa-solid fa-file-code"></i> Code.gs (Apps Script 後端代碼 v2.0)</span>
+                        <button class="action-btn edit" onclick="copyGasCode()" style="margin: 0;"><i class="fa-regular fa-copy"></i> 複製代碼</button>
+                    </div>
+                    <pre class="code-editor-body" id="gas-code-content">
+// Code.gs - Sunny廚苑訂餐系統後端 v2.0 (Google Apps Script)
+
+// 1. 發布 Web App 進入點
+function doGet() {
+  return HtmlService.createTemplateFromFile('index')
+      .evaluate()
+      .setTitle('Sunny廚苑 - 訂餐系統')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// 2. 初始化 Sheet (若不存在則自動創表)
+function initDatabase() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // 建立 Products 頁籤
+  var productSheet = ss.getSheetByName("Products");
+  if (!productSheet) {
+    productSheet = ss.insertSheet("Products");
+    productSheet.appendRow(["id", "name", "category", "description", "price", "image", "status"]);
+    // 寫入預設商品資料
+    productSheet.appendRow(["13058", "彤緣蔬食便當/蛋奶素/無肉無負擔", "salad", "高質感紙餐盒，可微波可回收。價格不同、菜色不同！", 90, "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_1-300x300.jpg", "instock"]);
+    productSheet.appendRow(["11331", "港式蔥油雞飯", "main", "自製油蔥香醇夠味，熱賣中！更換紙餐盒，更環保保溫！", 110, "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_18-300x300.jpg", "instock"]);
+    productSheet.appendRow(["76512", "Sunny愛妻招牌手工醃製炸燒肉飯", "main", "選用台灣溫體豬肉！王者回歸！高質感紙餐盒！", 110, "https://www.slk9898.com.tw/wp-content/uploads/2025/12/LINE_ALBUM_新餐盒🍱_260530_19-300x300.jpg", "instock"]);
+    productSheet.appendRow(["83669", "紅燒無骨滷排(先炸後滷)", "main", "人氣商品！選用台灣溫體豬大排，先炸後滷口感紮實！", 110, "https://www.slk9898.com.tw/wp-content/uploads/2026/03/S__127344680-300x300.jpg", "instock"]);
+  }
+  
+  // 建立 Orders 頁籤 (在第 11 欄增加 options 以支援客製化細節)
+  var orderSheet = ss.getSheetByName("Orders");
+  if (!orderSheet) {
+    orderSheet = ss.insertSheet("Orders");
+    orderSheet.appendRow(["orderId", "timestamp", "userEmail", "customerName", "phone", "method", "details", "totalPrice", "status", "remarks", "options"]);
+  }
+  return "資料庫初始化成功！";
+}
+
+// 3. 取得所有商品
+function getProducts() {
+  initDatabase();
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Products");
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var products = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    var product = {};
+    for (var j = 0; j < headers.length; j++) {
+      product[headers[j]] = data[i][j];
+    }
+    products.push(product);
+  }
+  return products;
+}
+
+// 4. 提交新訂單
+function submitOrder(orderData) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Orders");
+  
+  var orderId = "SLK-" + new Date().getTime().toString().slice(-6) + Math.floor(10 + Math.random() * 90);
+  var timestamp = new Date();
+  
+  sheet.appendRow([
+    orderId,
+    timestamp,
+    orderData.userEmail,
+    orderData.customerName,
+    orderData.phone,
+    orderData.method,
+    orderData.details,
+    Number(orderData.totalPrice),
+    "pending", 
+    orderData.remarks || "",
+    orderData.options || ""
+  ]);
+  
+  return { success: true, orderId: orderId };
+}
+
+// 5. 取得所有訂單 (後台與會員查詢用)
+function getOrders() {
+  initDatabase();
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Orders");
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var orders = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    var order = {};
+    for (var j = 0; j < headers.length; j++) {
+      order[headers[j]] = data[i][j];
+    }
+    orders.push(order);
+  }
+  return orders;
+}
+
+// 6. 更新訂單狀態
+function updateOrderStatus(orderId, newStatus) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Orders");
+  var data = sheet.getDataRange().getValues();
+  
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === orderId) {
+      sheet.getRange(i + 1, 9).setValue(newStatus); 
+      return { success: true };
+    }
+  }
+  return { success: false, message: "找不到該訂單" };
+}
+
+// 7. 更新商品資訊
+function updateProduct(productData) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Products");
+  var data = sheet.getDataRange().getValues();
+  
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0].toString() === productData.id.toString()) {
+      sheet.getRange(i + 1, 2).setValue(productData.name);
+      sheet.getRange(i + 1, 3).setValue(productData.category);
+      sheet.getRange(i + 1, 4).setValue(productData.description);
+      sheet.getRange(i + 1, 5).setValue(Number(productData.price));
+      sheet.getRange(i + 1, 6).setValue(productData.image);
+      sheet.getRange(i + 1, 7).setValue(productData.status);
+      return { success: true };
+    }
+  }
+  
+  sheet.appendRow([
+    productData.id,
+    productData.name,
+    productData.category,
+    productData.description,
+    Number(productData.price),
+    productData.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300",
+    productData.status || "instock"
+  ]);
+  return { success: true, isNew: true };
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 側邊滑動購物車面板 -->
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart(false)"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3><i class="fa-solid fa-basket-shopping"></i><span id="cart-drawer-title">您的點餐籃</span></h3>
+            <button class="close-cart-btn" onclick="toggleCart(false)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="cart-body">
+            <!-- 購物車商品 -->
+            <div id="cart-items-container">
+                <!-- 動態注入購物餐點 -->
+            </div>
+
+            <!-- 結帳表單，若購物車有商品才顯示 -->
+            <div class="checkout-section" id="checkout-form-container" style="display: none;">
+                <h4 id="label-shipping-title"><i class="fa-solid fa-clipboard-list"></i>填寫配送明細</h4>
+                <div class="form-group">
+                    <label for="checkout-name" id="label-chk-name">收件人姓名 *</label>
+                    <input type="text" id="checkout-name" class="form-control" placeholder="請輸入收件姓名" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-phone" id="label-chk-phone">聯絡電話 *</label>
+                    <input type="tel" id="checkout-phone" class="form-control" placeholder="請輸入手機或分機" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkout-method" id="label-chk-method">取餐方式 *</label>
+                        <select id="checkout-method" class="form-control" onchange="toggleMethodFields()">
+                            <!-- 由 JS 翻譯載入選項 -->
+                        </select>
+                    </div>
+                    <div class="form-group" id="dept-group">
+                        <label for="checkout-dept" id="label-chk-dept">公司/部門 *</label>
+                        <input type="text" id="checkout-dept" class="form-control" placeholder="例如: 銀行電子/研發部">
+                    </div>
+                </div>
+                <div class="form-group" id="address-group">
+                    <label for="checkout-address" id="label-chk-address">外送地址 *</label>
+                    <input type="text" id="checkout-address" class="form-control" placeholder="請填寫完整外送大樓或樓層資訊">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-remarks" id="label-chk-remarks">備註 (如: 飯少、不要辣、不要餐具)</label>
+                    <textarea id="checkout-remarks" class="form-control" rows="2" placeholder="備註其他特殊餐點需求..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-footer">
+            <div class="total-row">
+                <span class="total-label" id="label-chk-total">總計金額:</span>
+                <span class="total-price" id="cart-total-price">0</span>
+            </div>
+            <button class="submit-order-btn" id="submit-order-btn" onclick="submitOrder()" disabled>
+                <i class="fa-solid fa-circle-check"></i><span id="btn-submit-order">送出訂單</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 漂浮模擬角色切換面板 (用於 AI 教學點評) -->
+    <div class="role-switcher-bar">
+        <div class="role-switcher-title">
+            <i class="fa-solid fa-graduation-cap"></i><span id="label-switcher-title">教學帳號切換:</span>
+        </div>
+        <button class="role-switcher-btn guest active" onclick="changeUserRole('guest')">
+            <i class="fa-solid fa-user-slash"></i><span id="label-switcher-guest">訪客</span>
+        </button>
+        <button class="role-switcher-btn member" onclick="changeUserRole('member')">
+            <i class="fa-solid fa-user"></i><span id="label-switcher-member">會員(學生)</span>
+        </button>
+        <button class="role-switcher-btn admin" onclick="changeUserRole('admin')">
+            <i class="fa-solid fa-user-shield"></i><span id="label-switcher-admin">管理員(後台)</span>
+        </button>
+    </div>
+
+    <!-- 餐點客製化加選視窗 (Customize Modal) -->
+    <div class="modal-overlay" id="customize-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h4 id="customize-title">餐點客製化選項</h4>
+                <button class="close-modal-btn" onclick="closeCustomizeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="customize-item-header">
+                    <img id="cust-item-img" class="customize-item-img" src="" alt="">
+                    <div class="customize-item-info">
+                        <h4 id="cust-item-name" class="customize-item-name">餐點名稱</h4>
+                        <p id="cust-item-desc" class="customize-item-desc">餐點細節說明</p>
+                    </div>
+                </div>
+                <input type="hidden" id="cust-item-id">
+                
+                <!-- 選項一：米飯選擇 (Radio) -->
+                <div id="option-rice-group">
+                    <div class="option-group-title">
+                        <span id="label-rice-title">米飯份量 (Rice Portion)</span>
+                        <span class="required-tag" id="label-required-tag">必選</span>
+                    </div>
+                    <div class="options-grid">
+                        <div class="option-box selected" data-group="rice" data-value="normal" onclick="selectRadioOption(this)">
+                            <input type="radio" name="rice-portion" value="normal" checked>
+                            <span id="label-rice-normal">標準份量 (Standard)</span>
+                        </div>
+                        <div class="option-box" data-group="rice" data-value="extra" onclick="selectRadioOption(this)">
+                            <input type="radio" name="rice-portion" value="extra">
+                            <span id="label-rice-extra">米飯加量 (Extra)</span>
+                            <span class="option-price-tag">+$10</span>
+                        </div>
+                        <div class="option-box" data-group="rice" data-value="less" onclick="selectRadioOption(this)">
+                            <input type="radio" name="rice-portion" value="less">
+                            <span id="label-rice-less">米飯減半 (Less)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 選項二：客製要求 (Checkbox) -->
+                <div id="option-custom-group" style="margin-top: 15px;">
+                    <div class="option-group-title">
+                        <span id="label-custom-title">客製化偏好 (Preferences)</span>
+                    </div>
+                    <div class="options-grid">
+                        <div class="option-box" data-group="custom" data-value="no-scallion" onclick="toggleCheckboxOption(this)">
+                            <input type="checkbox" name="custom-opt" value="no-scallion">
+                            <span id="label-no-scallion">不要油蔥 (No Scallion Oil)</span>
+                        </div>
+                        <div class="option-box" data-group="custom" data-value="add-chili" onclick="toggleCheckboxOption(this)">
+                            <input type="checkbox" name="custom-opt" value="add-chili">
+                            <span id="label-add-chili">加生辣椒 (Add Chili)</span>
+                        </div>
+                        <div class="option-box" data-group="custom" data-value="no-utensils" onclick="toggleCheckboxOption(this)">
+                            <input type="checkbox" name="custom-opt" value="no-utensils">
+                            <span id="label-no-utensils">免洗餐具 (No Utensils)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 選項三：雙價位客製級別 (只針對會議餐盒顯示) -->
+                <div id="option-catering-group" style="display: none; margin-top: 15px;">
+                    <div class="option-group-title">
+                        <span id="label-catering-title">會議餐盒預算級別 (Catering Tier)</span>
+                        <span class="required-tag" id="label-required-catering">必選</span>
+                    </div>
+                    <div class="options-grid">
+                        <div class="option-box selected" data-group="catering" data-value="200" onclick="selectRadioOption(this)">
+                            <input type="radio" name="catering-tier" value="200" checked>
+                            <span id="label-catering-200">精緻雙主菜餐盒 200元款</span>
+                        </div>
+                        <div class="option-box" data-group="catering" data-value="250" onclick="selectRadioOption(this)">
+                            <input type="radio" name="catering-tier" value="250">
+                            <span id="label-catering-250">豪華雙主菜餐盒 250元款</span>
+                            <span class="option-price-tag">+$50</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn edit" style="background-color: #f1f5f9; color: var(--text-main);" onclick="closeCustomizeModal()" id="btn-cancel-cust">取消</button>
+                <button class="submit-order-btn" style="width: auto; padding: 10px 24px;" onclick="addCustomizedToCart()" id="btn-add-cust">加入點餐籃</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 產品管理模組視窗 (Add/Edit Product Modal) -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h4 id="modal-title">修改餐點資訊</h4>
+                <button class="close-modal-btn" onclick="closeProductModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modal-prod-id">
+                <div class="form-group">
+                    <label for="modal-prod-name">餐點名稱 *</label>
+                    <input type="text" id="modal-prod-name" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modal-prod-category">餐點分類 *</label>
+                        <select id="modal-prod-category" class="form-control">
+                            <option value="main">主餐便當 (main)</option>
+                            <option value="salad">沙拉米線 (salad)</option>
+                            <option value="promo">最新公告 (promo)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-prod-price">價格 *</label>
+                        <input type="number" id="modal-prod-price" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="modal-prod-desc">餐點描述與材料說明</label>
+                    <textarea id="modal-prod-desc" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modal-prod-image">餐點圖片連結 (URL)</label>
+                    <input type="text" id="modal-prod-image" class="form-control" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="modal-prod-status">供應狀態 *</label>
+                    <select id="modal-prod-status" class="form-control">
+                        <option value="instock">供餐中 (In Stock)</option>
+                        <option value="outofstock">已售罄 (Out of Stock)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn edit" style="background-color: #f1f5f9; color: var(--text-main);" onclick="closeProductModal()">取消</button>
+                <button class="submit-order-btn" style="width: auto; padding: 6px 20px;" onclick="saveProduct()">儲存變更</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 訊息提示容器 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 核心 JS 程式邏輯 -->
+    <script src="script.js"></script>
+</body>
+</html>
