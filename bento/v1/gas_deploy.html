@@ -1,0 +1,3007 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunny廚苑 - 訂餐系統 POC (AI 教學示範版)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <style>
+/* style.css - Sunny廚苑-訂餐系統 POC */
+
+/* --- 1. 設計系統變數 --- */
+:root {
+    --primary: #046bd2;
+    --primary-dark: #024286;
+    --primary-light: #e0f2fe;
+    --accent: #f59e0b;      /* 質感金黃 */
+    --accent-hover: #d97706;
+    --success: #10b981;     /* 翠綠色 */
+    --danger: #ef4444;      /* 警示紅 */
+    --warning: #f59e0b;
+    --bg-main: #f8fafc;     /* 背景淺灰藍 */
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --text-white: #ffffff;
+    --border: #e2e8f0;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-sans: 'Outfit', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* --- 2. 基礎設定 --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 90px; /* 為底部漂浮角色列留白 */
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* 容器 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 輔助樣式：隱藏視角 */
+.view-panel {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.view-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 3. 頂部導航列 (Navbar) --- */
+.navbar {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--text-white);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(4, 107, 210, 0.3);
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    letter-spacing: 0.5px;
+}
+
+.logo-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.nav-item.admin-btn {
+    border: 1px dashed var(--primary);
+    color: var(--primary);
+}
+
+.nav-item.admin-btn:hover {
+    background-color: var(--primary);
+    color: var(--text-white);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-badge {
+    background-color: #f1f5f9;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-badge i {
+    color: var(--primary);
+}
+
+.cart-toggle-btn {
+    background-color: var(--primary);
+    color: var(--text-white);
+    border: none;
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    box-shadow: 0 4px 12px rgba(4, 107, 210, 0.2);
+}
+
+.cart-toggle-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.cart-count-badge {
+    background-color: var(--accent);
+    color: var(--text-white);
+    font-size: 0.75rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* --- 4. 橫幅公告 (Hero Banner) --- */
+.hero-banner {
+    background: linear-gradient(135deg, #022a57 0%, #034f9c 100%);
+    color: var(--text-white);
+    padding: 40px 0;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border-bottom: 4px solid var(--accent);
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+    pointer-events: none;
+}
+
+.hero-banner-content {
+    max-width: 800px;
+}
+
+.hero-tag {
+    background-color: var(--accent);
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.hero-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.hero-subtitle {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.hero-features {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.hero-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    opacity: 0.95;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 50px;
+}
+
+.hero-feature-item i {
+    color: var(--accent);
+}
+
+/* --- 5. 搜尋與分類篩選 (Filter Bar) --- */
+.filter-bar {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+}
+
+.search-input-group {
+    position: relative;
+    max-width: 350px;
+    width: 100%;
+}
+
+.search-input-group i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 16px 10px 42px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    outline: none;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(4, 107, 210, 0.15);
+}
+
+.category-tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.cat-tab {
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background-color: transparent;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.cat-tab:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.cat-tab.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--text-white);
+    box-shadow: 0 4px 10px rgba(4, 107, 210, 0.2);
+}
+
+/* --- 6. 商品列表網格 (Product Grid) --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 25px;
+}
+
+/* 商品卡片 */
+.product-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(4, 107, 210, 0.2);
+}
+
+.product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: var(--accent);
+    color: var(--text-white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.product-badge.out-of-stock {
+    background-color: var(--text-muted);
+}
+
+.product-img-wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.08);
+}
+
+.product-info {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.product-meta {
+    font-size: 0.75rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.product-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.4;
+    margin-bottom: 8px;
+    /* 限制兩行 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.8rem;
+}
+
+.product-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.5rem;
+}
+
+.product-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.product-price-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-price-currency {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.product-price-amount {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: baseline;
+}
+
+.product-price-amount::before {
+    content: 'NT$';
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-right: 2px;
+}
+
+.order-btn {
+    background-color: var(--primary);
+    color: var(--text-white);
+    border: none;
+    padding: 8px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.order-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.order-btn:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* --- 7. 側邊滑動購物車 (Cart Drawer) --- */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.cart-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -450px; /* 初始隱藏在右側 */
+    width: 450px;
+    max-width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-card);
+    z-index: 201;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cart-drawer.open {
+    right: 0;
+}
+
+.cart-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-dark);
+    color: var(--text-white);
+}
+
+.cart-header h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close-cart-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: var(--transition);
+}
+
+.close-cart-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.cart-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.empty-cart-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.empty-cart-message i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: var(--border);
+}
+
+.cart-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+/* 購物車單一商品 */
+.cart-item {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.cart-item-img {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    background-color: #f1f5f9;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-item-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    color: var(--text-main);
+}
+
+.cart-item-price {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.cart-item-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.qty-btn {
+    border: none;
+    background-color: #f8fafc;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: var(--transition);
+}
+
+.qty-btn:hover {
+    background-color: #e2e8f0;
+}
+
+.qty-val {
+    width: 32px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.remove-item-btn {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 0.85rem;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.remove-item-btn:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* 結帳表單 */
+.checkout-section {
+    border-top: 2px solid var(--border);
+    padding-top: 20px;
+    margin-top: 15px;
+}
+
+.checkout-section h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--primary-dark);
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.cart-footer {
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    background-color: #f8fafc;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.total-label {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.total-price {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.total-price::before {
+    content: 'NT$';
+    font-size: 0.95rem;
+    margin-right: 2px;
+}
+
+.submit-order-btn {
+    width: 100%;
+    background-color: var(--success);
+    color: var(--text-white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.submit-order-btn:hover {
+    background-color: #059669;
+}
+
+.submit-order-btn:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* --- 8. 會員專區 (Member Profile & Orders) --- */
+.member-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.member-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    height: fit-content;
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--text-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    margin: 0 auto 15px;
+    font-weight: 700;
+}
+
+.member-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.member-email {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.member-stats {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--border);
+    padding-top: 15px;
+}
+
+.member-stat-box {
+    text-align: center;
+}
+
+.member-stat-num {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.member-stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.member-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.section-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.section-header-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary);
+    padding-left: 10px;
+}
+
+/* 訂單卡片 */
+.order-item-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 15px;
+    transition: var(--transition);
+}
+
+.order-item-card:hover {
+    border-color: var(--primary);
+}
+
+.order-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #f1f5f9;
+}
+
+.order-item-id {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.order-item-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.status-badge.pending { background-color: #fef3c7; color: #d97706; }
+.status-badge.preparing { background-color: #dbeafe; color: #2563eb; }
+.status-badge.completed { background-color: #d1fae5; color: #059669; }
+.status-badge.cancelled { background-color: #fee2e2; color: #dc2626; }
+
+.order-item-body {
+    font-size: 0.88rem;
+}
+
+.order-item-details {
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.order-item-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.order-item-total {
+    text-align: right;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary-dark);
+    margin-top: 8px;
+}
+
+/* --- 9. 管理員後台 (Admin Panel) --- */
+.admin-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.admin-sidebar {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 15px;
+    box-shadow: var(--shadow-sm);
+    height: fit-content;
+}
+
+.admin-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+}
+
+.admin-menu-item:hover, .admin-menu-item.active {
+    color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.admin-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* 後台儀表板指標卡 */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.metric-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.metric-info h5 {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.metric-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.metric-icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.metric-icon-box.blue { background-color: #e0f2fe; color: #0284c7; }
+.metric-icon-box.green { background-color: #d1fae5; color: #059669; }
+.metric-icon-box.orange { background-color: #ffedd5; color: #ea580c; }
+
+/* 後台圖表模擬 */
+.chart-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.chart-placeholder {
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-bottom: 2px solid var(--border);
+    gap: 10px;
+}
+
+.chart-bar-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.chart-bar {
+    width: 60%;
+    background: linear-gradient(to top, var(--primary-dark), var(--primary));
+    border-radius: 4px 4px 0 0;
+    transition: var(--transition);
+    position: relative;
+}
+
+.chart-bar:hover {
+    opacity: 0.85;
+}
+
+.chart-bar-tooltip {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--text-main);
+    color: var(--text-white);
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: var(--transition);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.chart-bar:hover .chart-bar-tooltip {
+    opacity: 1;
+}
+
+.chart-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    text-align: center;
+}
+
+/* 後台表格樣式 */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.admin-table th {
+    background-color: #f8fafc;
+    color: var(--text-muted);
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--border);
+}
+
+.admin-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.action-btn {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.action-btn.edit {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    margin-right: 6px;
+}
+
+.action-btn.edit:hover {
+    background-color: var(--primary);
+    color: var(--text-white);
+}
+
+.action-btn.status-change {
+    background-color: #f1f5f9;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.action-btn.status-change:hover {
+    background-color: #e2e8f0;
+}
+
+/* 產品管理視窗(Modal) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    width: 500px;
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+    background-color: var(--primary-dark);
+    color: var(--text-white);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h4 {
+    font-weight: 700;
+}
+
+.close-modal-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background-color: #f8fafc;
+}
+
+/* --- 10. GAS 部署教學區 (GAS Deploy Panel) --- */
+.guide-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 25px;
+}
+
+.guide-step {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.step-num {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.step-content p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.code-editor-header {
+    background-color: #1e293b;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-white);
+    font-size: 0.85rem;
+    font-family: monospace;
+}
+
+.code-editor-body {
+    background-color: #0f172a;
+    color: #cbd5e1;
+    padding: 20px;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: 'Fira Code', 'Courier New', Courier, monospace;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* --- 11. 漂浮模擬角色切換面板 (Simulated Role Switcher) --- */
+.role-switcher-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 8px 16px;
+    border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.role-switcher-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-right: 1px solid var(--border);
+    padding-right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.role-switcher-btn {
+    border: none;
+    background-color: transparent;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+}
+
+.role-switcher-btn.guest.active { background-color: #f1f5f9; color: var(--text-main); }
+.role-switcher-btn.member.active { background-color: var(--primary-light); color: var(--primary); }
+.role-switcher-btn.admin.active { background-color: #fef3c7; color: #d97706; }
+
+.role-switcher-btn:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* --- 12. 消息通知彈窗 (Toast Notifications) --- */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-left: 4px solid var(--primary);
+    transform: translateX(120%);
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast.success { border-left-color: var(--success); }
+.toast.error { border-left-color: var(--danger); }
+.toast.info { border-left-color: var(--primary); }
+
+.toast-icon.success { color: var(--success); }
+.toast-icon.error { color: var(--danger); }
+.toast-icon.info { color: var(--primary); }
+
+/* --- 13. 響應式佈局調整 --- */
+@media (max-width: 992px) {
+    .member-layout, .admin-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-input-group {
+        max-width: 100%;
+    }
+    
+    .category-tabs {
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar .container {
+        height: 60px;
+    }
+    
+    .logo-subtitle, .nav-item span {
+        display: none;
+    }
+    
+    .hero-title {
+        font-size: 1.6rem;
+    }
+    
+    .cart-drawer {
+        width: 100%;
+    }
+    
+    .role-switcher-bar {
+        width: calc(100% - 30px);
+        justify-content: space-between;
+    }
+    
+    .role-switcher-title {
+        display: none;
+    }
+}
+
+</style>
+</head>
+<body>
+
+    <!-- 頂部導航列 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo-area" onclick="switchView('menu')">
+                <div class="logo-icon"><i class="fa-solid fa-utensils"></i></div>
+                <div class="logo-text">
+                    <span class="logo-title">Sunny廚苑</span>
+                    <span class="logo-subtitle">精緻外送訂餐系統</span>
+                </div>
+            </div>
+            
+            <div class="nav-links">
+                <button class="nav-item active" id="nav-menu" onclick="switchView('menu')">
+                    <i class="fa-solid fa-house-chimney"></i><span>首頁選單</span>
+                </button>
+                <button class="nav-item" id="nav-member" onclick="switchView('member')">
+                    <i class="fa-solid fa-user-check"></i><span>會員訂單</span>
+                </button>
+                <button class="nav-item admin-btn" id="nav-admin" onclick="switchView('admin')" style="display: none;">
+                    <i class="fa-solid fa-chart-line"></i><span>後台管理</span>
+                </button>
+                <button class="nav-item" id="nav-guide" onclick="switchView('guide')">
+                    <i class="fa-solid fa-code"></i><span>GAS部署</span>
+                </button>
+            </div>
+
+            <div class="nav-actions">
+                <div class="user-badge" id="navbar-user-display">
+                    <i class="fa-solid fa-circle-user"></i><span>訪客模式</span>
+                </div>
+                <button class="cart-toggle-btn" onclick="toggleCart(true)">
+                    <i class="fa-solid fa-basket-shopping"></i><span>購物車</span>
+                    <span class="cart-count-badge" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主區塊 -->
+    <main>
+        
+        <!-- 視角一：點餐菜單首頁 (Menu View) -->
+        <div id="view-menu" class="view-panel active">
+            <!-- 橫幅公告 -->
+            <section class="hero-banner">
+                <div class="container">
+                    <div class="hero-banner-content">
+                        <span class="hero-tag">AI 教學示範 POC</span>
+                        <h1 class="hero-title">Sunny主廚推薦精緻餐盒</h1>
+                        <p class="hero-subtitle">自製油蔥港式蔥油雞飯、招牌炸燒肉便當、紅燒無骨滷排！安心多一點，食材好一點，為您訂做而製的極致美味！</p>
+                        <div class="hero-features">
+                            <div class="hero-feature-item"><i class="fa-solid fa-circle-check"></i><span>100% 台灣溫體豬</span></div>
+                            <div class="hero-feature-item"><i class="fa-solid fa-recycle"></i><span>高質感紙餐盒可微波</span></div>
+                            <div class="hero-feature-item"><i class="fa-solid fa-motorcycle"></i><span>外送自取超便利</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 搜尋與分類 -->
+            <section class="container">
+                <div class="filter-bar">
+                    <div class="search-input-group">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-box" class="search-input" placeholder="搜尋主餐、便當、沙拉..." oninput="filterProducts()">
+                    </div>
+                    <div class="category-tabs">
+                        <button class="cat-tab active" onclick="filterCategory('all', this)">全部商品</button>
+                        <button class="cat-tab" onclick="filterCategory('main', this)">主餐便當</button>
+                        <button class="cat-tab" onclick="filterCategory('salad', this)">沙拉米線</button>
+                        <button class="cat-tab" onclick="filterCategory('promo', this)">最新公告</button>
+                    </div>
+                </div>
+
+                <!-- 商品列表 -->
+                <div class="product-grid" id="product-list-container">
+                    <!-- 商品卡片會由 JavaScript 動態渲染 -->
+                </div>
+            </section>
+        </div>
+
+        <!-- 視角二：會員專區 (Member View) -->
+        <div id="view-member" class="view-panel">
+            <div class="container">
+                <div class="member-layout">
+                    <!-- 會員左側卡片 -->
+                    <div class="member-card">
+                        <div class="member-avatar">U</div>
+                        <div class="member-name" id="member-display-name">測試會員</div>
+                        <div class="member-email" id="member-display-email">member@slk.com</div>
+                        <div class="member-stats">
+                            <div class="member-stat-box">
+                                <div class="member-stat-num" id="stat-order-count">0</div>
+                                <div class="member-stat-label">訂單數量</div>
+                            </div>
+                            <div class="member-stat-box">
+                                <div class="member-stat-num" id="stat-total-spent">$0</div>
+                                <div class="member-stat-label">消費累計</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 會員右側列表 -->
+                    <div class="member-main-content">
+                        <div class="section-card">
+                            <h3 class="section-header-title">您的歷史訂單紀錄</h3>
+                            <div id="member-orders-container">
+                                <!-- 訂單列表由 JavaScript 動態渲染 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視角三：管理員後台 (Admin View) -->
+        <div id="view-admin" class="view-panel">
+            <div class="container">
+                <div class="admin-layout">
+                    <!-- 後台左側菜單 -->
+                    <div class="admin-sidebar">
+                        <button class="admin-menu-item active" id="admin-tab-btn-dashboard" onclick="switchAdminTab('dashboard')">
+                            <i class="fa-solid fa-chart-pie"></i>營業概況
+                        </button>
+                        <button class="admin-menu-item" id="admin-tab-btn-orders" onclick="switchAdminTab('orders')">
+                            <i class="fa-solid fa-list-check"></i>訂單管理
+                        </button>
+                        <button class="admin-menu-item" id="admin-tab-btn-products" onclick="switchAdminTab('products')">
+                            <i class="fa-solid fa-box"></i>商品管理
+                        </button>
+                    </div>
+
+                    <!-- 後台右側主面板 -->
+                    <div class="admin-main-content">
+                        <!-- 後台子分頁 1：營業概況 Dashboard -->
+                        <div class="admin-tab-panel active" id="admin-tab-dashboard">
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="metric-info">
+                                        <h5>累計營業額</h5>
+                                        <div class="metric-num" id="admin-metric-revenue">NT$0</div>
+                                    </div>
+                                    <div class="metric-icon-box green"><i class="fa-solid fa-dollar-sign"></i></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-info">
+                                        <h5>總訂單數</h5>
+                                        <div class="metric-num" id="admin-metric-orders">0 筆</div>
+                                    </div>
+                                    <div class="metric-icon-box blue"><i class="fa-solid fa-receipt"></i></div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-info">
+                                        <h5>平均單價 (AOV)</h5>
+                                        <div class="metric-num" id="admin-metric-aov">NT$0</div>
+                                    </div>
+                                    <div class="metric-icon-box orange"><i class="fa-solid fa-calculator"></i></div>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-card" style="margin-top: 20px;">
+                                <h3 class="section-header-title">每日訂單統計趨勢 (模擬數據)</h3>
+                                <div class="chart-placeholder" id="orders-chart-container">
+                                    <!-- 柱狀圖會由 JavaScript 繪製 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 後台子分頁 2：訂單管理 Orders -->
+                        <div class="admin-tab-panel" id="admin-tab-orders">
+                            <div class="section-card">
+                                <h3 class="section-header-title">所有訂單列表</h3>
+                                <div class="table-wrapper">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>訂單 ID</th>
+                                                <th>顧客資訊</th>
+                                                <th>餐點明細</th>
+                                                <th>配送方式</th>
+                                                <th>合計金額</th>
+                                                <th>訂單狀態</th>
+                                                <th>狀態更改</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-orders-table-body">
+                                            <!-- JavaScript 渲染訂單列 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 後台子分頁 3：商品管理 Products -->
+                        <div class="admin-tab-panel" id="admin-tab-products">
+                            <div class="section-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                    <h3 class="section-header-title" style="margin-bottom: 0;">上架商品清單</h3>
+                                    <button class="order-btn" onclick="openProductModal()"><i class="fa-solid fa-circle-plus"></i>新增商品</button>
+                                </div>
+                                <div class="table-wrapper">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>縮圖</th>
+                                                <th>名稱</th>
+                                                <th>分類</th>
+                                                <th>單價 (TWD)</th>
+                                                <th>狀態</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-products-table-body">
+                                            <!-- JavaScript 渲染商品列 -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 視角四：GAS 部署指南 (GAS Guide View) -->
+        <div id="view-guide" class="view-panel">
+            <div class="container">
+                <div class="guide-card">
+                    <h3 class="section-header-title"><i class="fa-solid fa-graduation-cap"></i> Google Apps Script (GAS) 部署教學與代碼</h3>
+                    <p style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-muted);">
+                        本訂餐系統採用完全前後端分離設計。前端透過 <code>google.script.run</code> 呼叫 GAS 後端，並將資料保存在 Google Sheet（試算表）中。以下為部署至真實 GAS 雲端的步驟：
+                    </p>
+
+                    <div class="guide-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>建立 Google 試算表</h4>
+                            <p>在您的 Google 雲端硬碟建立一個新的「試算表」，並在其中手動建立兩個工作表分頁，分別命名為 <code>Products</code> 與 <code>Orders</code>（或者執行下面的 GAS 初始化代碼，系統會自動建立）。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>開啟 Google Apps Script</h4>
+                            <p>在您的試算表選單中點選 <strong>擴充功能 ➡️ Apps Script</strong>，開啟指令碼編輯器。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>複製並貼上後端程式碼 (`Code.gs`)</h4>
+                            <p>將預設的 <code>myFunction</code> 清空，複製下方編輯器中的 <code>Code.gs</code> 內容並完整貼上，按下儲存鍵。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>建立前端網頁檔案 (`index.html`)</h4>
+                            <p>在 Apps Script 專案左側點選「+」新增一個 <strong>HTML 檔案</strong>，命名為 <code>index</code>（系統會自動生成 <code>index.html</code>），並將本專案的 <code>index.html</code>、<code>style.css</code> 與 <code>script.js</code> 合併（CSS 放入 <code>&lt;style&gt;</code>，JS 放入 <code>&lt;script&gt;</code>）後貼上。</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-num">5</div>
+                        <div class="step-content">
+                            <h4>發布 Web 應用程式</h4>
+                            <p>點選右上角 <strong>部署 ➡️ 新增部署</strong>。選取「網頁應用程式」，並設定：<br>
+                                - 專案執行為：<strong>我 (您的 Google 帳戶)</strong><br>
+                                - 誰有權存取：<strong>任何人 (Anyone)</strong><br>
+                                部署完成後，您即可獲得一個專屬的 Web App URL，直接線上點餐！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apps Script 代碼展示編輯器 -->
+                <div class="guide-card" style="padding: 15px;">
+                    <div class="code-editor-header">
+                        <span><i class="fa-solid fa-file-code"></i> Code.gs (Apps Script 後端代碼)</span>
+                        <button class="action-btn edit" onclick="copyGasCode()" style="margin: 0;"><i class="fa-regular fa-copy"></i> 複製代碼</button>
+                    </div>
+                    <pre class="code-editor-body" id="gas-code-content">
+// Code.gs - Sunny廚苑訂餐系統後端 (Google Apps Script)
+
+// 1. 發布 Web App 進入點
+function doGet() {
+  return HtmlService.createTemplateFromFile('index')
+      .evaluate()
+      .setTitle('Sunny廚苑 - 訂餐系統')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// 2. 初始化 Sheet (若不存在則自動創表)
+function initDatabase() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // 建立 Products 頁籤
+  var productSheet = ss.getSheetByName("Products");
+  if (!productSheet) {
+    productSheet = ss.insertSheet("Products");
+    productSheet.appendRow(["id", "name", "category", "description", "price", "image", "status"]);
+    // 寫入預設商品資料
+    productSheet.appendRow(["13058", "彤緣蔬食便當/蛋奶素/無肉無負擔", "salad", "高質感紙餐盒，可微波可回收。價格不同、菜色不同！", 90, "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_1-300x300.jpg", "instock"]);
+    productSheet.appendRow(["11331", "港式蔥油雞飯", "main", "自製油蔥香醇夠味，熱賣中！更換紙餐盒，更環保保溫！", 110, "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_18-300x300.jpg", "instock"]);
+    productSheet.appendRow(["76512", "Sunny愛妻招牌手工醃製炸燒肉飯", "main", "選用台灣溫體豬肉！王者回歸！高質感紙餐盒！", 110, "https://www.slk9898.com.tw/wp-content/uploads/2025/12/LINE_ALBUM_新餐盒🍱_260530_19-300x300.jpg", "instock"]);
+    productSheet.appendRow(["83669", "紅燒無骨滷排(先炸後滷)", "main", "人氣商品！選用台灣溫體豬大排，先炸後滷口感紮實！", 110, "https://www.slk9898.com.tw/wp-content/uploads/2026/03/S__127344680-300x300.jpg", "instock"]);
+  }
+  
+  // 建立 Orders 頁籤
+  var orderSheet = ss.getSheetByName("Orders");
+  if (!orderSheet) {
+    orderSheet = ss.insertSheet("Orders");
+    orderSheet.appendRow(["orderId", "timestamp", "userEmail", "customerName", "phone", "method", "details", "totalPrice", "status", "remarks"]);
+  }
+  return "資料庫初始化成功！";
+}
+
+// 3. 取得所有商品
+function getProducts() {
+  initDatabase();
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Products");
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var products = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    var product = {};
+    for (var j = 0; j < headers.length; j++) {
+      product[headers[j]] = data[i][j];
+    }
+    products.push(product);
+  }
+  return products;
+}
+
+// 4. 提交新訂單
+function submitOrder(orderData) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Orders");
+  
+  // 生成隨機訂單編號
+  var orderId = "SLK-" + new Date().getTime().toString().slice(-6) + Math.floor(10 + Math.random() * 90);
+  var timestamp = new Date();
+  
+  sheet.appendRow([
+    orderId,
+    timestamp,
+    orderData.userEmail,
+    orderData.customerName,
+    orderData.phone,
+    orderData.method,
+    orderData.details,
+    orderData.totalPrice,
+    "pending", // 預設待處理
+    orderData.remarks || ""
+  ]);
+  
+  return { success: true, orderId: orderId };
+}
+
+// 5. 取得所有訂單 (後台與會員查詢用)
+function getOrders() {
+  initDatabase();
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Orders");
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0];
+  var orders = [];
+  
+  for (var i = 1; i < data.length; i++) {
+    var order = {};
+    for (var j = 0; j < headers.length; j++) {
+      order[headers[j]] = data[i][j];
+    }
+    orders.push(order);
+  }
+  return orders;
+}
+
+// 6. 更新訂單狀態 (後台用)
+function updateOrderStatus(orderId, newStatus) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Orders");
+  var data = sheet.getDataRange().getValues();
+  
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === orderId) {
+      sheet.getRange(i + 1, 9).setValue(newStatus); // 狀態在第 9 欄
+      return { success: true };
+    }
+  }
+  return { success: false, message: "找不到該訂單" };
+}
+
+// 7. 更新商品資訊 (後台編輯用)
+function updateProduct(productData) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Products");
+  var data = sheet.getDataRange().getValues();
+  
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0].toString() === productData.id.toString()) {
+      sheet.getRange(i + 1, 2).setValue(productData.name);
+      sheet.getRange(i + 1, 3).setValue(productData.category);
+      sheet.getRange(i + 1, 4).setValue(productData.description);
+      sheet.getRange(i + 1, 5).setValue(Number(productData.price));
+      sheet.getRange(i + 1, 6).setValue(productData.image);
+      sheet.getRange(i + 1, 7).setValue(productData.status);
+      return { success: true };
+    }
+  }
+  
+  // 若找不到則新增
+  sheet.appendRow([
+    productData.id,
+    productData.name,
+    productData.category,
+    productData.description,
+    Number(productData.price),
+    productData.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300",
+    productData.status || "instock"
+  ]);
+  return { success: true, isNew: true };
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 側邊滑動購物車面板 -->
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart(false)"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3><i class="fa-solid fa-basket-shopping"></i>您的點餐籃</h3>
+            <button class="close-cart-btn" onclick="toggleCart(false)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="cart-body">
+            <!-- 購物車商品 -->
+            <div id="cart-items-container">
+                <!-- 動態注入購物餐點 -->
+            </div>
+
+            <!-- 結帳表單，若購物車有商品才顯示 -->
+            <div class="checkout-section" id="checkout-form-container" style="display: none;">
+                <h4><i class="fa-solid fa-clipboard-list"></i>填寫配送明細</h4>
+                <div class="form-group">
+                    <label for="checkout-name">收件人姓名 *</label>
+                    <input type="text" id="checkout-name" class="form-control" placeholder="請輸入收件姓名" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-phone">聯絡電話 *</label>
+                    <input type="tel" id="checkout-phone" class="form-control" placeholder="請輸入手機或分機" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkout-method">取餐方式 *</label>
+                        <select id="checkout-method" class="form-control" onchange="toggleMethodFields()">
+                            <option value="pickup">自取 (廚苑)</option>
+                            <option value="delivery" selected>外送 (指定地點)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="dept-group">
+                        <label for="checkout-dept">公司/部門 *</label>
+                        <input type="text" id="checkout-dept" class="form-control" placeholder="例如: 銀行電子/研發部">
+                    </div>
+                </div>
+                <div class="form-group" id="address-group">
+                    <label for="checkout-address">外送地址 *</label>
+                    <input type="text" id="checkout-address" class="form-control" placeholder="請填寫完整外送大樓或樓層資訊">
+                </div>
+                <div class="form-group">
+                    <label for="checkout-remarks">備註備註 (如: 飯少、不要辣、不要餐具)</label>
+                    <textarea id="checkout-remarks" class="form-control" rows="2" placeholder="備註其他特殊餐點需求..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-footer">
+            <div class="total-row">
+                <span class="total-label">總計金額:</span>
+                <span class="total-price" id="cart-total-price">0</span>
+            </div>
+            <button class="submit-order-btn" id="submit-order-btn" onclick="submitOrder()" disabled>
+                <i class="fa-solid fa-circle-check"></i>送出訂單
+            </button>
+        </div>
+    </div>
+
+    <!-- 漂浮模擬角色切換面板 (用於 AI 教學點評) -->
+    <div class="role-switcher-bar">
+        <div class="role-switcher-title">
+            <i class="fa-solid fa-graduation-cap"></i><span>教學帳號切換:</span>
+        </div>
+        <button class="role-switcher-btn guest active" onclick="changeUserRole('guest')">
+            <i class="fa-solid fa-user-slash"></i>訪客
+        </button>
+        <button class="role-switcher-btn member" onclick="changeUserRole('member')">
+            <i class="fa-solid fa-user"></i>會員(學生)
+        </button>
+        <button class="role-switcher-btn admin" onclick="changeUserRole('admin')">
+            <i class="fa-solid fa-user-shield"></i>管理員(後台)
+        </button>
+    </div>
+
+    <!-- 產品管理模組視窗 (Add/Edit Product Modal) -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h4 id="modal-title">修改餐點資訊</h4>
+                <button class="close-modal-btn" onclick="closeProductModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modal-prod-id">
+                <div class="form-group">
+                    <label for="modal-prod-name">餐點名稱 *</label>
+                    <input type="text" id="modal-prod-name" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="modal-prod-category">餐點分類 *</label>
+                        <select id="modal-prod-category" class="form-control">
+                            <option value="main">主餐便當 (main)</option>
+                            <option value="salad">沙拉米線 (salad)</option>
+                            <option value="promo">最新公告 (promo)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-prod-price">價格 *</label>
+                        <input type="number" id="modal-prod-price" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="modal-prod-desc">餐點描述與材料說明</label>
+                    <textarea id="modal-prod-desc" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modal-prod-image">餐點圖片連結 (URL)</label>
+                    <input type="text" id="modal-prod-image" class="form-control" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="modal-prod-status">供應狀態 *</label>
+                    <select id="modal-prod-status" class="form-control">
+                        <option value="instock">供餐中 (In Stock)</option>
+                        <option value="outofstock">已售罄 (Out of Stock)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn edit" style="background-color: #f1f5f9; color: var(--text-main);" onclick="closeProductModal()">取消</button>
+                <button class="submit-order-btn" style="width: auto; padding: 6px 20px;" onclick="saveProduct()">儲存變更</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 訊息提示容器 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 核心 JS 程式邏輯 -->
+    <script>
+// script.js - Sunny廚苑訂餐系統前端邏輯 & 模擬後端橋接器
+
+// --- 1. 初始化資料庫與預設資料 ---
+const DEFAULT_PRODUCTS = [
+    {
+        id: "13058",
+        name: "彤緣蔬食便當/蛋奶素/無肉無負擔",
+        category: "salad",
+        description: "高質感環保可微波餐盒。精心調製時蔬配菜，讓您清爽吃、無負擔！(注意：此餐盒主菜為精選奶蛋素食材，非全素喔)",
+        price: 90,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_1-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "11331",
+        name: "港式蔥油雞飯",
+        category: "main",
+        description: "香醇自製港式油蔥，搭配多汁溫體雞肉！經典口味王者回歸！保溫餐盒外送，鎖住熱騰鮮味！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_18-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "76512",
+        name: "Sunny愛妻招牌手工醃製炸燒肉飯",
+        category: "main",
+        description: "精選台灣溫體豬五花肉，手工秘方醃製多時後酥炸，外酥內嫩！紙餐盒微波依然美味，人氣熱賣！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/12/LINE_ALBUM_新餐盒🍱_260530_19-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "83669",
+        name: "紅燒無骨滷排(先炸後滷)",
+        category: "main",
+        description: "人氣爆棚新品！溫體豬大排先油炸鎖汁，再丟入主廚陳年老滷汁慢火燉煮，完全去骨，大口咬下超滿足！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/03/S__127344680-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "87428",
+        name: "什錦胡麻水果沙拉 (獨家胡麻風味)",
+        category: "salad",
+        description: "夏季商品熱力開賣！精選多款季節水果與鮮嫩生菜，淋上特製濃郁胡麻醬，夏日解暑美味！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/03/LINE_ALBUM_新餐盒🍱_260530_6-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "87429",
+        name: "什錦冰梅水果沙拉 (獨家酸甜冰梅)",
+        category: "salad",
+        description: "酸甜開胃必點！夏日限定冰梅調醬，將當季清甜水果的鮮美味道再次昇華，清爽健康無負擔！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/03/LINE_ALBUM_新餐盒🍱_260530_6-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "91945",
+        name: "川味家常肉絲便當 (肉超多飽足款)",
+        category: "main",
+        description: "正宗川香家常爆炒，肉絲軟嫩、鹹香帶點微辣！配菜豐富，超大肉量絕對滿足食肉大胃王！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/05/LINE_ALBUM_新餐盒🍱_260530_14-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "95251",
+        name: "椒麻螺絲米線 (香辣爆表)",
+        category: "salad",
+        description: "特製螺絲米線吸收川味椒麻紅油，搭配脆口黃瓜與花生，辣勁十足，酸爽解熱，辣度爆表！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/05/LINE_ALBUM_新餐盒🍱_260530_5-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "76513",
+        name: "Sunny主廚客製會議精緻餐盒",
+        category: "main",
+        description: "針對公司行號會議、貴賓研討會客製的精緻雙主菜餐盒，提供 200元/250元 雙規格供預算調配！(需提早預定)",
+        price: 200,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/12/LINE_ALBUM_新餐盒🍱_260530_3-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "38575",
+        name: "【特惠公告】感謝銀行電子袁董事長體恤員工補助餐費",
+        category: "promo",
+        description: "賀！每月伙食津貼外，袁董事長體恤員工辛苦，特額外補貼員工到店食堂點餐 *30元* 餐費！好人一生平安！",
+        price: 0,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/04/LINE_ALBUM_新餐盒🍱_260530_1-300x300.jpg",
+        status: "outofstock"
+    },
+    {
+        id: "38577",
+        name: "【季節公告】浪漫六月即將推出夏季商品，敬請期待",
+        category: "promo",
+        description: "夏季商品預計4/1正式開跑，歡迎老客戶提前使用語音諮詢優惠，另有熟客特別好康唷！",
+        price: 0,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/04/LINE_ALBUM_新餐盒🍱_260530_7-300x300.jpg",
+        status: "outofstock"
+    }
+];
+
+const DEFAULT_ORDERS = [
+    {
+        orderId: "SLK-827361",
+        timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        userEmail: "member@slk.com",
+        customerName: "測試會員",
+        phone: "0912-345678",
+        method: "delivery",
+        details: "港式蔥油雞飯 x2 ($220), 彤緣蔬食便當/蛋奶素/無肉無負擔 x1 ($90)",
+        totalPrice: 310,
+        status: "completed",
+        remarks: "不要餐具"
+    },
+    {
+        orderId: "SLK-948261",
+        timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+        userEmail: "guest",
+        customerName: "張大同",
+        phone: "0999-111222",
+        method: "pickup",
+        details: "紅燒無骨滷排(先炸後滷) x3 ($330)",
+        totalPrice: 330,
+        status: "preparing",
+        remarks: "飯少油蔥多"
+    },
+    {
+        orderId: "SLK-182749",
+        timestamp: new Date().toISOString(),
+        userEmail: "guest",
+        customerName: "李小美",
+        phone: "0988-777888",
+        method: "delivery",
+        details: "Sunny主廚客製會議精緻餐盒 x5 ($1000)",
+        totalPrice: 1000,
+        status: "pending",
+        remarks: "需11:45送達銀行電子大門"
+    }
+];
+
+// Helper: 讀取/儲存 LocalStorage
+function getLocalData(key) {
+    const data = localStorage.getItem(`slk_poc_${key}`);
+    return data ? JSON.parse(data) : null;
+}
+
+function setLocalData(key, value) {
+    localStorage.setItem(`slk_poc_${key}`, JSON.stringify(value));
+}
+
+// 初始化資料庫
+function initializeDB() {
+    if (!getLocalData('products')) {
+        setLocalData('products', DEFAULT_PRODUCTS);
+    }
+    if (!getLocalData('orders')) {
+        setLocalData('orders', DEFAULT_ORDERS);
+    }
+}
+initializeDB();
+
+// --- 2. Google Apps Script Bridge (模擬 GAS `google.script.run`) ---
+// 如果在真實 GAS 中，google.script.run 會被 Google 自動注入，
+// 下面程式碼做安全攔截：在本地瀏覽器運行時自動掛載 mock 邏輯，避免噴 Exception
+if (typeof google === 'undefined' || !google.script) {
+    window.google = {
+        script: {
+            run: {
+                withSuccessHandler: function(onSuccess) {
+                    this._successHandler = onSuccess;
+                    return this;
+                },
+                withFailureHandler: function(onFailure) {
+                    this._failureHandler = onFailure;
+                    return this;
+                },
+                getProducts: function() {
+                    setTimeout(() => {
+                        const products = getLocalData('products');
+                        this._successHandler(products);
+                    }, 200);
+                },
+                getOrders: function() {
+                    setTimeout(() => {
+                        const orders = getLocalData('orders');
+                        this._successHandler(orders);
+                    }, 200);
+                },
+                submitOrder: function(orderData) {
+                    setTimeout(() => {
+                        const orders = getLocalData('orders');
+                        const orderId = "SLK-" + new Date().getTime().toString().slice(-6) + Math.floor(10 + Math.random() * 90);
+                        const newOrder = {
+                            orderId: orderId,
+                            timestamp: new Date().toISOString(),
+                            userEmail: orderData.userEmail,
+                            customerName: orderData.customerName,
+                            phone: orderData.phone,
+                            method: orderData.method,
+                            details: orderData.details,
+                            totalPrice: Number(orderData.totalPrice),
+                            status: 'pending',
+                            remarks: orderData.remarks || ""
+                        };
+                        orders.unshift(newOrder); // 最新訂單排在最前
+                        setLocalData('orders', orders);
+                        this._successHandler({ success: true, orderId: orderId });
+                    }, 300);
+                },
+                updateOrderStatus: function(orderId, status) {
+                    setTimeout(() => {
+                        const orders = getLocalData('orders');
+                        const idx = orders.findIndex(o => o.orderId === orderId);
+                        if (idx !== -1) {
+                            orders[idx].status = status;
+                            setLocalData('orders', orders);
+                            this._successHandler({ success: true });
+                        } else {
+                            if (this._failureHandler) this._failureHandler("找不到訂單");
+                        }
+                    }, 150);
+                },
+                updateProduct: function(productData) {
+                    setTimeout(() => {
+                        const products = getLocalData('products');
+                        const idx = products.findIndex(p => p.id.toString() === productData.id.toString());
+                        if (idx !== -1) {
+                            products[idx] = { 
+                                ...products[idx], 
+                                name: productData.name,
+                                category: productData.category,
+                                description: productData.description,
+                                price: Number(productData.price),
+                                image: productData.image,
+                                status: productData.status
+                            };
+                            setLocalData('products', products);
+                            this._successHandler({ success: true });
+                        } else {
+                            // 新增
+                            const newProd = {
+                                id: productData.id || new Date().getTime().toString().slice(-6),
+                                name: productData.name,
+                                category: productData.category,
+                                description: productData.description,
+                                price: Number(productData.price),
+                                image: productData.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300",
+                                status: productData.status || "instock"
+                            };
+                            products.push(newProd);
+                            setLocalData('products', products);
+                            this._successHandler({ success: true, isNew: true });
+                        }
+                    }, 200);
+                }
+            }
+        }
+    };
+}
+
+// --- 3. 全域變數與資料狀態 ---
+let currentRole = 'guest'; // guest, member, admin
+let allProducts = [];
+let shoppingCart = [];
+let currentCategoryFilter = 'all';
+
+// --- 4. 網頁初始化與導航視角切換 ---
+document.addEventListener('DOMContentLoaded', () => {
+    loadProducts();
+    updateNavbarUserBadge();
+});
+
+// 切換主頁面 Tabs
+function switchView(viewName) {
+    // 移除所有 Tab Active 樣式
+    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+
+    // 套用特定 Tab Active
+    document.getElementById(`view-${viewName}`).classList.add('active');
+    const navBtn = document.getElementById(`nav-${viewName}`);
+    if (navBtn) navBtn.classList.add('active');
+
+    // 進入該視角時的額外觸發
+    if (viewName === 'member') {
+        loadMemberOrders();
+    } else if (viewName === 'admin') {
+        loadAdminData();
+    }
+}
+
+// 切換管理員後台的內部子 Tabs (營業概況, 訂單管理, 商品管理)
+function switchAdminTab(tabName) {
+    document.querySelectorAll('.admin-menu-item').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-panel').forEach(panel => panel.classList.remove('active'));
+
+    document.getElementById(`admin-tab-${tabName}`).classList.add('active');
+    document.getElementById(`admin-tab-btn-${tabName}`).classList.add('active');
+
+    if (tabName === 'dashboard') {
+        renderSalesChart();
+    }
+}
+
+// --- 5. 商品資料載入與渲染 (選單前端) ---
+function loadProducts() {
+    google.script.run.withSuccessHandler(products => {
+        allProducts = products;
+        renderProductGrid(products);
+        // 如果後台打開，同步更新後台產品表
+        if (document.getElementById('view-admin').classList.contains('active')) {
+            renderAdminProductsTable();
+        }
+    }).getProducts();
+}
+
+function renderProductGrid(products) {
+    const container = document.getElementById('product-list-container');
+    container.innerHTML = '';
+
+    // 篩選與搜尋
+    let filtered = products;
+    if (currentCategoryFilter !== 'all') {
+        filtered = filtered.filter(p => p.category === currentCategoryFilter);
+    }
+
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
+                <i class="fa-solid fa-cookie-bite" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.3;"></i>
+                <p>沒有找到符合該分類的商品餐盒</p>
+            </div>
+        `;
+        return;
+    }
+
+    filtered.forEach(p => {
+        const isOutOfStock = p.status === 'outofstock';
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        
+        // 如果是公告，做不同的樣式高亮
+        const isPromo = p.category === 'promo';
+        const priceDisplay = isPromo ? '最新公告' : `$${p.price}`;
+
+        card.innerHTML = `
+            ${isOutOfStock ? `<span class="product-badge out-of-stock">已售罄</span>` : ''}
+            ${p.category === 'promo' ? `<span class="product-badge" style="background-color: var(--primary)">熱門資訊</span>` : ''}
+            <div class="product-img-wrapper">
+                <img src="${p.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300'}" class="product-img" alt="${p.name}">
+            </div>
+            <div class="product-info">
+                <span class="product-meta">${p.category === 'main' ? '主餐便當' : p.category === 'salad' ? '沙拉米線' : '餐廳公告'}</span>
+                <h4 class="product-title" title="${p.name}">${p.name}</h4>
+                <p class="product-desc">${p.description}</p>
+                <div class="product-action-row">
+                    <div class="product-price-box">
+                        ${isPromo ? '' : '<span class="product-price-currency">單價</span>'}
+                        <span class="${isPromo ? 'product-meta' : 'product-price-amount'}" style="${isPromo ? 'font-size: 1rem; font-weight:700;' : ''}">${isPromo ? '特惠諮詢' : p.price}</span>
+                    </div>
+                    ${isPromo ? 
+                      `<button class="order-btn" style="background-color:#64748b" onclick="showToast('請撥打語音詢問此公告細節', 'info')"><i class="fa-solid fa-phone"></i>聯絡</button>` :
+                      `<button class="order-btn" ${isOutOfStock ? 'disabled' : ''} onclick="addToCart('${p.id}')">
+                            <i class="fa-solid fa-plus"></i>點餐
+                       </button>`
+                    }
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// 搜尋過濾
+function filterProducts() {
+    const query = document.getElementById('search-box').value.toLowerCase().trim();
+    if (query === '') {
+        renderProductGrid(allProducts);
+        return;
+    }
+    const filtered = allProducts.filter(p => 
+        p.name.toLowerCase().includes(query) || 
+        p.description.toLowerCase().includes(query)
+    );
+    renderProductGrid(filtered);
+}
+
+// 分類切換
+function filterCategory(cat, btnElement) {
+    document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+    currentCategoryFilter = cat;
+    renderProductGrid(allProducts);
+}
+
+// --- 6. 購物車核心引擎 ---
+function toggleCart(isOpen) {
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('cart-overlay');
+    if (isOpen) {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+    } else {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+    }
+}
+
+function addToCart(productId) {
+    const product = allProducts.find(p => p.id === productId);
+    if (!product || product.status === 'outofstock') return;
+
+    const existing = shoppingCart.find(item => item.product.id === productId);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        shoppingCart.push({ product, quantity: 1 });
+    }
+
+    updateCartUI();
+    showToast(`已新增 ${product.name} 至點餐籃`, 'success');
+}
+
+function updateCartQuantity(productId, delta) {
+    const item = shoppingCart.find(item => item.product.id === productId);
+    if (!item) return;
+
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+        shoppingCart = shoppingCart.filter(item => item.product.id !== productId);
+    }
+    updateCartUI();
+}
+
+function removeFromCart(productId) {
+    shoppingCart = shoppingCart.filter(item => item.product.id !== productId);
+    updateCartUI();
+    showToast('已移除餐點', 'info');
+}
+
+function updateCartUI() {
+    const container = document.getElementById('cart-items-container');
+    const checkoutForm = document.getElementById('checkout-form-container');
+    const totalPriceDisplay = document.getElementById('cart-total-price');
+    const cartCountDisplay = document.getElementById('cart-count');
+    const submitBtn = document.getElementById('submit-order-btn');
+
+    container.innerHTML = '';
+    
+    // 計算總數與金額
+    let totalItems = 0;
+    let totalPrice = 0;
+
+    if (shoppingCart.length === 0) {
+        container.innerHTML = `
+            <div class="empty-cart-message">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <p>您的點餐籃空空如也<br>快去挑選好吃的餐盒吧！</p>
+            </div>
+        `;
+        checkoutForm.style.display = 'none';
+        totalPriceDisplay.textContent = '0';
+        cartCountDisplay.textContent = '0';
+        submitBtn.disabled = true;
+        return;
+    }
+
+    // 有商品，顯示結帳表單
+    checkoutForm.style.display = 'block';
+    submitBtn.disabled = false;
+
+    shoppingCart.forEach(item => {
+        totalItems += item.quantity;
+        totalPrice += item.product.price * item.quantity;
+
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <img src="${item.product.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300'}" class="cart-item-img" alt="${item.product.name}">
+            <div class="cart-item-details">
+                <span class="cart-item-title">${item.product.name}</span>
+                <span class="cart-item-price">NT$ ${item.product.price} / 個</span>
+                <div class="cart-item-controls">
+                    <div class="quantity-control">
+                        <button class="qty-btn" onclick="updateCartQuantity('${item.product.id}', -1)">-</button>
+                        <span class="qty-val">${item.quantity}</span>
+                        <button class="qty-btn" onclick="updateCartQuantity('${item.product.id}', 1)">+</button>
+                    </div>
+                    <button class="remove-item-btn" onclick="removeFromCart('${item.product.id}')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    totalPriceDisplay.textContent = totalPrice.toString();
+    cartCountDisplay.textContent = totalItems.toString();
+}
+
+function toggleMethodFields() {
+    const method = document.getElementById('checkout-method').value;
+    const addressGroup = document.getElementById('address-group');
+    const deptGroup = document.getElementById('dept-group');
+
+    if (method === 'pickup') {
+        addressGroup.style.display = 'none';
+        deptGroup.style.display = 'none';
+    } else {
+        addressGroup.style.display = 'block';
+        deptGroup.style.display = 'block';
+    }
+}
+
+// 結帳送出訂單
+function submitOrder() {
+    const name = document.getElementById('checkout-name').value.trim();
+    const phone = document.getElementById('checkout-phone').value.trim();
+    const method = document.getElementById('checkout-method').value;
+    const dept = document.getElementById('checkout-dept').value.trim();
+    const address = document.getElementById('checkout-address').value.trim();
+    const remarks = document.getElementById('checkout-remarks').value.trim();
+
+    if (!name || !phone) {
+        showToast('請填寫收件人姓名與電話！', 'error');
+        return;
+    }
+
+    if (method === 'delivery' && !address) {
+        showToast('外送模式下請填寫完整地址！', 'error');
+        return;
+    }
+
+    const totalPrice = Number(document.getElementById('cart-total-price').textContent);
+
+    // 彙整明細文字
+    const details = shoppingCart.map(item => `${item.product.name} x${item.quantity} ($${item.product.price * item.quantity})`).join(', ');
+
+    // 禁用送出按鈕
+    const submitBtn = document.getElementById('submit-order-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 送出中...';
+
+    const orderData = {
+        userEmail: currentRole === 'member' ? 'member@slk.com' : 'guest',
+        customerName: name,
+        phone: phone + (dept ? ` (${dept})` : ''),
+        method: method === 'delivery' ? `外送 (${address})` : '店面自取',
+        details: details,
+        totalPrice: totalPrice,
+        remarks: remarks
+    };
+
+    google.script.run.withSuccessHandler(res => {
+        if (res.success) {
+            showToast(`訂單送出成功！您的訂單編號是 ${res.orderId}`, 'success');
+            // 清空購物車
+            shoppingCart = [];
+            updateCartUI();
+            toggleCart(false);
+            
+            // 重置結帳欄位
+            document.getElementById('checkout-name').value = '';
+            document.getElementById('checkout-phone').value = '';
+            document.getElementById('checkout-dept').value = '';
+            document.getElementById('checkout-address').value = '';
+            document.getElementById('checkout-remarks').value = '';
+
+            // 如果是會員，直接跳至會員專區看訂單
+            if (currentRole === 'member') {
+                switchView('member');
+            }
+        }
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> 送出訂單';
+    }).submitOrder(orderData);
+}
+
+// --- 7. 會員訂單專區 ---
+function loadMemberOrders() {
+    const container = document.getElementById('member-orders-container');
+    const orderCountBadge = document.getElementById('stat-order-count');
+    const totalSpentBadge = document.getElementById('stat-total-spent');
+    container.innerHTML = '<div style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> 載入訂單中...</div>';
+
+    google.script.run.withSuccessHandler(orders => {
+        // 只過濾出本測試會員 (member@slk.com) 且排除其他
+        const myOrders = orders.filter(o => o.userEmail === 'member@slk.com');
+        container.innerHTML = '';
+        
+        orderCountBadge.textContent = myOrders.length.toString();
+        const total = myOrders.reduce((sum, o) => sum + (o.status !== 'cancelled' ? Number(o.totalPrice) : 0), 0);
+        totalSpentBadge.textContent = `NT$ ${total}`;
+
+        if (myOrders.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                    <i class="fa-solid fa-receipt" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.2;"></i>
+                    <p>尚無任何點餐訂單紀錄</p>
+                </div>
+            `;
+            return;
+        }
+
+        myOrders.forEach(o => {
+            const dateStr = new Date(o.timestamp).toLocaleString();
+            const div = document.createElement('div');
+            div.className = 'order-item-card';
+            div.innerHTML = `
+                <div class="order-item-header">
+                    <span class="order-item-id"><i class="fa-solid fa-hashtag"></i> ${o.orderId}</span>
+                    <span class="order-item-date">${dateStr}</span>
+                    <span class="status-badge ${o.status}">${translateStatus(o.status)}</span>
+                </div>
+                <div class="order-item-body">
+                    <div class="order-item-details"><strong>餐點明細:</strong> ${o.details}</div>
+                    <div class="order-item-meta"><strong>取餐方式:</strong> ${o.method}</div>
+                    ${o.remarks ? `<div class="order-item-meta"><strong>餐點備註:</strong> <span style="color:var(--accent); font-weight:600;">${o.remarks}</span></div>` : ''}
+                    <div class="order-item-total">合計: NT$ ${o.totalPrice}</div>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }).getOrders();
+}
+
+function translateStatus(status) {
+    switch(status) {
+        case 'pending': return '待處理';
+        case 'preparing': return '準備中';
+        case 'completed': return '已完成';
+        case 'cancelled': return '已取消';
+        default: return status;
+    }
+}
+
+// --- 8. 後台管理系統核心 (Admin Panel) ---
+function loadAdminData() {
+    loadAdminMetrics();
+    renderAdminOrdersTable();
+    renderAdminProductsTable();
+}
+
+function loadAdminMetrics() {
+    google.script.run.withSuccessHandler(orders => {
+        const totalOrders = orders.length;
+        const totalRevenue = orders.reduce((sum, o) => sum + (o.status === 'completed' ? Number(o.totalPrice) : 0), 0);
+        const activeOrders = orders.filter(o => o.status !== 'cancelled').length;
+        const avgValue = activeOrders > 0 ? Math.round(orders.reduce((sum, o) => sum + (o.status !== 'cancelled' ? Number(o.totalPrice) : 0), 0) / activeOrders) : 0;
+
+        document.getElementById('admin-metric-revenue').textContent = `NT$ ${totalRevenue.toLocaleString()}`;
+        document.getElementById('admin-metric-orders').textContent = `${totalOrders} 筆`;
+        document.getElementById('admin-metric-aov').textContent = `NT$ ${avgValue}`;
+
+        renderSalesChart(orders);
+    }).getOrders();
+}
+
+// 模擬動態繪製業績報表
+function renderSalesChart(orders = []) {
+    const container = document.getElementById('orders-chart-container');
+    container.innerHTML = '';
+
+    // 製造 5 個長條圖柱子代表近日業績
+    const chartData = [
+        { label: '6/4', value: 800 },
+        { label: '6/5', value: 1200 },
+        { label: '6/6', value: 950 },
+        { label: '6/7', value: 1600 },
+        { label: '今日', value: 0 }
+    ];
+
+    // 加總今日成交額
+    const todayStr = new Date().toDateString();
+    const todayRevenue = orders
+        .filter(o => new Date(o.timestamp).toDateString() === todayStr && o.status === 'completed')
+        .reduce((sum, o) => sum + Number(o.totalPrice), 0);
+
+    chartData[4].value = todayRevenue || 500; // 最少給500好展示
+
+    const maxVal = Math.max(...chartData.map(d => d.value)) || 1000;
+
+    chartData.forEach(d => {
+        const pct = (d.value / maxVal) * 80 + 10; // 保留一些最高高度比例
+        const wrapper = document.createElement('div');
+        wrapper.className = 'chart-bar-wrapper';
+        wrapper.innerHTML = `
+            <div class="chart-bar" style="height: ${pct}%;">
+                <span class="chart-bar-tooltip">NT$ ${d.value}</span>
+            </div>
+            <span class="chart-label">${d.label}</span>
+        `;
+        container.appendChild(wrapper);
+    });
+}
+
+// 渲染後台訂單表
+function renderAdminOrdersTable() {
+    const tbody = document.getElementById('admin-orders-table-body');
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> 載入中...</td></tr>';
+
+    google.script.run.withSuccessHandler(orders => {
+        tbody.innerHTML = '';
+        if (orders.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">暫無點單訂單</td></tr>';
+            return;
+        }
+
+        orders.forEach(o => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${o.orderId}</strong></td>
+                <td>
+                    <strong>${o.customerName}</strong><br>
+                    <span style="font-size:0.75rem; color:var(--text-muted);">${o.phone}</span>
+                </td>
+                <td style="max-width:200px; font-size:0.82rem; word-break:break-all;">${o.details}</td>
+                <td style="font-size:0.8rem;">${o.method}</td>
+                <td><strong>$${o.totalPrice}</strong></td>
+                <td><span class="status-badge ${o.status}">${translateStatus(o.status)}</span></td>
+                <td>
+                    <select class="form-control" style="width:110px; padding:4px 8px; font-size:0.8rem;" onchange="changeOrderStatus('${o.orderId}', this.value)">
+                        <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>待處理</option>
+                        <option value="preparing" ${o.status === 'preparing' ? 'selected' : ''}>準備中</option>
+                        <option value="completed" ${o.status === 'completed' ? 'selected' : ''}>已完成</option>
+                        <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>已取消</option>
+                    </select>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }).getOrders();
+}
+
+function changeOrderStatus(orderId, newStatus) {
+    google.script.run.withSuccessHandler(res => {
+        if (res.success) {
+            showToast(`訂單 ${orderId} 狀態已變更為 ${translateStatus(newStatus)}`, 'success');
+            loadAdminMetrics(); // 同步更新營業額指標
+        }
+    }).updateOrderStatus(orderId, newStatus);
+}
+
+// 渲染後台商品表
+function renderAdminProductsTable() {
+    const tbody = document.getElementById('admin-products-table-body');
+    tbody.innerHTML = '';
+
+    allProducts.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><img src="${p.image}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" alt=""></td>
+            <td><strong>${p.name}</strong></td>
+            <td><span class="product-meta">${p.category === 'main' ? '主餐便當' : p.category === 'salad' ? '沙拉米線' : '公告'}</span></td>
+            <td>$${p.price}</td>
+            <td>
+                <span class="status-badge ${p.status === 'instock' ? 'completed' : 'cancelled'}">
+                    ${p.status === 'instock' ? '供餐中' : '已售罄'}
+                </span>
+            </td>
+            <td>
+                <button class="action-btn edit" onclick="openProductModal('${p.id}')">
+                    <i class="fa-solid fa-pen-to-square"></i> 編輯
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// --- 9. 商品管理彈出編輯視窗 (Modal) ---
+function openProductModal(productId = null) {
+    const modal = document.getElementById('product-modal');
+    const title = document.getElementById('modal-title');
+    
+    // 清空 / 預設
+    document.getElementById('modal-prod-id').value = '';
+    document.getElementById('modal-prod-name').value = '';
+    document.getElementById('modal-prod-category').value = 'main';
+    document.getElementById('modal-prod-price').value = '110';
+    document.getElementById('modal-prod-desc').value = '';
+    document.getElementById('modal-prod-image').value = '';
+    document.getElementById('modal-prod-status').value = 'instock';
+
+    if (productId) {
+        title.textContent = '修改餐點資訊';
+        const p = allProducts.find(prod => prod.id === productId);
+        if (p) {
+            document.getElementById('modal-prod-id').value = p.id;
+            document.getElementById('modal-prod-name').value = p.name;
+            document.getElementById('modal-prod-category').value = p.category;
+            document.getElementById('modal-prod-price').value = p.price;
+            document.getElementById('modal-prod-desc').value = p.description;
+            document.getElementById('modal-prod-image').value = p.image;
+            document.getElementById('modal-prod-status').value = p.status;
+        }
+    } else {
+        title.textContent = '新增上架餐點';
+    }
+
+    modal.classList.add('open');
+}
+
+function closeProductModal() {
+    document.getElementById('product-modal').classList.remove('open');
+}
+
+function saveProduct() {
+    const id = document.getElementById('modal-prod-id').value;
+    const name = document.getElementById('modal-prod-name').value.trim();
+    const category = document.getElementById('modal-prod-category').value;
+    const price = Number(document.getElementById('modal-prod-price').value);
+    const description = document.getElementById('modal-prod-desc').value.trim();
+    const image = document.getElementById('modal-prod-image').value.trim();
+    const status = document.getElementById('modal-prod-status').value;
+
+    if (!name || isNaN(price)) {
+        showToast('請填寫完整名稱與合法價格！', 'error');
+        return;
+    }
+
+    const prodData = { id, name, category, price, description, image, status };
+
+    google.script.run.withSuccessHandler(res => {
+        if (res.success) {
+            closeProductModal();
+            showToast('上架餐點資料已儲存更新！', 'success');
+            loadProducts(); // 重新讀取渲染前端
+        }
+    }).updateProduct(prodData);
+}
+
+// --- 10. 角色切換控制列 ---
+function changeUserRole(role) {
+    currentRole = role;
+    
+    // 更新 switcher buttons 狀態
+    document.querySelectorAll('.role-switcher-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.role-switcher-btn.${role}`).classList.add('active');
+
+    // 修改 navbar UI 與權限控制
+    const navAdmin = document.getElementById('nav-admin');
+    if (role === 'admin') {
+        navAdmin.style.display = 'flex';
+        showToast('已切換至「後台管理員」權限！可查看與管理所有訂單及上架餐點。', 'info');
+    } else {
+        navAdmin.style.display = 'none';
+        // 如果目前停留在 admin 視角，切換回首頁選單
+        if (document.getElementById('view-admin').classList.contains('active')) {
+            switchView('menu');
+        }
+        if (role === 'member') {
+            showToast('已切換至「測試會員 (member@slk.com)」。此模式下送出的訂單將存入會員專區中。', 'success');
+        } else {
+            showToast('已切換至「訪客模式」。無須登入即可進行購物籃點餐結帳。', 'info');
+        }
+    }
+    
+    updateNavbarUserBadge();
+    
+    // 如果目前在會員視角，重新加載該視角資料
+    if (document.getElementById('view-member').classList.contains('active')) {
+        loadMemberOrders();
+    }
+}
+
+function updateNavbarUserBadge() {
+    const userDisplay = document.getElementById('navbar-user-display');
+    const label = userDisplay.querySelector('span');
+
+    if (currentRole === 'admin') {
+        label.textContent = '管理員 (admin@slk.com)';
+        userDisplay.style.backgroundColor = '#fef3c7';
+        userDisplay.style.color = '#d97706';
+    } else if (currentRole === 'member') {
+        label.textContent = '測試會員 (學生)';
+        userDisplay.style.backgroundColor = '#e0f2fe';
+        userDisplay.style.color = '#0284c7';
+    } else {
+        label.textContent = '訪客模式';
+        userDisplay.style.backgroundColor = '#f1f5f9';
+        userDisplay.style.color = '#64748b';
+    }
+}
+
+// --- 11. Toast 訊息彈窗 ---
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    let icon = 'fa-info-circle';
+    if (type === 'success') icon = 'fa-check-circle';
+    if (type === 'error') icon = 'fa-triangle-exclamation';
+
+    toast.innerHTML = `
+        <i class="fa-solid ${icon} toast-icon ${type}"></i>
+        <span>${message}</span>
+    `;
+
+    container.appendChild(toast);
+    
+    // 動態進入
+    setTimeout(() => toast.classList.add('show'), 50);
+    
+    // 3秒後消退
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+    }, 3500);
+}
+
+// 複製 GAS 代碼輔助函數
+function copyGasCode() {
+    const code = document.getElementById('gas-code-content').textContent.trim();
+    navigator.clipboard.writeText(code).then(() => {
+        showToast('GAS 代碼已成功複製至剪貼簿！', 'success');
+    }).catch(err => {
+        showToast('複製失敗，請手動複製代碼框內容。', 'error');
+    });
+}
+
+</script>
+</body>
+</html>
