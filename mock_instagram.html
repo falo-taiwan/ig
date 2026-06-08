@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Video Enhancer 模擬測試頁面</title>
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --text-color: #f1f1f1;
+            --text-secondary: #aaa;
+            --instagram-gradient: linear-gradient(45deg, #f99f1b 0%, #e1306c 50%, #833ab4 100%);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            background: var(--instagram-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        /* Mock Instagram Player Wrapper */
+        .mock-ig-player {
+            width: 340px;
+            height: 600px;
+            background-color: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2d2d2d;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e1306c;
+            background: #444;
+            margin-right: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .post-type {
+            font-size: 10px;
+            color: #ccc;
+        }
+
+        /* Simulated Instagram Video Tag and Overlays */
+        .video-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* This is the key overlay element that Instagram uses */
+        .instagram-overlay-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: auto; /* Allow children to interact */
+        }
+
+        /* Mock Instagram Sidebar Action Icons */
+        .mock-sidebar {
+            position: absolute;
+            bottom: 60px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 8;
+        }
+
+        .sidebar-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-btn:hover {
+            background: rgba(225, 48, 108, 0.8);
+        }
+
+        /* Controls / Options Panel on the web page */
+        .control-panel {
+            max-width: 720px;
+            width: 100%;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid #333;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: #fff;
+            border-bottom: 1px solid #333;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: var(--instagram-gradient);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            display: inline-block;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #444;
+            color: #fff;
+            box-shadow: none;
+            margin-left: 10px;
+        }
+
+        .btn-outline:hover {
+            border-color: #888;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .shortcut-list {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .shortcut-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #2d2d2d;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .key {
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #ff9d00;
+        }
+
+        /* Bookmarklet drag container */
+        .bookmarklet-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed #444;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .bookmarklet-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: move;
+            user-select: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .bookmarklet-link:hover {
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.5);
+        }
+
+        .alert-info {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid #3498db;
+            color: #d4e6f1;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .success-indicator {
+            color: #2ecc71;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Instagram Video Enhancer 模擬測試頁</h1>
+    <div class="subtitle">在不用部署 Chrome 外掛的情況下，立即體驗高質感影片控制面板。</div>
+
+    <!-- Instructions Control Panel -->
+    <div class="control-panel">
+        <h2>🛠️ 控制與注入面板</h2>
+        <div class="alert-info">
+            <strong>本地測試說明：</strong><br>
+            點擊下方「🔥 注入進度條腳本」按鈕，即可將開發中的 <code>instagram-video-enhancer.user.js</code> 注入到本頁的模擬播放器中。您將會看到播放器上方出現速度控制按鈕，下方出現彩虹漸層進度條！
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <button class="btn" id="inject-btn">🔥 注入進度條腳本</button>
+            <span class="success-indicator" id="success-text">✓ 腳本已成功注入！請將滑鼠移到影片上體驗。</span>
+        </div>
+
+        <h2>⌨️ 鍵盤快捷鍵（注入腳本後生效）</h2>
+        <div class="shortcut-list">
+            <div class="shortcut-item"><span>播放 / 暫停</span> <span class="key">Space</span></div>
+            <div class="shortcut-item"><span>倒帶 5 秒</span> <span class="key">←</span></div>
+            <div class="shortcut-item"><span>快進 5 秒</span> <span class="key">→</span></div>
+            <div class="shortcut-item"><span>提高音量 5%</span> <span class="key">↑</span></div>
+            <div class="shortcut-item"><span>降低音量 5%</span> <span class="key">↓</span></div>
+            <div class="shortcut-item"><span>切換靜音</span> <span class="key">M</span></div>
+            <div class="shortcut-item"><span>加快播放速度</span> <span class="key">&gt;</span></div>
+            <div class="shortcut-item"><span>減慢播放速度</span> <span class="key">&lt;</span></div>
+        </div>
+
+        <div class="bookmarklet-box">
+            <h3>🔖 使用者書籤小工具 (Bookmarklet) 部署法</h3>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 15px;">
+                將下方的藍色按鈕<b>拖曳</b>到您的瀏覽器書籤列（Bookmarks Bar）。<br>
+                之後在官方 Instagram 網頁版看影片時，點一下該書籤，進度條功能便會立刻啟用！
+            </p>
+            <a class="bookmarklet-link" id="bookmarklet-href" href="#">IG 進度條助手</a>
+        </div>
+    </div>
+
+    <!-- Players Container -->
+    <div class="container">
+        <!-- Mock Reel Player 1 -->
+        <div class="mock-ig-player">
+            <div class="player-header">
+                <div class="user-avatar"></div>
+                <div class="user-info">
+                    <span class="username">force.chinese</span>
+                    <span class="post-type">模擬 Instagram Reels</span>
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <video loop muted playsinline>
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-light-40503-large.mp4" type="video/mp4">
+                    您的瀏覽器不支援 HTML5 影片。
+                </video>
+                
+                <!-- Instagram overlay structure matches content.js selector -->
+                <div class="instagram-overlay-wrapper" data-instancekey="mock-reel-key-1">
+                    <!-- Our script will inject here -->
+                </div>
+            </div>
+
+            <!-- Instagram Sidebar action panel -->
+            <div class="mock-sidebar">
+                <button class="sidebar-btn" title="喜歡">❤️</button>
+                <button class="sidebar-btn" title="留言">💬</button>
+                <button class="sidebar-btn" title="分享">📤</button>
+                <!-- Target for audio control -->
+                <button class="sidebar-btn audio-btn" aria-label="Audio is muted" title="靜音">🔊</button>
+            </div>
+        </div>
+
+        <!-- Mock Story Player 2 -->
+        <div class="mock-ig-player">
+            <div class="player-header">
+                <div class="user-avatar" style="border-color: #3897f0;"></div>
+                <div class="user-info">
+                    <span class="username">antigravity_ai</span>
+                    <span class="post-type">模擬 Instagram Stories</span>
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <video loop muted playsinline>
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-neon-sign-of-a-cocktail-glass-42352-large.mp4" type="video/mp4">
+                    您的瀏覽器不支援 HTML5 影片。
+                </video>
+                
+                <!-- Instagram overlay structure matches content.js selector -->
+                <div class="instagram-overlay-wrapper" data-instancekey="mock-story-key-2">
+                    <!-- Our script will inject here -->
+                </div>
+            </div>
+
+            <!-- Instagram Sidebar action panel -->
+            <div class="mock-sidebar">
+                <button class="sidebar-btn audio-btn" aria-label="Audio is muted" title="靜音">🔊</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Start videos playing when hovered/clicked for mock simulation
+        document.querySelectorAll('video').forEach(video => {
+            video.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play().catch(err => console.log("Auto-play blocked, interaction required."));
+                } else {
+                    video.pause();
+                }
+            });
+            // Auto play
+            video.play().catch(e => {});
+        });
+
+        // Set up the bookmarklet script content (uses a loader that dynamically fetches the script from local/github)
+        // For local testing, we print a bookmarklet code snippet.
+        // We'll construct a bookmarklet loader pointing to the script.
+        const loaderJS = `javascript:(function(){
+            var s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/gh/force/ig-video-enhancer/instagram-video-enhancer.user.js';
+            document.body.appendChild(s);
+        })();`;
+        document.getElementById('bookmarklet-href').setAttribute('href', loaderJS.replace(/\s+/g, ' '));
+
+        // Inject script locally on button click
+        document.getElementById('inject-btn').addEventListener('click', function() {
+            fetch('instagram-video-enhancer.user.js')
+                .then(response => response.text())
+                .then(code => {
+                    // Evaluate code in page context
+                    const script = document.createElement('script');
+                    script.textContent = code;
+                    document.body.appendChild(script);
+                    
+                    document.getElementById('success-text').style.display = 'inline-block';
+                    this.disabled = true;
+                    this.style.opacity = '0.7';
+                    this.innerText = '✓ 腳本已注入';
+                })
+                .catch(err => {
+                    console.error("無法載入腳本：", err);
+                    alert("無法載入 instagram-video-enhancer.user.js 檔案，請確認檔案與 mock_instagram.html 位於相同資料夾。");
+                });
+        });
+    </script>
+</body>
+</html>

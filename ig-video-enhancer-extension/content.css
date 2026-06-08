@@ -1,0 +1,451 @@
+/* Injected stylesheet for FALO Instagram Video Enhancer */
+/* Signature: Falo x Force Cheng 2026/6/8 */
+
+/* 1. Video bottom timeline progress bar styles */
+.ive-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  cursor: pointer;
+  z-index: 10000;
+  display: flex;
+  align-items: flex-end;
+  background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 100%);
+  transition: height 0.2s ease, background 0.2s ease;
+}
+
+.ive-progress-container:hover {
+  height: 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+}
+
+.ive-progress-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: height 0.2s ease;
+}
+
+.ive-progress-container:hover .ive-progress-track,
+.ive-progress-container.dragging .ive-progress-track {
+  height: 8px;
+}
+
+.ive-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f99f1b 0%, #e1306c 50%, #833ab4 100%);
+  position: relative;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  box-shadow: 0 0 8px rgba(225, 48, 108, 0.8);
+}
+
+.ive-progress-handle {
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: transform 0.1s ease;
+  pointer-events: none;
+}
+
+.ive-progress-container:hover .ive-progress-handle,
+.ive-progress-container.dragging .ive-progress-handle {
+  transform: translateY(-50%) scale(1);
+}
+
+.ive-time-tooltip {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  z-index: 10001;
+  white-space: nowrap;
+}
+
+.ive-progress-container:hover .ive-time-tooltip,
+.ive-progress-container.dragging .ive-time-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* 2. Visual central HUD styles */
+.ive-hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease;
+  z-index: 10005;
+}
+
+.ive-hud.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.ive-hud-icon {
+  width: 32px;
+  height: 32px;
+  fill: #fff;
+}
+
+.ive-hud-text {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+/* 3. Floating Remote Control Color Themes (Drastically tuned!) */
+/* Theme 1: 一班遙控器黑 (Classic Black) */
+.ive-remote-control,
+.ive-remote-control.theme-black {
+  --theme-color: #ffffff;
+  --theme-shadow: rgba(255, 255, 255, 0.45);
+  --theme-glow: rgba(255, 255, 255, 0.12);
+  --theme-bg: rgba(20, 20, 20, 0.88);
+  --theme-border: rgba(255, 255, 255, 0.14);
+  --theme-btn-bg: rgba(255, 255, 255, 0.06);
+  --theme-btn-border: rgba(255, 255, 255, 0.12);
+  --theme-btn-text-color: #ffffff;
+  --screen-bg: #000000;
+}
+
+/* Theme 2: 一班遙控器白 (Classic White - Darker labels and widgets) */
+.ive-remote-control.theme-white {
+  --theme-color: #222222;
+  --theme-shadow: rgba(0, 0, 0, 0.12);
+  --theme-glow: rgba(0, 0, 0, 0.04);
+  --theme-bg: rgba(240, 240, 240, 0.92);
+  --theme-border: rgba(0, 0, 0, 0.15);
+  --theme-btn-bg: rgba(0, 0, 0, 0.05);
+  --theme-btn-border: rgba(0, 0, 0, 0.12);
+  --theme-btn-text-color: #222222;
+  --screen-bg: #ffffff;
+}
+
+/* Theme 3: 少女櫻花粉 (Sakura Pink) */
+.ive-remote-control.theme-pink {
+  --theme-color: #ff4a74;
+  --theme-shadow: rgba(255, 74, 116, 0.5);
+  --theme-glow: rgba(255, 74, 116, 0.15);
+  --theme-bg: rgba(255, 225, 230, 0.9);
+  --theme-border: rgba(255, 74, 116, 0.25);
+  --theme-btn-bg: rgba(255, 74, 116, 0.06);
+  --theme-btn-border: rgba(255, 74, 116, 0.18);
+  --theme-btn-text-color: #ff4a74;
+  --screen-bg: #fff0f3;
+}
+
+/* Theme 4: 少女奶油白 (Creamy Milk White) */
+.ive-remote-control.theme-cream {
+  --theme-color: #c48d3f;
+  --theme-shadow: rgba(196, 141, 63, 0.35);
+  --theme-glow: rgba(196, 141, 63, 0.1);
+  --theme-bg: rgba(254, 250, 240, 0.92);
+  --theme-border: rgba(196, 141, 63, 0.22);
+  --theme-btn-bg: rgba(196, 141, 63, 0.05);
+  --theme-btn-border: rgba(196, 141, 63, 0.15);
+  --theme-btn-text-color: #8b5a2b;
+  --screen-bg: #fffdf9;
+}
+
+/* Theme 5: 馬卡龍綠 (Macaron Green - soft light green) */
+.ive-remote-control.theme-dream {
+  --theme-color: #2bb673;
+  --theme-shadow: rgba(43, 182, 115, 0.45);
+  --theme-glow: rgba(43, 182, 115, 0.12);
+  --theme-bg: rgba(220, 245, 230, 0.92);
+  --theme-border: rgba(43, 182, 115, 0.25);
+  --theme-btn-bg: rgba(43, 182, 115, 0.05);
+  --theme-btn-border: rgba(43, 182, 115, 0.15);
+  --theme-btn-text-color: #1e7b4c;
+  --screen-bg: #ecfdf5;
+}
+
+/* 4. Floating Remote Control Layout Styles */
+.ive-remote-control {
+  position: fixed;
+  width: 110px;
+  background: var(--theme-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid var(--theme-border);
+  border-radius: 24px;
+  z-index: 2147483647;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  user-select: none;
+  transition: opacity 0.2s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+/* Drag Grab bar */
+.ive-remote-drag {
+  width: 36px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+  cursor: move;
+  margin-bottom: 2px;
+  transition: background 0.15s ease;
+}
+
+.ive-remote-drag:hover {
+  background: var(--theme-color);
+}
+
+/* OLED Screen Display inside Remote */
+.ive-remote-screen {
+  width: 100%;
+  background: var(--screen-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  box-sizing: border-box;
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--theme-color);
+  text-shadow: 0 0 4px var(--theme-shadow);
+  box-shadow: inset 0 0 6px var(--theme-glow);
+  transition: color 0.25s ease, text-shadow 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.ive-screen-speed {
+  font-size: 10px;
+}
+
+.ive-screen-time {
+  letter-spacing: 0.2px;
+}
+
+/* Remote Control Embedded Timeline Progress Bar */
+.ive-remote-progress-container {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.ive-remote-progress-track {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 1.5px;
+  transition: height 0.15s ease;
+}
+
+.ive-remote-progress-container:hover .ive-remote-progress-track,
+.ive-remote-progress-container.dragging .ive-remote-progress-track {
+  height: 5px;
+}
+
+.ive-remote-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--theme-color);
+  position: relative;
+  border-radius: 1.5px;
+  box-shadow: 0 0 6px var(--theme-shadow);
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ive-remote-progress-handle {
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  transition: transform 0.1s ease;
+  pointer-events: none;
+}
+
+.ive-remote-progress-container:hover .ive-remote-progress-handle,
+.ive-remote-progress-container.dragging .ive-remote-progress-handle {
+  transform: translateY(-50%) scale(1);
+}
+
+/* Button rows */
+.ive-remote-row {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.ive-remote-row-label {
+  font-size: 8px;
+  color: var(--theme-color);
+  opacity: 0.45;
+  font-weight: 600;
+  margin-bottom: -5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.25s ease;
+}
+
+/* Buttons (Styles linked to theme variables!) */
+.ive-remote-btn {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: var(--theme-btn-bg);
+  border: 1.2px solid var(--theme-btn-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--theme-btn-text-color);
+  transition: all 0.15s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  box-sizing: border-box;
+}
+
+.ive-remote-btn svg {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+
+.ive-remote-btn-text {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: -0.2px;
+}
+
+.ive-remote-btn:hover {
+  background: rgba(128, 128, 128, 0.2);
+  color: var(--theme-color);
+  border-color: var(--theme-color);
+  transform: scale(1.08);
+}
+
+.ive-remote-btn:active {
+  transform: scale(0.92);
+}
+
+/* Play/Pause Button shape */
+.ive-remote-btn-play {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #f99f1b 0%, #e1306c 100%);
+  border: none;
+  box-shadow: 0 4px 10px rgba(225, 48, 108, 0.3);
+  color: #fff !important; /* Keep icon white on play */
+}
+
+.ive-remote-btn-play svg {
+  width: 13px;
+  height: 13px;
+}
+
+.ive-remote-btn-play:hover {
+  background: linear-gradient(135deg, #ffb347 0%, #ff4b82 100%);
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(225, 48, 108, 0.5);
+}
+
+/* Theme color selector row */
+.ive-remote-theme-row {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.ive-theme-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.ive-theme-dot:hover, 
+.ive-theme-dot.active {
+  transform: scale(1.35);
+  border-color: var(--theme-color);
+}
+
+.ive-theme-dot.active {
+  box-shadow: 0 0 4px var(--theme-color);
+}
+
+.theme-dot-black { background-color: #1a1a1a; }
+.theme-dot-white { background-color: #ffffff; }
+.theme-dot-pink { background-color: #ff4a74; }
+.theme-dot-cream { background-color: #fcf6e5; }
+.theme-dot-dream { background-color: #7de3af; }
+
+/* Footer Signature Stamp style */
+.ive-remote-footer {
+  font-size: 7.5px;
+  color: var(--theme-color);
+  opacity: 0.4;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 4px;
+  margin-bottom: -2px;
+  width: 100%;
+  transition: color 0.25s ease;
+}
