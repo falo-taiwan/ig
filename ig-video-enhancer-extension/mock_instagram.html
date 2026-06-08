@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chrome Extension 模擬測試頁面 (Instagram Video Enhancer)</title>
+  <link rel="stylesheet" href="content.css">
+  <style>
+    :root {
+      --bg-color: #0f0f0f;
+      --card-bg: #1a1a1a;
+      --text-color: #f1f1f1;
+      --text-secondary: #aaa;
+      --instagram-gradient: linear-gradient(45deg, #f99f1b 0%, #e1306c 50%, #833ab4 100%);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      background: var(--instagram-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+
+    /* Mock Instagram Player Wrapper */
+    .mock-ig-player {
+      width: 340px;
+      height: 600px;
+      background-color: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid #2d2d2d;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .player-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%);
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #e1306c;
+      background: #444;
+      margin-right: 10px;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .username {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .post-type {
+      font-size: 10px;
+      color: #ccc;
+    }
+
+    /* Video wrapper */
+    .video-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Simulated Instagram Overlay */
+    .instagram-overlay-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+    }
+
+    /* Mock Instagram Sidebar Action Icons */
+    .mock-sidebar {
+      position: absolute;
+      bottom: 60px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 8;
+    }
+
+    .sidebar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+
+    .sidebar-btn:hover {
+      background: rgba(225, 48, 108, 0.8);
+    }
+
+    /* Info card on bottom */
+    .info-card {
+      max-width: 720px;
+      width: 100%;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      box-sizing: border-box;
+      border: 1px solid #333;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.4rem;
+      color: #fff;
+      border-bottom: 1px solid #333;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background-color: rgba(46, 204, 113, 0.1);
+      border-left: 4px solid #2ecc71;
+      color: #d5f5e3;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .shortcut-list {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .shortcut-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #2d2d2d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .key {
+      background: #333;
+      border: 1px solid #555;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: monospace;
+      font-weight: bold;
+      color: #ff9d00;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>FALO Instagram Video Enhancer 模擬測試頁面</h1>
+  <div class="subtitle">可以直接在本地測試 content.js 和 content.css 的控制功能！(Falo x Force Cheng 2026/6/8)</div>
+
+  <!-- Info Card -->
+  <div class="info-card">
+    <h2>🎨 本地靜態測試模式</h2>
+    <div class="alert-success">
+      <strong>程式碼直接運作中：</strong><br>
+      因為本頁面已經透過 <code>&lt;script src="content.js"&gt;</code> 和 <code>&lt;link rel="stylesheet" href="content.css"&gt;</code> 直接引入了檔案，您不需要安裝/載入外掛即可直接測試影片上的進度條、拖曳式虛擬遙控器、5種主題與鍵盤快捷鍵！
+    </div>
+
+    <h2>⌨️ 鍵盤快捷鍵</h2>
+    <div class="shortcut-list">
+      <div class="shortcut-item"><span>播放 / 暫停</span> <span class="key">1</span></div>
+      <div class="shortcut-item"><span>降低音量 5%</span> <span class="key">2</span></div>
+      <div class="shortcut-item"><span>提高音量 5%</span> <span class="key">3</span></div>
+      <div class="shortcut-item"><span>切換靜音</span> <span class="key">4</span></div>
+      <div class="shortcut-item"><span>減慢播放速度</span> <span class="key">5</span></div>
+      <div class="shortcut-item"><span>加快播放速度</span> <span class="key">6</span></div>
+      <div class="shortcut-item"><span>倒帶 5 秒</span> <span class="key">←</span></div>
+      <div class="shortcut-item"><span>快進 5 秒</span> <span class="key">→</span></div>
+    </div>
+  </div>
+
+  <!-- Players Container -->
+  <div class="container">
+    <!-- Mock Reel Player -->
+    <div class="mock-ig-player">
+      <div class="player-header">
+        <div class="user-avatar"></div>
+        <div class="user-info">
+          <span class="username">force.chinese</span>
+          <span class="post-type">Reels 模擬</span>
+        </div>
+      </div>
+      
+      <div class="video-container">
+        <video loop muted playsinline>
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-light-40503-large.mp4" type="video/mp4">
+          您的瀏覽器不支援 HTML5 影片。
+        </video>
+        
+        <div class="instagram-overlay-wrapper" data-instancekey="mock-key-reels"></div>
+      </div>
+
+      <!-- Action Panel -->
+      <div class="mock-sidebar">
+        <button class="sidebar-btn">❤️</button>
+        <button class="sidebar-btn">💬</button>
+        <button class="sidebar-btn">📤</button>
+        <button class="sidebar-btn" aria-label="Audio is muted">🔊</button>
+      </div>
+    </div>
+
+    <!-- Mock Story Player -->
+    <div class="mock-ig-player">
+      <div class="player-header">
+        <div class="user-avatar" style="border-color: #3897f0;"></div>
+        <div class="user-info">
+          <span class="username">antigravity_ai</span>
+          <span class="post-type">Stories 模擬</span>
+        </div>
+      </div>
+      
+      <div class="video-container">
+        <video loop muted playsinline>
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-neon-sign-of-a-cocktail-glass-42352-large.mp4" type="video/mp4">
+        </video>
+        
+        <div class="instagram-overlay-wrapper" data-instancekey="mock-key-stories"></div>
+      </div>
+
+      <div class="mock-sidebar">
+        <button class="sidebar-btn" aria-label="Audio is muted">🔊</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load script directly -->
+  <script src="content.js"></script>
+  <script>
+    // Play/Pause on click
+    document.querySelectorAll('video').forEach(video => {
+      video.addEventListener('click', () => {
+        if (video.paused) {
+          video.play().catch(e => {});
+        } else {
+          video.pause();
+        }
+      });
+      video.play().catch(e => {});
+    });
+  </script>
+</body>
+</html>

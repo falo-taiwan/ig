@@ -20,6 +20,5 @@ standard_answer_key.md
 
 # Exclude temporary/legacy IG files not needed in the clean extension repo
 instagram-video-enhancer.user.js
-mock_instagram.html
-ig-video-enhancer-extension/mock_instagram.html
+/mock_instagram.html
 ig-video-enhancer-extension/resize_icons.py
