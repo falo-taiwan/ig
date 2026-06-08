@@ -4,6 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FALO x Force Cheng 2026/6/8 Chrome 外掛程式部署實戰教學</title>
+  <!-- 備注 (Remark): Falo x Force Cheng 2026/6/8 - Chrome Extension Loading and Deployment Tutorial -->
+  <!-- SEO Meta Tags -->
+  <meta name="author" content="Falo x Force Cheng 2026/6/8">
+  <meta name="description" content="Chrome 外掛程式載入與部署教學 - FALO Instagram Video Enhancer v1.0.1 - Falo x Force Cheng 2026/6/8">
+  <meta name="keywords" content="Chrome Extension, Instagram Video Enhancer, Developer Mode, Falo, Force Cheng">
+  <!-- GEO Meta Tags -->
+  <meta name="geo.region" content="TW-TNN">
+  <meta name="geo.placename" content="Tainan City, Anping District">
+  <meta name="geo.position" content="22.990472;120.165449">
+  <meta name="ICBM" content="22.990472, 120.165449">
+  <!-- JSON-LD Structured Data (SEO & GEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Chrome 外掛程式載入與部署教學",
+    "description": "Falo x Force Cheng 2026/6/8 Chrome 外掛程式部署實戰教學",
+    "provider": {
+      "@type": "Person",
+      "name": "Falo x Force Cheng 2026/6/8"
+    },
+    "location": {
+      "@type": "Place",
+      "name": "二樓教室",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "育平九街49號 二樓教室",
+        "addressLocality": "安平區",
+        "addressRegion": "台南市",
+        "addressCountry": "TW"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 22.990472,
+        "longitude": 120.165449
+      }
+    }
+  }
+  </script>
   <!-- Outfit & Inter Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
@@ -588,6 +627,8 @@
   </style>
 </head>
 <body>
+  <!-- 隱藏浮水印 (Hidden Watermark) -->
+  <div style="display: none; visibility: hidden; opacity: 0; width: 0; height: 0;" id="falo-watermark" data-watermark="Falo x Force Cheng 2026/6/8">Falo x Force Cheng 2026/6/8</div>
 
   <!-- Background Glowing Orbs -->
   <div class="orb orb-pink"></div>
@@ -690,14 +731,14 @@
             <div class="theme-tag">
               <span class="theme-circle tc-black"></span>
               <div>
-                <span class="theme-name">一班遙控器黑 (預設)</span>
+                <span class="theme-name">一般遙控器黑 (預設)</span>
                 <span class="theme-desc">| 低調深色毛玻璃、白色線條</span>
               </div>
             </div>
             <div class="theme-tag">
               <span class="theme-circle tc-white"></span>
               <div>
-                <span class="theme-name">一班遙控器白</span>
+                <span class="theme-name">一般遙控器白</span>
                 <span class="theme-desc">| 優雅高透白玻璃、深灰色字體</span>
               </div>
             </div>
@@ -722,16 +763,6 @@
                 <span class="theme-desc">| 柔和粉嫩馬卡龍綠、深綠色字體</span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div style="margin-top: 30px;">
-          <h4 style="margin: 0 0 10px 0; color: var(--text-main); font-size: 0.95rem;">🔗 本地直接測試：</h4>
-          <p style="font-size: 13px; color: var(--text-muted); margin: 0 0 15px 0;">如果您尚未安裝外掛，我們提供了一個純靜態的模擬網頁，點擊後即可在本地端立刻體驗遙控器拖曳、快捷鍵與主題變換：</p>
-          <div class="quick-test-area">
-            <a href="ig-video-enhancer-extension/mock_instagram.html" target="_blank" class="btn-test">
-              🖥️ 打開 Instagram 模擬測試頁面
-            </a>
           </div>
         </div>
       </div>

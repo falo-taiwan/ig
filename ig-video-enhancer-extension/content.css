@@ -132,7 +132,7 @@
 }
 
 /* 3. Floating Remote Control Color Themes (Drastically tuned!) */
-/* Theme 1: 一班遙控器黑 (Classic Black) */
+/* Theme 1: 一般遙控器黑 (Classic Black) */
 .ive-remote-control,
 .ive-remote-control.theme-black {
   --theme-color: #ffffff;
@@ -146,7 +146,7 @@
   --screen-bg: #000000;
 }
 
-/* Theme 2: 一班遙控器白 (Classic White - Darker labels and widgets) */
+/* Theme 2: 一般遙控器白 (Classic White - Darker labels and widgets) */
 .ive-remote-control.theme-white {
   --theme-color: #222222;
   --theme-shadow: rgba(0, 0, 0, 0.12);

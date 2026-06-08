@@ -590,8 +590,8 @@
     themeRow.className = 'ive-remote-theme-row';
     const themes = ['black', 'white', 'pink', 'cream', 'dream'];
     const themeNames = {
-      black: '一班遙控器黑',
-      white: '一班遙控器白',
+      black: '一般遙控器黑',
+      white: '一般遙控器白',
       pink: '少女櫻花粉',
       cream: '少女奶油白',
       dream: '馬卡龍綠'
