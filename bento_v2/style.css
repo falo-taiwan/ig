@@ -169,6 +169,7 @@ button, input, select, textarea {
     display: flex;
     align-items: center;
     gap: 6px;
+    white-space: nowrap;
 }
 
 .nav-item:hover, .nav-item.active {
@@ -210,6 +211,7 @@ button, input, select, textarea {
     align-items: center;
     gap: 6px;
     transition: var(--transition);
+    white-space: nowrap;
 }
 
 .lang-selector-btn:hover {
@@ -299,6 +301,7 @@ button, input, select, textarea {
     transition: var(--transition);
     position: relative;
     box-shadow: 0 4px 12px rgba(4, 107, 210, 0.2);
+    white-space: nowrap;
 }
 
 .cart-toggle-btn:hover {
@@ -1894,8 +1897,17 @@ button, input, select, textarea {
 
 /* 將所有 v2.1 新增之互動元件，以橘色高亮裝飾以示區別 */
 .lang-selector-wrapper {
-    border: 2px solid #e28703; /* 橘色框線區分多國語系切換器 */
-    border-radius: var(--radius-sm);
+    border: none;
+}
+
+.lang-selector-btn {
+    border: 1.5px solid #e28703 !important; /* 橘色框線區分新增之語言切換器 */
+    color: #d97706 !important;
+    background-color: #fff7ed !important;
+}
+
+.lang-selector-btn i {
+    color: #d97706 !important;
 }
 
 .role-switcher-bar {

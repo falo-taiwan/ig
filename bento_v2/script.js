@@ -964,7 +964,7 @@ function applyLanguage(lang) {
     // 批量翻譯 ID 元素
     const idList = [
         "logo-subtitle", "nav-text-menu", "nav-text-member", "nav-text-admin", "nav-text-guide", "nav-text-cart",
-        "nav-text-cart-link", "nav-text-checkout-link", "woo-breadcrumbs", "woo-page-title", "woo-result-count",
+        "nav-text-checkout-link", "woo-breadcrumbs", "woo-page-title", "woo-result-count",
         "hero-title", "hero-subtitle", "feat-pork", "feat-box", "feat-delivery", 
         "cart-drawer-title", "label-shipping-title", "label-chk-name", "label-chk-phone", 
         "label-chk-method", "label-chk-dept", "label-chk-address", "label-chk-remarks", "label-chk-total", "btn-submit-order",
