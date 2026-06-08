@@ -1,4 +1,13 @@
-/* style.css - Sunny廚苑-訂餐系統 POC v2.1 */
+/* 
+  style.css - Sunny廚苑-訂餐系統 POC v2.1 
+  Copyright © Falo x Force Cheng 2026/6/8
+  All Rights Reserved.
+  
+  本樣式表定義了系統的視覺主題：
+  1. 經典藍色 (#046bd2) 呈現 WooCommerce 前台點餐氛圍。
+  2. 暖橘色 (#e28703) 高亮表示 v2.1 版本的新功能或 AI 修改項目，方便教學辨識。
+  3. 紫色 (#8b5cf6) 用於隔離獨立的 GAS 部署指南面板。
+*/
 
 /* --- 1. 設計系統變數 --- */
 :root {

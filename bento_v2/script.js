@@ -1,4 +1,16 @@
-// script.js - Sunny廚苑訂餐系統 v2.1 前端邏輯 (i18n & 客製化點餐版)
+/**
+ * script.js - Sunny廚苑訂餐系統 v2.1 前端邏輯 (i18n & 客製化點餐版)
+ * Copyright © Falo x Force Cheng 2026/6/8
+ * All Rights Reserved.
+ * 
+ * 前端 JavaScript 邏輯模組：
+ * 1. 支援 4 國語系 (zh-TW, en, th, vi) 語系切換與翻譯載入。
+ * 2. 實作 WooCommerce 商品客製化加選計算（飯量、油蔥、辣椒、預算等級）。
+ * 3. 購物車與 LocalStorage 本地儲存與模擬下單。
+ * 4. 學生會員設定檔與常用地址自動預填。
+ * 5. 獨立的 GAS 部署代碼展示與複製。
+ * 6. 模擬留言回饋板，支援訪客提交與管理員後台搜尋、標記已讀/未讀、編輯與刪除。
+ */
 
 // --- 1. 多國語言對照翻譯庫 (i18n Dictionary) ---
 const I18N_DICT = {
