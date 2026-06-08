@@ -66,7 +66,9 @@
     pause: `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`,
     seekBack: `<svg viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>`,
     seekForward: `<svg viewBox="0 0 24 24"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>`,
-    speed: `<svg viewBox="0 0 24 24"><path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6l1.85-1.23A10 10 0 0 0 3.35 15a10 10 0 0 0 17.03 3.57 10 10 0 0 0 .15-10m-8.38 2.43a2 2 0 1 0 2 2 2 2 0 0 0-2-2m4.83-3.65l-3.75 5.62a2 2 0 0 0-1 .08l2.67-5.75a1 1 0 0 1 2.08.05z"/></svg>`
+    speed: `<svg viewBox="0 0 24 24"><path d="M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6l1.85-1.23A10 10 0 0 0 3.35 15a10 10 0 0 0 17.03 3.57 10 10 0 0 0 .15-10m-8.38 2.43a2 2 0 1 0 2 2 2 2 0 0 0-2-2m4.83-3.65l-3.75 5.62a2 2 0 0 0-1 .08l2.67-5.75a1 1 0 0 1 2.08.05z"/></svg>`,
+    lock: `<svg viewBox="0 0 24 24" width="12" height="12"><path fill="currentColor" d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`,
+    unlock: `<svg viewBox="0 0 24 24" width="12" height="12"><path fill="currentColor" d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-9V6c0-2.76 2.24-5 5-5s5 2.24 5 5v2h1c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V10c0-1.1.9-2 2-2h9z"/></svg>`
   };
 
   // Load Initial Settings
@@ -370,10 +372,21 @@
     const savedTheme = localStorage.getItem('ive_remote_theme') || 'black';
     remote.classList.add('theme-' + savedTheme);
 
-    // Drag Handle
-    const dragHandle = document.createElement('div');
-    dragHandle.className = 'ive-remote-drag';
-    remote.appendChild(dragHandle);
+    // Load lock state
+    let isLocked = localStorage.getItem('ive_remote_locked') === 'true';
+    if (isLocked) {
+      remote.classList.add('is-locked');
+    }
+
+    // Lock/Unlock Button on top
+    const lockBtn = document.createElement('div');
+    lockBtn.className = 'ive-remote-lock';
+    if (isLocked) {
+      lockBtn.classList.add('locked');
+    }
+    lockBtn.innerHTML = isLocked ? SVGs.lock : SVGs.unlock;
+    lockBtn.title = isLocked ? '點擊解鎖遙控器位置' : '點擊鎖定遙控器位置';
+    remote.appendChild(lockBtn);
 
     // OLED Screen
     const screen = document.createElement('div');
@@ -604,11 +617,11 @@
     });
     remote.appendChild(themeRow);
 
-    // [New] Footer Signature Stamp (at the very bottom, exactly Falo Force Cheng 2026!)
+    // [New] Footer Signature Stamp (at the very bottom, exactly FALO FORCE 2026!)
     const footer = document.createElement('div');
     footer.className = 'ive-remote-footer';
-    footer.textContent = 'Falo Force Cheng 2026';
-    footer.title = '點擊前往課程教學專案網頁';
+    footer.textContent = 'FALO FORCE 2026';
+    footer.title = 'FALO FORCE 2026 (點擊前往課程教學專案網頁)';
     footer.style.cursor = 'pointer';
     footer.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -634,10 +647,37 @@
       remote.style.right = '20px';
     }
 
-    // Drag-and-drop listener
-    let offsetX = 0, offsetY = 0;
-    dragHandle.addEventListener('pointerdown', (e) => {
+    // Toggle Lock state
+    lockBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      isLocked = !isLocked;
+      if (isLocked) {
+        lockBtn.classList.add('locked');
+        remote.classList.add('is-locked');
+        lockBtn.innerHTML = SVGs.lock;
+        lockBtn.title = '點擊解鎖遙控器位置';
+        showHUD('遙控器已鎖定 🔒');
+      } else {
+        lockBtn.classList.remove('locked');
+        remote.classList.remove('is-locked');
+        lockBtn.innerHTML = SVGs.unlock;
+        lockBtn.title = '點擊鎖定遙控器位置';
+        showHUD('遙控器已解鎖 🔓');
+      }
+      localStorage.setItem('ive_remote_locked', isLocked);
+    });
+
+    // Drag-and-drop listener (bound to remote background)
+    let offsetX = 0, offsetY = 0;
+    remote.addEventListener('pointerdown', (e) => {
+      // If locked, do not allow drag
+      if (isLocked) return;
+
+      // Skip dragging if clicking interactive controls
+      if (e.target.closest('button, .ive-remote-dot, .ive-remote-progress-container, .ive-theme-dot, .ive-remote-lock, .ive-remote-btn, .ive-remote-btn svg, .ive-remote-btn path, .ive-remote-progress-handle')) {
+        return;
+      }
+
       e.preventDefault();
       offsetX = e.clientX - remote.getBoundingClientRect().left;
       offsetY = e.clientY - remote.getBoundingClientRect().top;

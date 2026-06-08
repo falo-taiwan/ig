@@ -219,19 +219,54 @@
   transition: opacity 0.2s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
-/* Drag Grab bar */
-.ive-remote-drag {
-  width: 36px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: 3px;
-  cursor: move;
-  margin-bottom: 2px;
-  transition: background 0.15s ease;
+/* Drag Cursor for Remote */
+.ive-remote-control {
+  cursor: grab;
+}
+.ive-remote-control.is-locked {
+  cursor: default;
+}
+.ive-remote-control:active {
+  cursor: grabbing;
+}
+.ive-remote-control.is-locked:active {
+  cursor: default;
 }
 
-.ive-remote-drag:hover {
-  background: var(--theme-color);
+/* Lock/Unlock Button on Top */
+.ive-remote-lock {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(128, 128, 128, 0.08);
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--theme-btn-text-color);
+  margin-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+.ive-remote-lock svg {
+  width: 11px;
+  height: 11px;
+  display: block;
+}
+
+.ive-remote-lock:hover {
+  background: rgba(128, 128, 128, 0.15);
+  color: var(--theme-color);
+  border-color: var(--theme-color);
+  box-shadow: 0 0 6px var(--theme-glow);
+}
+
+.ive-remote-lock.locked {
+  background: var(--theme-btn-bg);
+  border-color: var(--theme-color);
+  color: var(--theme-color);
+  box-shadow: 0 0 6px var(--theme-shadow);
 }
 
 /* OLED Screen Display inside Remote */
@@ -410,8 +445,8 @@
 }
 
 .ive-theme-dot {
-  width: 7px;
-  height: 7px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   cursor: pointer;
   border: 1px solid rgba(128, 128, 128, 0.4);
