@@ -1064,6 +1064,11 @@
       <!-- Secrets Card 1: Bypassing conflict -->
       <div class="anatomy-diagram-card">
         <h3>⚡ 為什麼有些地方會「卡卡的」？探討特殊手段控制的本質</h3>
+        
+        <div style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid var(--primary-color); padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 0.92rem; line-height: 1.6; color: var(--text-main);">
+          <strong>💡 研發背景與二創聲明：</strong> 本專案（FALO Instagram Video Enhancer）並非完全原創，而是下載了市售外掛 <strong>Progress Bar for Instagram</strong>，隨後透過 AI Agent 工具（如 Antigravity、Claude 等）將其核心程式碼抽出、解析並理解運作原理後，經由人機協同交流進行二次創作（加入智慧遙控器、5種主題色彩、HUD 提示、坐標儲存鎖定等功能）與代碼重構。這是一個透過 AI Agent 工具進行逆向工程、學習與二創的典型 Vibe Coding 實戰案例。
+        </div>
+
         <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
           在開發如 Instagram 這類大型、高動態的 SPA (單頁應用) 時，官方前端框架（React/Relay）有一套非常嚴密的事件與播放狀態管理機制。外掛因為不是呼叫原生 API，而是採取「<strong>DOM 植入與覆蓋 (DOM Injection & Overlay)</strong>」的外部強行操作手段，如果沒有處理好瀏覽器的事件流（Event Flow），就容易導致按鈕點擊「卡卡的」、操作不同步、甚至是點擊時觸發 IG 原生暫停與靜音的 Bug。以下為您公開本專案用來突破限制的「黑科技小技巧」：
         </p>
