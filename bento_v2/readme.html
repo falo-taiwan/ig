@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunny廚苑 - 訂餐系統 POC v2.1 (進階多語客製版) 說明文件</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #046bd2;
+            --primary-dark: #024286;
+            --primary-light: #e0f2fe;
+            --accent: #e28703;      /* 教育橘 */
+            --gas-color: #8b5cf6;   /* GAS 紫 */
+            --gas-dark: #6d28d9;
+            --gas-light: #f5f3ff;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius-md: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --font-sans: 'Outfit', 'Noto Sans TC', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header block */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            border-radius: var(--radius-md);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.25);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        /* Color badges */
+        .color-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .color-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        /* Cards layout */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        .card-title.gas-title {
+            color: var(--gas-dark);
+            border-bottom-color: var(--gas-light);
+        }
+        .card-title.gas-title i {
+            color: var(--gas-color);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            font-family: monospace;
+            background-color: #f1f5f9;
+            color: #ef4444;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 頂部標頭 -->
+        <header class="header">
+            <span class="badge" style="background-color: var(--accent);">Version 2.1 (Advanced)</span>
+            <h1>Sunny廚苑 - 訂餐系統 POC v2.1</h1>
+            <p>進階多語客製前後端串接概念驗證版 (Concept of Proof)</p>
+        </header>
+
+        <!-- 顏色視覺體系說明 -->
+        <section class="card">
+            <h2 class="card-title"><i class="fa-solid fa-palette"></i> v2.1 視覺設計色彩規範</h2>
+            <p style="margin-bottom: 15px;">為符合 AI 教學中區分修改痕跡的設計目的，本版本導入了三色區分設計：</p>
+            <div class="color-group">
+                <div class="color-badge" style="background-color: var(--primary-light); color: var(--primary-dark);"><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background-color:var(--primary);"></span> 經典藍色：原版 WooCommerce 前台功能</div>
+                <div class="color-badge" style="background-color: #fff7ed; color: #c2410c;"><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background-color:var(--accent);"></span> 暖橘色：AI 教學新增/修改元素高亮</div>
+                <div class="color-badge" style="background-color: var(--gas-light); color: var(--gas-dark);"><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background-color:var(--gas-color);"></span> 紫色主題：獨立抽離之 GAS 部署教學模組</div>
+            </div>
+        </section>
+
+        <!-- 1. 新增功能邏輯 -->
+        <section class="card">
+            <h2 class="card-title"><i class="fa-solid fa-square-plus"></i> 1. v2.1 重點功能升級邏輯</h2>
+            <h3>A. 多國語系切換器 (i18n Switcher)</h3>
+            <p>
+                導覽列右上角的國旗按鈕點擊後展開下拉選單，點選即可在 🇹🇼 <b>繁體中文</b>、🇺🇸 <b>English</b>、🇹🇭 <b>ภาษาไทย</b>、🇻🇳 <b>Tiếng Việt</b> 間即時進行無縫切換。所有主菜單、頁籤、購物車、驗收提示及後台表格均支援全語系翻譯。
+            </p>
+            <h3>B. WooCommerce 商品客製加選彈窗 (Options Customizer)</h3>
+            <p>
+                點擊商品卡片時不再直接加入購物車，而是彈出加選視窗。使用者可選擇<b>米飯份量</b>（正常、加量 +$10、減半）、<b>客製化要求</b>（不要油蔥、加生辣椒、免洗餐具）或<b>會議餐盒預算</b>（$200/$250）。購物車會將這些客製化項目打包（如 <code>options: "米飯加量,不要油蔥"</code>）並即時累加價格。
+            </p>
+            <h3>C. 直達結帳滾動 (Direct Checkout)</h3>
+            <p>
+                點選 Navbar 的「結帳」時，系統會自動呼叫 <code>openCheckoutDirectly()</code>。當檢測到購物車有商品時，會自動展開購物車並以<b>平滑動畫 (Smooth Scroll)</b> 捲動至下方「配送明細」表單，提升結帳流暢度。
+            </p>
+            <h3>D. 基本資料與送餐地址簿 (Member Address Book)</h3>
+            <p>
+                會員可在個人專區設定姓名、電話、公司與常用外送地址。設定儲存後，LocalStorage 會將資料快取，並在結帳時<b>自動預填 (Autofill)</b> 配送表單。
+            </p>
+        </section>
+
+        <!-- 2. Reconstructed Feedback Message Board -->
+        <section class="card">
+            <h2 class="card-title"><i class="fa-solid fa-comments"></i> 2. 鼓勵與反饋留言板系統</h2>
+            <p>
+                為高仿原站 <code>slk9898.com.tw/鼓勵與反饋/</code>，我們為訪客與管理員實現了完整的留言功能：
+            </p>
+            <ul>
+                <li><b>訪客/會員模式</b>：提供乾淨的留言表單。留言時必須輸入系統中合法的「員工工號」（如 <code>1000</code>、<code>11100002</code> 到 <code>11100020</code>），否則會彈出工號錯誤警告。驗證成功後，系統會自動在人員庫中匹配 mock 姓名與部門，並記錄當下時間。</li>
+                <li><b>管理員(後台)模式</b>：當使用者在底部切換為 Admin 權限時，此分頁會自動渲染成<b>留言管理後台表格</b>：
+                    <ul>
+                        <li><b>即時篩選</b>：可輸入工號進行模糊查詢，並透過下拉選單過濾「已讀」或「未讀」留言。</li>
+                        <li><b>批量修改</b>：勾選多筆留言後，可點選「標示為已讀」或「標示為未讀」進行批量狀態變更。</li>
+                        <li><b>行內編輯與刪除</b>：點擊修改圖示即可彈出 prompt 編輯留言內容，點選刪除圖示並確認後即可將其完全刪除。</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <!-- 3. GAS 部署隔離設計 -->
+        <section class="card gas-theme">
+            <h2 class="card-title gas-title"><i class="fa-solid fa-code"></i> 3. 獨立的 GAS 部署指南面版</h2>
+            <p>
+                原本混雜在回饋分頁中的 Google Apps Script (GAS) 指南與代碼展示器，已完全被抽離到 Navbar 新增的 <b>「GAS 部署」</b> 獨立分頁中，並套用<b>紫色系主題</b>。代碼預覽框提供 <code>Code.gs</code> v2.1 完整後端原始碼，並提供「複製代碼」功能，方便學員一鍵部署。
+            </p>
+        </section>
+
+        <!-- 頁腳 -->
+        <footer class="footer">
+            <p>Copyright © Falo x Force Cheng 2026/6/8 All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
