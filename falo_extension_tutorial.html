@@ -891,6 +891,7 @@
     <!-- Tab Navigation Switcher -->
     <div class="tabs-container">
       <button class="tab-btn active" data-tab="tab-deploy">🚀 部署與安裝實戰</button>
+      <button class="tab-btn" data-tab="tab-secrets">⚡ 專案黑科技：特殊控制與效能優化</button>
       <button class="tab-btn" data-tab="tab-architecture">🧩 核心架構與 AI 協同開發指南</button>
     </div>
 
@@ -1057,6 +1058,103 @@
       </table>
     </div>
     </div> <!-- End Tab Deploy -->
+
+    <!-- Tab Secrets Content -->
+    <div id="tab-secrets" class="tab-content">
+      <!-- Secrets Card 1: Bypassing conflict -->
+      <div class="anatomy-diagram-card">
+        <h3>⚡ 為什麼有些地方會「卡卡的」？探討特殊手段控制的本質</h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+          在開發如 Instagram 這類大型、高動態的 SPA (單頁應用) 時，官方前端框架（React/Relay）有一套非常嚴密的事件與播放狀態管理機制。外掛因為不是呼叫原生 API，而是採取「<strong>DOM 植入與覆蓋 (DOM Injection & Overlay)</strong>」的外部強行操作手段，如果沒有處理好瀏覽器的事件流（Event Flow），就容易導致按鈕點擊「卡卡的」、操作不同步、甚至是點擊時觸發 IG 原生暫停與靜音的 Bug。以下為您公開本專案用來突破限制的「黑科技小技巧」：
+        </p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Hack 1 Card -->
+        <div class="card">
+          <h3>🛡️ 黑科技一：事件攔截與防衝突機制 (Event Propagation Bypass)</h3>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>開發痛點：</strong> 當您點選自製遙控器的按鈕、或拖曳自製的播放進度條時，點擊事件會「冒泡 (Bubble)」傳遞給底層 Instagram 原生的影片容器，觸發 IG 本身的 Click 事件，導致影片又被暫停或靜音，操作感極度不流暢。
+          </p>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>黑科技小技巧：</strong> 外掛在自製的 progress-container 與遙控器按鈕上註冊 <code>pointerdown</code> 與 <code>click</code> 事件，並在第一時間調用：
+          </p>
+          <pre style="background: rgba(0,0,0,0.15); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; overflow-x: auto; color: var(--primary-color); margin-bottom: 15px;">
+e.stopPropagation(); // 阻止事件冒泡，不讓點擊穿透
+e.preventDefault();  // 阻止瀏覽器的預設點擊暫停行為</pre>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+            這就像是在 IG 原有介面之上，強行蓋了一層「事件防護罩」，確保遙控器的指令是單向且獨立地直接送給 HTML5 <code>&lt;video&gt;</code>，完全隔絕 IG 原生 JS 監聽器的干擾。
+          </p>
+        </div>
+
+        <!-- Hack 2 Card -->
+        <div class="card">
+          <h3>🎯 黑科技二：多影片視區計算與自動定位 (Viewport Visibility Algorithm)</h3>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>開發痛點：</strong> 當使用者快速上下滑動 IG 牆時，DOM 中其實會殘留好幾個 <code>&lt;video&gt;</code> 標籤。這時按下快捷鍵（如「1」播放暫停），外掛要如何精準判定此時該控制哪一個影片，而不是讓看不見的影片在背景亂播？
+          </p>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>黑科技小技巧：</strong> 外掛並不固定綁定單一 Video，而是在事件觸發時動態計算！透過實時調用 <code>getBoundingClientRect()</code> 計算當前所有影片在 Viewport 中的可見面積：
+          </p>
+          <pre style="background: rgba(0,0,0,0.15); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; overflow-x: auto; color: var(--primary-color); margin-bottom: 15px;">
+// 計算可見寬高乘積，找出目前佔螢幕面積最大的 video
+const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+const visibleWidth = Math.max(0, visibleRight - visibleLeft);
+const visibleArea = visibleHeight * visibleWidth;
+if (visibleArea > maxVisibleArea) { ... }</pre>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+            這套算法能在毫秒間定位出「目前畫面上可見佔比最大」的 Reels 影片，將熱鍵操作目標動態綁定在它身上，完美解決滑動時的多影片控制衝突。
+          </p>
+        </div>
+
+        <!-- Hack 3 Card -->
+        <div class="card">
+          <h3>⚙️ 黑科技三：雙模式儲存適配器 (Dual-Mode Storage Wrapper)</h3>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>開發痛點：</strong> Chrome 擴充功能的 <code>chrome.storage.sync</code> 只能在被載入成正式外掛時運行。如果在一般網頁（例如本地教學測試頁面 <code>mock_instagram.html</code>）測試，就會因為找不到 <code>chrome</code> API 而直接報錯崩潰。
+          </p>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>黑科技小技巧：</strong> 外掛實作了巧妙的介面適配器模式 (Adapter Pattern)：
+          </p>
+          <pre style="background: rgba(0,0,0,0.15); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; overflow-x: auto; color: var(--primary-color); margin-bottom: 15px;">
+const storage = {
+  get: (defaults, callback) => {
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+      chrome.storage.sync.get(defaults, callback);
+    } else {
+      // 降級 fallback 支援普通網頁的 localStorage
+      // ...
+    }
+  }
+};</pre>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+            這使同一份程式碼同時具備「外掛端」與「網頁 PoC 端」的相容性，讓學生即使不載入外掛，也能在本地測試網頁上完整體驗遙控器的倍速、主題切換等功能！
+          </p>
+        </div>
+
+        <!-- Hack 4 Card -->
+        <div class="card">
+          <h3>🔄 黑科技四：跨標籤同步與 OLED 即時渲染 (OLED Screen Loop)</h3>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>開發痛點：</strong> 遙控器上的 OLED 螢幕需要顯示目前影片的精確播放進度和倍速。如果每個 DOM 更新都綁定高頻率的 <code>timeupdate</code> 事件，可能導致網頁重繪 (Repaint) 過度頻繁而產生掉幀、卡頓。
+          </p>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+            <strong>黑科技小技巧：</strong> 程式在遙控器內部使用了一個 250ms 的輕量級定時循環，實時渲染 OLED 螢幕：
+          </p>
+          <pre style="background: rgba(0,0,0,0.15); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; overflow-x: auto; color: var(--primary-color); margin-bottom: 15px;">
+setInterval(() => {
+  const video = getActiveVideo();
+  if (video) {
+    screenSpeed.textContent = `SPEED: ${video.playbackRate.toFixed(2)}x`;
+    screenTime.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+  }
+}, 250);</pre>
+          <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
+            配合 <code>chrome.storage.onChanged</code> 的全域監聽，當使用者在分頁 A 調整了速度或靜音狀態，設定會瞬間寫入 Storage 並廣播，讓所有分頁的遙控器狀態即時同步。
+          </p>
+        </div>
+      </div>
+    </div> <!-- End Tab Secrets -->
 
     <!-- Tab Architecture -->
     <div id="tab-architecture" class="tab-content">
