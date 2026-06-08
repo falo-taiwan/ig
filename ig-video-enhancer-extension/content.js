@@ -608,11 +608,11 @@
     const footer = document.createElement('div');
     footer.className = 'ive-remote-footer';
     footer.textContent = 'Falo Force Cheng 2026';
-    footer.title = '點擊前往 GitHub 專案原始碼';
+    footer.title = '點擊前往課程教學專案網頁';
     footer.style.cursor = 'pointer';
     footer.addEventListener('click', (e) => {
       e.stopPropagation();
-      window.open('https://github.com/falo-taiwan/ig', '_blank');
+      window.open('https://falo-taiwan.github.io/ig/', '_blank');
     });
     remote.appendChild(footer);
 
