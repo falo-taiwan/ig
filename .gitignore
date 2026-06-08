@@ -17,3 +17,9 @@ bentov2/
 bento_ordering_system.zip
 merge_gas.py
 standard_answer_key.md
+
+# Exclude temporary/legacy IG files not needed in the clean extension repo
+instagram-video-enhancer.user.js
+mock_instagram.html
+ig-video-enhancer-extension/mock_instagram.html
+ig-video-enhancer-extension/resize_icons.py
