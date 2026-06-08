@@ -10,7 +10,7 @@
     --success: #10b981;     /* 翠綠色 */
     --danger: #ef4444;      /* 警示紅 */
     --warning: #f59e0b;
-    --bg-main: #f8fafc;     /* 背景淺灰藍 */
+    --bg-main: #F0F5FA;     /* 背景淺灰藍 */
     --bg-card: #ffffff;
     --text-main: #1e293b;
     --text-muted: #64748b;
@@ -511,9 +511,10 @@ button, input, select, textarea {
 
 .product-img-wrapper {
     position: relative;
-    height: 200px;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background-color: #f1f5f9;
+    cursor: pointer;
 }
 
 .product-img {
@@ -582,27 +583,18 @@ button, input, select, textarea {
     border-top: 1px solid #f1f5f9;
 }
 
-.product-price-box {
-    display: flex;
-    flex-direction: column;
-}
-
-.product-price-currency {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-.product-price-amount {
-    font-size: 1.3rem;
-    font-weight: 800;
+.price {
+    display: inline-block;
     color: var(--text-main);
-    display: flex;
-    align-items: baseline;
+    font-weight: 700;
+    font-size: 1.15rem;
 }
 
-.product-price-amount::before {
-    content: 'NT$';
+.woocommerce-Price-amount {
+    color: var(--text-main);
+}
+
+.woocommerce-Price-currencySymbol {
     font-size: 0.85rem;
     font-weight: 700;
     margin-right: 2px;

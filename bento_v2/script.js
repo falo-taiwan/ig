@@ -878,10 +878,10 @@ function applyLanguage(lang) {
     // 分類 Tabs 翻譯重繪
     const catTabs = document.getElementById('category-tabs-container');
     catTabs.innerHTML = `
-        <button class="cat-tab active" onclick="filterCategory('all', this)">${dict.cat_all}</button>
-        <button class="cat-tab" onclick="filterCategory('main', this)">${dict.cat_main}</button>
-        <button class="cat-tab" onclick="filterCategory('salad', this)">${dict.cat_salad}</button>
-        <button class="cat-tab" onclick="filterCategory('promo', this)">${dict.cat_promo}</button>
+        <button class="cat-tab ${currentCategoryFilter === 'all' ? 'active' : ''}" onclick="filterCategory('all', this)">${dict.cat_all}</button>
+        <button class="cat-tab ${currentCategoryFilter === 'main' ? 'active' : ''}" onclick="filterCategory('main', this)">${dict.cat_main}</button>
+        <button class="cat-tab ${currentCategoryFilter === 'salad' ? 'active' : ''}" onclick="filterCategory('salad', this)">${dict.cat_salad}</button>
+        <button class="cat-tab ${currentCategoryFilter === 'promo' ? 'active' : ''}" onclick="filterCategory('promo', this)">${dict.cat_promo}</button>
     `;
 
     // 結帳配送下拉選單翻譯
@@ -996,18 +996,16 @@ function renderProductGrid(products) {
         card.innerHTML = `
             ${isOutOfStock ? `<span class="product-badge out-of-stock">${currentLang === 'zh-TW' ? '已售罄' : 'Sold Out'}</span>` : ''}
             ${p.category === 'promo' ? `<span class="product-badge" style="background-color: var(--primary)">${currentLang === 'zh-TW' ? '熱門公告' : 'News'}</span>` : ''}
-            <div class="product-img-wrapper">
+            <div class="product-img-wrapper" onclick="openCustomizeModal('${p.id}')">
                 <img src="${p.image}" class="product-img" alt="${displayName}">
             </div>
             <div class="product-info">
                 <span class="product-meta">${p.category === 'main' ? getTranslation('cat_main') : p.category === 'salad' ? getTranslation('cat_salad') : getTranslation('cat_promo')}</span>
                 <h4 class="product-title" title="${displayName}" onclick="openCustomizeModal('${p.id}')">${displayName}</h4>
-                <p class="product-desc">${displayDesc}</p>
                 <div class="product-action-row">
-                    <div class="product-price-box">
-                        ${isPromo ? '' : `<span class="product-price-currency">${currentLang === 'zh-TW' ? '單價' : 'Price'}</span>`}
-                        <span class="${isPromo ? 'product-meta' : 'product-price-amount'}" style="${isPromo ? 'font-size: 0.95rem; font-weight:700;' : ''}">${isPromo ? getTranslation('btn_contact') : p.price}</span>
-                    </div>
+                    <span class="price">
+                        ${isPromo ? `<span class="promo-badge-text" style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">${getTranslation('btn_contact')}</span>` : `<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">NT$</span>${p.price}</bdi></span>`}
+                    </span>
                     ${isPromo ? 
                       `<button class="order-btn" style="background-color:#64748b" onclick="showToast(getTranslation('toast_contact_info'), 'info')"><i class="fa-solid fa-phone"></i>${getTranslation('btn_contact')}</button>` :
                       `<button class="order-btn" ${isOutOfStock ? 'disabled' : ''} onclick="openCustomizeModal('${p.id}')">
