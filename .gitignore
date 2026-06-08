@@ -2,3 +2,18 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# Exclude non-IG related course assets
+compare_excel.py
+create_simulated_data.py
+project_comparison_report.xlsx
+project_data_v1.xlsx
+project_data_v2.xlsx
+line-mutator/
+script.js
+style.css
+bento/
+bentov2/
+bento_ordering_system.zip
+merge_gas.py
+standard_answer_key.md
