@@ -1,4 +1,4 @@
-/* style.css - Sunny廚苑-訂餐系統 POC v2.0 */
+/* style.css - Sunny廚苑-訂餐系統 POC v2.1 */
 
 /* --- 1. 設計系統變數 --- */
 :root {
@@ -1824,4 +1824,106 @@ button, input, select, textarea {
     .role-switcher-title {
         display: none;
     }
+}
+
+/* --- 14. v2.1 高仿 WooCommerce 與新增功能區分樣式 --- */
+
+/* 麵包屑與頁面標題樣式 */
+.shop-header-section {
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.woocommerce-breadcrumbs {
+    font-size: 0.88rem;
+    color: #8d96a0;
+    margin-bottom: 10px;
+    font-family: var(--font-sans);
+}
+
+.woocommerce-page-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 20px;
+}
+
+.woocommerce-result-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+}
+
+.woocommerce-result-count {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+}
+
+.woocommerce-ordering select {
+    padding: 8px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    outline: none;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+/* 橘色高亮樣式 (標記 v2.1 新增/修改內容) */
+.highlight-new {
+    color: #e28703 !important; /* 明顯的暖橘色，區分修改過的内容 */
+    font-weight: 700;
+}
+
+.orange-badge-new {
+    background-color: #e28703;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 50px;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    text-transform: uppercase;
+}
+
+/* 將所有 v2.1 新增之互動元件，以橘色高亮裝飾以示區別 */
+.lang-selector-wrapper {
+    border: 2px solid #e28703; /* 橘色框線區分多國語系切換器 */
+    border-radius: var(--radius-sm);
+}
+
+.role-switcher-bar {
+    border: 2px solid #e28703 !important; /* 橘色框線區分模擬帳號切換列 */
+    background-color: #fffbeb !important; /* 暖橘色系背景 */
+}
+
+.role-switcher-btn.active {
+    background-color: #e28703 !important;
+    color: #ffffff !important;
+}
+
+/* 會員設定 & 後台管理標頭裝飾 */
+.member-card, .admin-sidebar {
+    border-top: 4px solid #e28703 !important; /* 橘色頂線代表為 v2.1 擴充面版 */
+}
+
+.admin-menu-item.active {
+    background-color: #fff7ed !important;
+    color: #e28703 !important;
+    border-left: 3px solid #e28703 !important;
+}
+
+.option-box.selected {
+    border-color: #e28703 !important;
+    background-color: #fff7ed !important;
+}
+
+.option-box.selected input {
+    accent-color: #e28703;
 }

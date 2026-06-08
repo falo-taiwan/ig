@@ -19,25 +19,30 @@
     <nav class="navbar">
         <div class="container">
             <div class="logo-area" onclick="switchView('menu')">
-                <div class="logo-icon"><i class="fa-solid fa-utensils"></i></div>
+                <img src="chef_logo.png" class="logo-img" alt="Mascot" style="height: 55px; border-radius: 4px; object-fit: contain;">
                 <div class="logo-text">
-                    <span class="logo-title">Sunny廚苑</span>
-                    <span class="logo-subtitle" id="logo-subtitle">精緻外送訂餐系統</span>
+                    <span class="logo-title"><span class="highlight-new">Sunny</span>廚苑-訂餐系統</span>
                 </div>
             </div>
             
             <div class="nav-links">
                 <button class="nav-item active" id="nav-menu" onclick="switchView('menu')">
-                    <i class="fa-solid fa-house-chimney"></i><span id="nav-text-menu">首頁選單</span>
+                    <span id="nav-text-menu">超值美味餐點</span>
+                </button>
+                <button class="nav-item" id="nav-cart-link" onclick="toggleCart(true)">
+                    <span id="nav-text-cart-link">購物車</span>
+                </button>
+                <button class="nav-item" id="nav-checkout-link" onclick="openCheckoutDirectly()">
+                    <span id="nav-text-checkout-link">結帳</span>
                 </button>
                 <button class="nav-item" id="nav-member" onclick="switchView('member')">
-                    <i class="fa-solid fa-user-check"></i><span id="nav-text-member">會員訂單</span>
+                    <span id="nav-text-member">訂餐查詢</span>
+                </button>
+                <button class="nav-item new-feature" id="nav-guide" onclick="switchView('guide')">
+                    <span id="nav-text-guide">鼓勵與反饋</span><span class="orange-badge-new">New</span>
                 </button>
                 <button class="nav-item admin-btn" id="nav-admin" onclick="switchView('admin')" style="display: none;">
-                    <i class="fa-solid fa-chart-line"></i><span id="nav-text-admin">後台管理</span>
-                </button>
-                <button class="nav-item" id="nav-guide" onclick="switchView('guide')">
-                    <i class="fa-solid fa-code"></i><span id="nav-text-guide">GAS部署</span>
+                    <span id="nav-text-admin">後台管理</span>
                 </button>
             </div>
 
@@ -75,7 +80,7 @@
             <section class="hero-banner">
                 <div class="container">
                     <div class="hero-banner-content">
-                        <span class="hero-tag">AI 教學示範 POC v2.0</span>
+                        <span class="hero-tag">AI 教學示範 POC v2.1</span>
                         <h1 class="hero-title" id="hero-title">Sunny主廚推薦精緻餐盒</h1>
                         <p class="hero-subtitle" id="hero-subtitle">自製油蔥港式蔥油雞飯、招牌炸燒肉便當、紅燒無骨滷排！安心多一點，食材好一點，為您訂做而製的極致美味！</p>
                         <div class="hero-features">
@@ -83,6 +88,24 @@
                             <div class="hero-feature-item"><i class="fa-solid fa-recycle"></i><span id="feat-box">高質感紙餐盒可微波</span></div>
                             <div class="hero-feature-item"><i class="fa-solid fa-motorcycle"></i><span id="feat-delivery">外送自取超便利</span></div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WooCommerce 麵包屑與分類標題 -->
+            <section class="container shop-header-section">
+                <div class="woocommerce-breadcrumbs" id="woo-breadcrumbs">首頁 / 主餐</div>
+                <h1 class="woocommerce-page-title" id="woo-page-title">主餐</h1>
+                <div class="woocommerce-result-bar">
+                    <p class="woocommerce-result-count" id="woo-result-count">顯示所有 11 個結果</p>
+                    <div class="woocommerce-ordering">
+                        <select name="orderby" class="orderby" aria-label="商店訂單">
+                            <option value="menu_order" selected="selected">依價格排序:低至高</option>
+                            <option value="popularity">依熱銷度</option>
+                            <option value="date">依最新項目排序</option>
+                            <option value="price">依價格排序:低至高</option>
+                            <option value="price-desc">依價格排序:高至低</option>
+                        </select>
                     </div>
                 </div>
             </section>
@@ -377,11 +400,11 @@
                 <!-- Apps Script 代碼展示編輯器 -->
                 <div class="guide-card" style="padding: 15px;">
                     <div class="code-editor-header">
-                        <span><i class="fa-solid fa-file-code"></i> Code.gs (Apps Script 後端代碼 v2.0)</span>
+                        <span><i class="fa-solid fa-file-code"></i> Code.gs (Apps Script 後端代碼 v2.1)</span>
                         <button class="action-btn edit" onclick="copyGasCode()" style="margin: 0;"><i class="fa-regular fa-copy"></i> 複製代碼</button>
                     </div>
                     <pre class="code-editor-body" id="gas-code-content">
-// Code.gs - Sunny廚苑訂餐系統後端 v2.0 (Google Apps Script)
+// Code.gs - Sunny廚苑訂餐系統後端 v2.1 (Google Apps Script)
 
 // 1. 發布 Web App 進入點
 function doGet() {

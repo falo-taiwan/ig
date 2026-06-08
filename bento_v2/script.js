@@ -1,15 +1,20 @@
-// script.js - Sunny廚苑訂餐系統 v2.0 前端邏輯 (i18n & 客製化點餐版)
+// script.js - Sunny廚苑訂餐系統 v2.1 前端邏輯 (i18n & 客製化點餐版)
 
 // --- 1. 多國語言對照翻譯庫 (i18n Dictionary) ---
 const I18N_DICT = {
     "zh-TW": {
         web_title: "Sunny廚苑 - 訂餐系統 POC (AI 教學示範版)",
         logo_subtitle: "精緻外送訂餐系統",
-        nav_menu: "首頁選單",
-        nav_member: "會員訂單",
+        nav_menu: "超值美味餐點",
+        nav_member: "訂餐查詢",
         nav_admin: "後台管理",
-        nav_guide: "GAS部署",
+        nav_guide: "鼓勵與反饋",
         nav_cart: "購物車",
+        nav_cart_link: "購物車",
+        nav_checkout_link: "結帳",
+        woo_breadcrumbs: "首頁 / 主餐",
+        woo_page_title: "主餐",
+        woo_result_count: "顯示所有 11 個結果",
         user_guest: "訪客模式",
         user_member: "測試會員 (學生)",
         user_admin: "管理員 (admin@slk.com)",
@@ -115,11 +120,16 @@ const I18N_DICT = {
     "en": {
         web_title: "Sunny Kitchen - Ordering System POC (AI Education)",
         logo_subtitle: "Premium Delivery & Takeout System",
-        nav_menu: "Menu",
-        nav_member: "My Orders",
+        nav_menu: "Special Menu",
+        nav_member: "Order Inquiry",
         nav_admin: "Admin Panel",
-        nav_guide: "GAS Deploy",
+        nav_guide: "Feedback & Support",
         nav_cart: "Cart",
+        nav_cart_link: "Cart",
+        nav_checkout_link: "Checkout",
+        woo_breadcrumbs: "Home / Main Entree",
+        woo_page_title: "Main Entree",
+        woo_result_count: "Showing all 11 results",
         user_guest: "Guest Mode",
         user_member: "Test Member (Student)",
         user_admin: "Administrator (admin@slk.com)",
@@ -225,11 +235,16 @@ const I18N_DICT = {
     "th": {
         web_title: "Sunny Kitchen - ระบบสั่งอาหารกล่อง POC",
         logo_subtitle: "ระบบจัดส่งปิ่นโตพรีเมียม",
-        nav_menu: "รายการอาหาร",
-        nav_member: "ประวัติการสั่ง",
+        nav_menu: "เมนูสุดคุ้ม",
+        nav_member: "ตรวจสอบรายการสั่งซื้อ",
         nav_admin: "จัดการหลังบ้าน",
-        nav_guide: "ติดตั้ง GAS",
+        nav_guide: "ข้อเสนอแนะและเสียงตอบรับ",
         nav_cart: "ตะกร้า",
+        nav_cart_link: "รถเข็น",
+        nav_checkout_link: "ชำระเงิน",
+        woo_breadcrumbs: "หน้าแรก / อาหารจานหลัก",
+        woo_page_title: "อาหารจานหลัก",
+        woo_result_count: "แสดงผลลัพธ์ทั้งหมด 11 รายการ",
         user_guest: "โหมดผู้มาเยือน",
         user_member: "บัญชีทดสอบ (นักเรียน)",
         user_admin: "ผู้ดูแลระบบ (admin@slk.com)",
@@ -335,11 +350,16 @@ const I18N_DICT = {
     "vi": {
         web_title: "Sunny Kitchen - Hệ Thống Đặt Cơm Hộp POC",
         logo_subtitle: "Hệ Thống Giao Cơm Hộp Văn Phòng",
-        nav_menu: "Thực Đơn",
-        nav_member: "Đơn Đã Đặt",
+        nav_menu: "Món ngon giá trị",
+        nav_member: "Tra cứu đơn hàng",
         nav_admin: "Trang Quản Trị",
-        nav_guide: "Cài Đặt GAS",
+        nav_guide: "Khích lệ & Phản hồi",
         nav_cart: "Giỏ Hàng",
+        nav_cart_link: "Giỏ hàng",
+        nav_checkout_link: "Thanh toán",
+        woo_breadcrumbs: "Trang chủ / Món chính",
+        woo_page_title: "Món chính",
+        woo_result_count: "Hiển thị tất cả 11 kết quả",
         user_guest: "Khách Vãng Lai",
         user_member: "Học Viên Thử Nghiệm",
         user_admin: "Quản Trị Viên (admin@slk.com)",
@@ -459,10 +479,10 @@ const PRODUCT_I18N = {
         "vi": { name: "Cơm Gà Sốt Mỡ Hành Hồng Kông", desc: "Thịt gà hấp mọng nước kết hợp sốt hành gừng tự làm đậm đà. Đóng hộp giữ nhiệt giao tận nơi nóng hổi." }
     },
     "76512": {
-        "zh-TW": { name: "Sunny愛妻招牌手工醃製炸燒肉飯", desc: "精選台灣溫體豬五花肉，手工秘方醃製多時後酥炸，外酥內嫩！紙餐盒微波依然美味，人氣熱賣！" },
-        "en": { name: "Sunny Signature Crispy Fried Pork Rice", desc: "Fresh Taiwanese pork belly marinated with secret family spices then deep-fried. Crispy outside, tender inside!" },
-        "th": { name: "ข้าวหน้าหมูสามชั้นทอดกรอบซันนี่", desc: "หมูสามชั้นไต้หวันคัดพิเศษหมักเครื่องเทศสูตรลับเฉพาะแล้วนำไปทอดจนกรอบนอกนุ่มใน เมนูยอดฮิตประจำร้าน!" },
-        "vi": { name: "Cơm Thịt Heo Quay Chiên Giòn Sunny", desc: "Ba chỉ heo tươi Đài Loan ướp gia vị gia truyền rồi chiên giòn rụm. Vỏ ngoài giòn tan, thịt bên trong mềm ngọt!" }
+        "zh-TW": { name: "<span class=\"highlight-new\">Sunny</span>愛妻招牌手工醃製炸燒肉飯", desc: "精選台灣溫體豬五花肉，手工秘方醃製多時後酥炸，外酥內嫩！紙餐盒微波依然美味，人氣熱賣！" },
+        "en": { name: "<span class=\"highlight-new\">Sunny</span> Signature Crispy Fried Pork Rice", desc: "Fresh Taiwanese pork belly marinated with secret family spices then deep-fried. Crispy outside, tender inside!" },
+        "th": { name: "ข้าวหน้าหมูสามชั้นทอดกรอบ<span class=\"highlight-new\">ซันนี่</span>", desc: "หมูสามชั้นไต้หวันคัดพิเศษหมักเครื่องเทศสูตรลับเฉพาะแล้วนำไปทอดจนกรอบนอกนุ่มใน เมนูยอดฮิตประจำร้าน!" },
+        "vi": { name: "Cơm Thịt Heo Quay Chiên Giòn <span class=\"highlight-new\">Sunny</span>", desc: "Ba chỉ heo tươi Đài Loan ướp gia vị gia truyền rồi chiên giòn rụm. Vỏ ngoài giòn tan, thịt bên trong mềm ngọt!" }
     },
     "83669": {
         "zh-TW": { name: "紅燒無骨滷排(先炸後滷)", desc: "人氣爆棚新品！溫體豬大排先油炸鎖汁，再丟入主廚陳年老滷汁慢火燉煮，完全去骨，大口咬下超滿足！" },
@@ -473,6 +493,148 @@ const PRODUCT_I18N = {
     "87428": {
         "zh-TW": { name: "什錦胡麻水果沙拉 (獨家胡麻風味)", desc: "夏季商品熱力開賣！精選多款季節水果與鮮嫩生菜，淋上特製濃郁胡麻醬，夏日解暑美味！" },
         "en": { name: "Seasonal Mixed Fruit Salad (Roasted Sesame)", desc: "Refreshing summer salad featuring fresh fruits and crisp greens with aromatic roasted sesame dressing." },
+        "th": { name: "สลัดผลไม้รวมราดซอสงาน้ำลึก", desc: "เมนูคลายร้อนต้อนรับซัมเมอร์! ผลไม้สดตามฤดูกาลและผักกรอบ ราดด้วยน้ำสลัดงาคั่วสไตล์ญี่ปุ่นเข้มข้น" },
+        "vi": { name: "Salad Hoa Quả Trộn Sốt Mè Rang", desc: "Thực đơn giải nhiệt mùa hè! Trái cây tươi cắt miếng kết hợp sốt mè rang béo ngậy thơm nức mũi." }
+    },
+    "87429": {
+        "zh-TW": { name: "什錦冰梅水果沙拉 (獨家酸甜冰梅)", desc: "酸甜開胃必點！夏日限定冰梅調醬，將當季清甜水果的鮮美味道再次昇華，清爽健康無負擔！" },
+        "en": { name: "Seasonal Mixed Fruit Salad (Sweet Plum)", desc: "Tangy and sweet! Seasonal fruits tossed in chef's signature iced plum syrup. A perfect appetite trigger." },
+        "th": { name: "สลัดผลไม้รวมราดซอสบ๊วยเปรี้ยวหวาน", desc: "รสชาติเปรี้ยวหวานกลมกล่อมช่วยกระตุ้นความอยากอาหาร! ซอสบ๊วยเย็นชื่นใจคลุกเคล้าผลไม้หวานฉ่ำ" },
+        "vi": { name: "Salad Hoa Quả Trộn Sốt Xí Muội Chua Ngọt", desc: "Món khai vị chua ngọt kích thích vị giác! Sốt xí muội đá kết hợp hoa quả thanh mát, bổ dưỡng." }
+    },
+    "91945": {
+        "zh-TW": { name: "川味家常肉絲便當 (肉超多飽足款)", desc: "正宗川香家常爆炒，肉絲軟嫩、鹹香帶點微辣！配菜豐富，超大肉量絕對滿足食肉大胃王！" },
+        "en": { name: "Szechuan Shredded Pork Bento (Heavy Portion)", desc: "Stir-fried tender pork strips in savory, slightly spicy Szechuan sauce. Generous portion for meat lovers!" },
+        "th": { name: "กล่องข้าวหมูเส้นผัดพริกเสฉวน (จานโตจุใจ)", desc: "หมูเส้นนุ่มผัดซอสเสฉวนรสเข้มข้นเผ็ดน้อยเค็มมัน ครบเครื่องกับผักเคียงและปริมาณเนื้อเน้นๆ!" },
+        "vi": { name: "Hộp Cơm Thịt Heo Xé Sợi Xào Tứ Xuyên", desc: "Thịt heo xé sợi xào cay cay đậm đà chuẩn vị Tứ Xuyên. Suất cơm đầy đặn đáp ứng nhu cầu năng lượng cao." }
+    },
+    "95251": {
+        "zh-TW": { name: "椒麻螺絲米線 (香辣爆表)", desc: "特製螺絲米線吸收川味椒麻紅油，搭配脆口黃瓜與花生，辣勁十足，酸爽解熱，辣度爆表！" },
+        "en": { name: "Spicy & Numbing Rice Noodles (Extra Hot)", desc: "Spiral rice noodles soaked in Szechuan chili oil and Sichuan peppercorn sauce, garnished with cucumber and peanuts." },
+        "th": { name: "ขนมจีนเสฉวนซอสเผ็ดชาล่ากึ่งเปรี้ยว", desc: "เส้นขนมจีนนุ่มหนึบซับน้ำมันพริกเผ็ดชาสไตล์เสฉวน โรยหน้าด้วยแตงกวากรอบและถั่วลิสงคั่ว เผ็ดซี้ดถึงใจ!" },
+        "vi": { name: "Bún Sợi Tròn Sốt Tiêu Tứ Xuyên Siêu Cay", desc: "Bún sợi tròn dai dai ngấm đẫm sốt sa tế cay tê, ăn kèm dưa chuột giòn và lạc rang. Cay cay kích thích!" }
+    },
+    "76513": {
+        "zh-TW": { name: "<span class=\"highlight-new\">Sunny</span>主廚客製會議精緻餐盒", desc: "針對公司行號會議、貴賓研討會客製的精緻雙主菜餐盒，提供 200元/250元 雙規格供預算調配！(需提早預定)" },
+        "en": { name: "<span class=\"highlight-new\">Sunny</span> Chef's Customized Catering Box", desc: "Premium double-entree lunchbox tailored for business meetings and VIP workshops. TWD 200 / 250 tiers available." },
+        "th": { name: "กล่องอาหารจัดประชุมของเชฟ<span class=\"highlight-new\">ซันนี่</span>", desc: "กล่องข้าวอาหารกล่องสองหน้าคัดเกรด VIP สำหรับงานประชุมและงานสัมมนา เลือกราคาได้ระหว่าง 200/250 TWD" },
+        "vi": { name: "Hộp Cơm Hội Nghị Cao Cấp Chef <span class=\"highlight-new\">Sunny</span>", desc: "Hộp cơm 2 món chính cao cấp thiết kế cho hội nghị doanh nghiệp và hội thảo VIP. Tùy chọn phân khúc 200 / 250 TWD." }
+    },
+    "38575": {
+        "zh-TW": { name: "【特惠公告】感謝<span class=\"highlight-new\">銀行電子</span>袁董事長體恤員工補助餐費", desc: "賀！每月伙食津貼外，袁董事長體恤員工辛苦，特額外補貼員工到店食堂點餐 *30元* 餐費！好人一生平安！" },
+        "en": { name: "【Benefit Notice】Thanks to <span class=\"highlight-new\">Bank Electronics</span> Chairman for Subsidy", desc: "Bonus! Chairman subsidized TWD 30 for employee cafeteria orders, in addition to standard meal allowances. Bless him!" },
+        "th": { name: "【ประกาศสวัสดิการ】ขอบคุณประธานบริษัท <span class=\"highlight-new\">Bank Electronics</span> สนับสนุนค่าอาหาร", desc: "ยินดีด้วย! ประธานสนับสนุนสวัสดิการช่วยจ่ายค่าอาหารเพิ่ม 30 TWD ต่อมื้อสำหรับพนักงานในโรงอาหารนอกเหนือจากสวัสดิการเดิม!" },
+        "vi": { name: "【Tin Đặc Biệt】Cảm ơn Chủ Tịch <span class=\"highlight-new\">Bank Electronics</span> hỗ trợ phụ cấp ăn trưa", desc: "Tin vui! Phụ cấp thêm 30 TWD/suất ăn tại nhà ăn cho nhân viên bên cạnh trợ cấp ăn uống tiêu chuẩn hàng tháng!" }
+    },
+    "38577": {
+        "zh-TW": { name: "【季節公告】浪漫六月即將推出夏季商品，敬請期待", desc: "夏季商品預計4/1正式開跑，歡迎老客戶提前使用語音諮詢優惠，另有熟客特別好康唷！" },
+        "en": { name: "【Seasonal Notice】Upcoming Summer Delights in June", desc: "New summer menu items launch on 4/1. Old friends enjoy special telephone booking vouchers." },
+        "th": { name: "【ข่าวฤดูกาล】เตรียมเปิดตัวเมนูใหม่รับหน้าร้อนช่วงมิถุนายนนี้", desc: "รายการอาหารสำหรับฤดูร้อนเตรียมเปิดตัวเป็นทางการ 4/1 ลูกค้าเก่าติดต่อทางโทรศัพท์เพื่อรับข้อเสนอพิเศษล่วงหน้า!" },
+        "vi": { name: "【Mùa Hè Vẫy Gọi】Menu mới chào hè sắp ra mắt vào tháng 6", desc: "Các món ăn giải nhiệt dự kiến mở bán từ 4/1. Khách hàng thân thiết vui lòng gọi điện trước để nhận ưu đãi đặc biệt!" }
+    }
+};
+
+const DEFAULT_PRODUCTS = [
+    {
+        id: "13058",
+        name: "彤緣蔬食便當/蛋奶素/無肉無負擔",
+        category: "salad",
+        description: "高質感環保可微波餐盒。精心調製時蔬配菜，讓您清爽吃、無負擔！(注意：此餐盒主菜為精選奶蛋素食材，非全素喔)",
+        price: 90,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_1-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "11331",
+        name: "港式蔥油雞飯",
+        category: "main",
+        description: "香醇自製港式油蔥，搭配多汁溫體雞肉！經典口味王者回歸！保溫餐盒外送，鎖住熱騰鮮味！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2024/08/LINE_ALBUM_新餐盒🍱_260530_18-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "76512",
+        name: "<span class=\"highlight-new\">Sunny</span>愛妻招牌手工醃製炸燒肉飯",
+        category: "main",
+        description: "精選台灣溫體豬五花肉，手工秘方醃製多時後酥炸，外酥內嫩！紙餐盒微波依然美味，人氣熱賣！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/12/LINE_ALBUM_新餐盒🍱_260530_19-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "83669",
+        name: "紅燒無骨滷排(先炸後滷)",
+        category: "main",
+        description: "人氣爆棚新品！溫體豬大排先油炸鎖汁，再丟入主廚陳年老滷汁慢火燉煮，完全去骨，大口咬下超滿足！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/03/S__127344680-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "87428",
+        name: "什錦胡麻水果沙拉 (獨家胡麻風味)",
+        category: "salad",
+        description: "夏季商品熱力開賣！精選多款季節水果與鮮嫩生菜，淋上特製濃郁胡麻醬，夏日解暑美味！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/03/LINE_ALBUM_新餐盒🍱_260530_6-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "87429",
+        name: "什錦冰梅水果沙拉 (獨家酸甜冰梅)",
+        category: "salad",
+        description: "酸甜開胃必點！夏日限定冰梅調醬，將當季清甜水果的鮮美味道再次昇華，清爽健康無負擔！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/03/LINE_ALBUM_新餐盒🍱_260530_6-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "91945",
+        name: "川味家常肉絲便當 (肉超多飽足款)",
+        category: "main",
+        description: "正宗川香家常爆炒，肉絲軟嫩、鹹香帶點微辣！配菜豐富，超大肉量絕對滿足食肉大胃王！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/05/LINE_ALBUM_新餐盒🍱_260530_14-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "95251",
+        name: "椒麻螺絲米線 (香辣爆表)",
+        category: "salad",
+        description: "特製螺絲米線吸收川味椒麻紅油，搭配脆口黃瓜與花生，辣勁十足，酸爽解熱，辣度爆表！",
+        price: 110,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2026/05/LINE_ALBUM_新餐盒🍱_260530_5-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "76513",
+        name: "<span class=\"highlight-new\">Sunny</span>主廚客製會議精緻餐盒",
+        category: "main",
+        description: "針對公司行號會議、貴賓研討會客製的精緻雙主菜餐盒，提供 200元/250元 雙規格供預算調配！(需提早預定)",
+        price: 200,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/12/LINE_ALBUM_新餐盒🍱_260530_3-300x300.jpg",
+        status: "instock"
+    },
+    {
+        id: "38575",
+        name: "【特惠公告】感謝<span class=\"highlight-new\">銀行電子</span>袁董事長體恤員工補助餐費",
+        category: "promo",
+        description: "賀！每月伙食津貼外，袁董事長體恤員工辛苦，特額外補貼員工到店食堂點餐 *30元* 餐費！好人一生平安！",
+        price: 0,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/04/LINE_ALBUM_新餐盒🍱_260530_1-300x300.jpg",
+        status: "outofstock"
+    },
+    {
+        id: "38577",
+        name: "【季節公告】浪漫六月即將推出夏季商品，敬請期待",
+        category: "promo",
+        description: "夏季商品預計4/1正式開跑，歡迎老客戶提前使用語音諮詢優惠，另有熟客特別好康唷！",
+        price: 0,
+        image: "https://www.slk9898.com.tw/wp-content/uploads/2025/04/LINE_ALBUM_新餐盒🍱_260530_7-300x300.jpg",
+        status: "outofstock"
+    }
+];ing fresh fruits and crisp greens with aromatic roasted sesame dressing." },
         "th": { name: "สลัดผลไม้รวมราดซอสงาน้ำลึก", desc: "เมนูคลายร้อนต้อนรับซัมเมอร์! ผลไม้สดตามฤดูกาลและผักกรอบ ราดด้วยน้ำสลัดงาคั่วสไตล์ญี่ปุ่นเข้มข้น" },
         "vi": { name: "Salad Hoa Quả Trộn Sốt Mè Rang", desc: "Thực đơn giải nhiệt mùa hè! Trái cây tươi cắt miếng kết hợp sốt mè rang béo ngậy thơm nức mũi." }
     },
@@ -844,6 +1006,7 @@ function applyLanguage(lang) {
     // 批量翻譯 ID 元素
     const idList = [
         "logo-subtitle", "nav-text-menu", "nav-text-member", "nav-text-admin", "nav-text-guide", "nav-text-cart",
+        "nav-text-cart-link", "nav-text-checkout-link", "woo-breadcrumbs", "woo-page-title", "woo-result-count",
         "hero-title", "hero-subtitle", "feat-pork", "feat-box", "feat-delivery", 
         "cart-drawer-title", "label-shipping-title", "label-chk-name", "label-chk-phone", 
         "label-chk-method", "label-chk-dept", "label-chk-address", "label-chk-remarks", "label-chk-total", "btn-submit-order",
@@ -899,6 +1062,11 @@ function applyLanguage(lang) {
 
 function getTranslation(key) {
     return I18N_DICT[currentLang][key] || I18N_DICT['zh-TW'][key] || key;
+}
+
+function stripHtml(html) {
+    if (!html) return '';
+    return html.replace(/<[^>]*>/g, '');
 }
 
 // 取得多語系商品資訊
@@ -997,11 +1165,11 @@ function renderProductGrid(products) {
             ${isOutOfStock ? `<span class="product-badge out-of-stock">${currentLang === 'zh-TW' ? '已售罄' : 'Sold Out'}</span>` : ''}
             ${p.category === 'promo' ? `<span class="product-badge" style="background-color: var(--primary)">${currentLang === 'zh-TW' ? '熱門公告' : 'News'}</span>` : ''}
             <div class="product-img-wrapper" onclick="openCustomizeModal('${p.id}')">
-                <img src="${p.image}" class="product-img" alt="${displayName}">
+                <img src="${p.image}" class="product-img" alt="${stripHtml(displayName)}">
             </div>
             <div class="product-info">
                 <span class="product-meta">${p.category === 'main' ? getTranslation('cat_main') : p.category === 'salad' ? getTranslation('cat_salad') : getTranslation('cat_promo')}</span>
-                <h4 class="product-title" title="${displayName}" onclick="openCustomizeModal('${p.id}')">${displayName}</h4>
+                <h4 class="product-title" title="${stripHtml(displayName)}" onclick="openCustomizeModal('${p.id}')">${displayName}</h4>
                 <div class="product-action-row">
                     <span class="price">
                         ${isPromo ? `<span class="promo-badge-text" style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">${getTranslation('btn_contact')}</span>` : `<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">NT$</span>${p.price}</bdi></span>`}
@@ -1054,7 +1222,7 @@ function openCustomizeModal(productId) {
     const localized = getLocalizedProduct(product.id);
     document.getElementById('cust-item-id').value = product.id;
     document.getElementById('cust-item-img').src = product.image;
-    document.getElementById('cust-item-name').textContent = localized.name || product.name;
+    document.getElementById('cust-item-name').innerHTML = localized.name || product.name;
     document.getElementById('cust-item-desc').textContent = localized.desc || product.description;
 
     // 重置選項為預設值
@@ -1220,6 +1388,20 @@ function toggleCart(isOpen) {
     }
 }
 
+function openCheckoutDirectly() {
+    toggleCart(true);
+    if (shoppingCart.length === 0) {
+        showToast(currentLang === 'zh-TW' ? '您的購物車是空的，請先加入餐點！' : 'Your cart is empty, please add some items first!', 'warning');
+        return;
+    }
+    setTimeout(() => {
+        const checkoutForm = document.getElementById('checkout-form-container');
+        if (checkoutForm && checkoutForm.style.display !== 'none') {
+            checkoutForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 300);
+}
+
 function updateCartQuantity(productId, specDetails, delta) {
     const item = shoppingCart.find(item => item.product.id === productId && item.specDetails === specDetails);
     if (!item) return;
@@ -1276,7 +1458,7 @@ function updateCartUI() {
         const div = document.createElement('div');
         div.className = 'cart-item';
         div.innerHTML = `
-            <img src="${item.product.image}" class="cart-item-img" alt="${displayName}">
+            <img src="${item.product.image}" class="cart-item-img" alt="${stripHtml(displayName)}">
             <div class="cart-item-details">
                 <span class="cart-item-title">${displayName}</span>
                 ${item.specDetails ? `<span class="cart-item-options">${item.specDetails}</span>` : ''}
@@ -1336,8 +1518,8 @@ function submitOrder() {
     const totalPrice = Number(document.getElementById('cart-total-price').textContent);
 
     // 整合商品名稱、數量與客製選項，寫入試算表 database
-    const details = shoppingCart.map(item => `${getLocalizedProduct(item.product.id).name || item.product.name} x${item.quantity} ($${item.price * item.quantity})`).join(', ');
-    const allOptions = shoppingCart.map(item => `[${getLocalizedProduct(item.product.id).name || item.product.name}]: ${item.specDetails} x${item.quantity}`).join('; ');
+    const details = shoppingCart.map(item => `${stripHtml(getLocalizedProduct(item.product.id).name || item.product.name)} x${item.quantity} ($${item.price * item.quantity})`).join(', ');
+    const allOptions = shoppingCart.map(item => `[${stripHtml(getLocalizedProduct(item.product.id).name || item.product.name)}]: ${item.specDetails} x${item.quantity}`).join('; ');
 
     const submitBtn = document.getElementById('submit-order-btn');
     submitBtn.disabled = true;

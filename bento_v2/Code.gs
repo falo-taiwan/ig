@@ -1,4 +1,4 @@
-// Code.gs - Sunny廚苑訂餐系統後端 v2.0 (Google Apps Script)
+// Code.gs - Sunny廚苑訂餐系統後端 v2.1 (Google Apps Script)
 
 // 1. 發布 Web App 進入點
 function doGet() {
